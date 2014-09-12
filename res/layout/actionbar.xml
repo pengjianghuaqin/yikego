@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/market_detail_actionbar"
+    android:layout_width="match_parent"
+    android:layout_height="50dip"
+    android:layout_alignParentTop="true"
+    android:background="@color/bg_color_blue" >
+
+    <ImageView
+        android:id="@+id/market_detail_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dip"
+        android:background="@drawable/ic_back" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/actionbar_title"
+        android:layout_centerInParent="true"
+        android:text="店铺详情"
+        android:textColor="@color/white"
+        android:textSize="20dip" />
+
+    <ImageView
+        android:id="@+id/market_detail_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/market_search"
+        android:background="@drawable/ic_search" />
+
+    <TextView
+        android:id="@+id/market_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dip"
+        android:text="搜索"
+        android:textColor="@color/white"
+        android:textSize="20dip" />
+
+</RelativeLayout>

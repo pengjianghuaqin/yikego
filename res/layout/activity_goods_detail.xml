@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color_gray" >
+
+    <RelativeLayout
+        android:id="@+id/goods_detail_actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:layout_alignParentTop="true"
+        android:background="@color/bg_color_blue" >
+
+        <ImageView
+            android:id="@+id/goods_detail_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dip"
+            android:background="@drawable/ic_back" />
+
+        <TextView
+            android:id="@+id/actionbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="商品详情"
+            android:textColor="@color/white"
+            android:textSize="20dip" />
+
+        <TextView
+            android:id="@+id/market_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dip"
+            android:text="分享"
+            android:textColor="@color/white"
+            android:textSize="15dip" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/goods_detail_img"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/goods_detail_actionbar"
+        android:background="@drawable/img_bg_goods_detail" />
+
+    <RelativeLayout
+        android:id="@+id/goods_detail_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/goods_detail_img"
+        android:background="@color/bg_color_gray" >
+
+        <TextView
+            android:id="@+id/goods_detail_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dip"
+            android:layout_marginTop="5dip"
+            android:text="￥ 5"
+            android:textColor="@color/bg_color_blue"
+            android:textSize="20dip" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:layout_toRightOf="@id/goods_detail_price"
+            android:text="元"
+            android:textColor="@color/bg_color_blue"
+            android:textSize="15dip" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/goods_detail_price"
+            android:layout_marginLeft="10dip"
+            android:layout_marginTop="10dip"
+            android:text="中盐   125克碘盐"
+            android:textColor="@color/bg_color_blue"
+            android:textSize="12dip" />
+
+        <ImageView
+            android:id="@+id/img_shopping_car"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dip"
+            android:background="@drawable/ic_shopping_car" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dip"
+            android:layout_toLeftOf="@id/img_shopping_car"
+            android:text="加入购物车"
+            android:textColor="@color/bg_color_blue"
+            android:textSize="12dip" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/market_detail_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/goods_detail_area"
+        android:background="@color/bg_color_gray" >
+
+        <TextView
+            android:id="@+id/market_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dip"
+            android:layout_marginTop="15dip"
+            android:text="全家便利超市"
+            android:textColor="@color/bg_color_blue"
+            android:textSize="20dip" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dip"
+            android:layout_marginTop="5dip"
+            android:layout_below="@id/market_name"
+            android:text="营业时间：8:00-21:00"
+            android:textColor="@color/black"
+            android:textSize="10dip" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="30元起送"
+            android:textColor="@color/bg_color_blue"
+            android:textSize="15dip" />
+
+        <LinearLayout
+            android:id="@+id/enter_market_area"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dip"
+            android:layout_marginTop="15dip"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_enter_market_detail"
+                android:textColor="@color/edit_text_color"
+                android:textSize="15dip" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_arrow_right_gray" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/enter_market_area"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="25dip"
+            android:text="距离310米"
+            android:textColor="@color/bg_color_blue"
+            android:textSize="12dip" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/market_detail_area"
+        android:background="@color/bg_color_gray" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:layout_marginTop="5dip"
+            android:text="@string/text_goods_Description"
+            android:textColor="@color/bg_color_blue" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_confirm"
+        android:layout_width="220dp"
+        android:layout_height="50dip"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="25dip"
+        android:background="@drawable/ic_btn_confirm"
+        android:gravity="center"
+        android:text="@string/confirm_buy"
+        android:textColor="@color/white"
+        android:textSize="20dip" />
+
+</RelativeLayout>

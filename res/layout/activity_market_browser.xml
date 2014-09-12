@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:id="@+id/browser_title"
+        android:background="@color/bg_color_blue" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dip"
+            android:background="@drawable/ic_btn_menu" />
+
+        <TextView
+            android:id="@+id/title_spineer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="曹杨路"
+            android:textColor="@color/white"
+            android:textSize="20dip" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/title_spineer"
+            android:background="@drawable/ic_arrow_down" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dip"
+            android:text="@string/title_map"
+            android:textColor="@color/white"
+            android:textSize="20dip" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:layout_below="@id/browser_title"
+        android:id="@+id/browser_search"
+        android:background="@color/bg_color_blue" >
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="36dip"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="40dip"
+            android:layout_marginRight="40dip"
+            android:background="@drawable/btn_search_bg"
+            android:hint="@string/title_import"
+            android:paddingLeft="30dip"
+            android:textColorHint="@color/bg_color_gray" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="45dip"
+            android:layout_centerVertical="true"
+            android:background="@drawable/ic_btn_search" />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/browser_search"
+        android:layout_weight="0"
+        android:background="@color/white"
+        android:cacheColorHint="@color/white"
+        android:divider="@color/white"
+        android:dividerHeight="2dip"
+        android:drawSelectorOnTop="false"
+        android:footerDividersEnabled="false" />
+
+</RelativeLayout>

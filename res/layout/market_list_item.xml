@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="120dip"
+    android:background="@color/bg_color_gray" >
+
+    <ImageView
+        android:id="@+id/market_listitem_thumb"
+        android:layout_width="100dip"
+        android:layout_height="100dip"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dip"
+        android:background="@drawable/ic_item_thumb" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="30dip"
+        android:layout_marginTop="15dip"
+        android:layout_toRightOf="@+id/market_listitem_thumb" >
+
+        <TextView
+            android:id="@+id/market_listitem_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/bg_color_blue"
+            android:textSize="20dip" />
+
+        <RelativeLayout
+            android:id="@+id/market_listitem_location_area"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/market_listitem_name"
+            android:layout_marginTop="15dip" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@drawable/ic_mark" />
+
+            <TextView
+                android:id="@+id/market_listitem_path"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:textColor="@color/bg_color_blue"
+                android:textSize="17dip" />
+
+            <TextView
+                android:id="@+id/market_business_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="14dip"
+                android:layout_toRightOf="@id/market_listitem_path"
+                android:textColor="@color/bg_color_blue"
+                android:textSize="10dip" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dip"
+                android:background="@drawable/ic_shopping_car" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/market_listitem_location_area"
+            android:layout_marginTop="10dip" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/item_text_arrive"
+                android:textColor="@color/bg_color_blue"
+                android:textSize="10dip" >
+            </TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="@string/item_text_takeaway"
+                android:textColor="@color/bg_color_blue"
+                android:textSize="10dip" >
+            </TextView>
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dip"
+        android:layout_marginTop="20dip"
+        android:background="@drawable/ic_arrow_right" />
+
+</RelativeLayout>

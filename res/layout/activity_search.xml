@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:background="@color/bg_color_blue" >
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="36dip"
+            android:layout_marginRight="60dip"
+            android:id="@+id/search_text"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="12dip"
+            android:background="@drawable/btn_search_bg"
+            android:hint="@string/title_import_goods"
+            android:paddingLeft="30dip"
+            android:textColorHint="@color/bg_color_gray" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="17dip"
+            android:layout_centerVertical="true"
+            android:background="@drawable/ic_btn_search" />
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_define"
+            android:layout_marginRight="10dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/white"
+            android:textSize="20dip"
+            />
+    </RelativeLayout>
+
+</RelativeLayout>
