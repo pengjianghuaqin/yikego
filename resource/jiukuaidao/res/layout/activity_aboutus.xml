@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout android:background="@color/text_gray_color_ee" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:id="@id/content_layout_title" android:background="@drawable/bg_title" android:layout_width="fill_parent" android:layout_height="48.0dip">
+        <ImageView android:id="@id/titile_back_imageview" android:paddingLeft="5.0dip" android:paddingRight="10.0dip" android:layout_width="wrap_content" android:layout_height="fill_parent" android:src="@drawable/button_title_back" android:scaleType="centerInside" android:contentDescription="@string/description" />
+        <TextView android:textSize="18.0sp" android:textColor="@color/bai" android:id="@id/titile_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="关于我们" android:layout_centerInParent="true" />
+    </RelativeLayout>
+    <ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/content_layout_title">
+        <RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_margin="20.0dip">
+            <TextView android:textSize="18.0sp" android:textColor="@color/text_red_color_DE" android:id="@id/conetent_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="酒快到介绍" />
+            <TextView android:textSize="16.0sp" android:textColor="@color/text_black_color_59" android:id="@id/conetent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:text="@string/string_about_us" android:layout_below="@id/conetent_title" />
+            <ImageView android:id="@id/iv_about_us" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/img_about_us" android:layout_below="@id/conetent" android:layout_centerHorizontal="true" android:contentDescription="@null" />
+            <TextView android:textSize="18.0sp" android:textColor="@color/text_black_color_59" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="20.0dip" android:text="@string/company_name" android:layout_below="@id/iv_about_us" android:layout_centerHorizontal="true" />
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

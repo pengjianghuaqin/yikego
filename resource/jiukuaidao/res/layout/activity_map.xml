@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout android:orientation="vertical" android:background="@color/bai" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:id="@id/content_layout_title" android:background="@drawable/bg_title" android:layout_width="fill_parent" android:layout_height="48.0dip">
+        <ImageView android:id="@id/titile_back_imageview" android:paddingLeft="5.0dip" android:paddingRight="10.0dip" android:layout_width="wrap_content" android:layout_height="fill_parent" android:src="@drawable/button_title_back" android:scaleType="centerInside" android:layout_alignParentLeft="true" />
+        <TextView android:textSize="20.0sp" android:id="@id/titile_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="当前位置..." android:layout_centerInParent="true" />
+        <ImageView android:id="@id/titile_list_imageview" android:layout_width="wrap_content" android:layout_height="fill_parent" android:scaleType="centerInside" android:layout_alignParentRight="true" />
+    </RelativeLayout>
+    <FrameLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/content_layout_title">
+        <com.jiukuaidao.client.map.MyLocationMapView android:id="@id/bmapView" android:clickable="true" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+        <ImageView android:layout_gravity="bottom|left|center" android:id="@id/quest_location_image" android:background="@drawable/button_title_back_bg" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="20.0dip" android:scaleType="centerInside" />
+    </FrameLayout>
+</RelativeLayout>

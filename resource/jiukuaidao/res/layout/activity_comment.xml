@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:id="@id/top" android:background="@drawable/bg_title" android:layout_width="fill_parent" android:layout_height="48.0dip">
+        <ImageView android:id="@id/titile_back_imageview" android:paddingLeft="5.0dip" android:paddingRight="10.0dip" android:layout_width="wrap_content" android:layout_height="fill_parent" android:src="@drawable/button_title_back" android:scaleType="centerInside" android:layout_alignParentLeft="true" android:contentDescription="@string/description" />
+        <TextView android:textSize="@dimen/top_middle" android:textColor="@color/bai" android:id="@id/titile_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="添加评价" android:maxLines="1" android:singleLine="true" android:layout_centerInParent="true" />
+    </RelativeLayout>
+    <ScrollView android:id="@id/content" android:background="@color/text_gray_color_ee" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/top">
+        <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <TextView android:textSize="20.0sp" android:textColor="#ff000000" android:id="@id/tv_store_comment" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="20.0dip" android:text="店铺评分" android:layout_alignParentTop="true" android:layout_centerHorizontal="true" />
+            <RatingBar android:id="@id/rb_comment" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:max="5" android:numStars="5" android:rating="5.0" android:stepSize="1.0" android:isIndicator="false" android:layout_below="@id/tv_store_comment" android:layout_centerHorizontal="true" style="\@style/roomRatingBarBig" />
+            <RelativeLayout android:id="@id/rl_comment" android:background="@color/white" android:layout_width="fill_parent" android:layout_height="150.0dip" android:layout_marginTop="15.0dip" android:layout_below="@id/rb_comment" android:layout_alignParentLeft="true">
+                <EditText android:textSize="16.0sp" android:textColor="@color/black" android:gravity="top" android:id="@id/et_comment" android:background="@color/white" android:paddingLeft="5.0dip" android:paddingTop="5.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent" android:hint="\u0020写点评论吧,对其他用户帮助很大哦!" android:maxLength="50" android:layout_above="@id/tv_tip" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" />
+                <TextView android:textSize="16.0sp" android:id="@id/tv_tip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="10.0dip" android:layout_marginBottom="10.0dip" android:text="您还可以输入50字" android:layout_alignParentRight="true" android:layout_alignParentBottom="true" />
+            </RelativeLayout>
+            <Button android:textSize="17.0sp" android:textColor="@color/white" android:id="@id/bt_submit" android:background="@drawable/select_button_dial" android:layout_width="wrap_content" android:layout_height="45.0dip" android:layout_marginLeft="20.0dip" android:layout_marginTop="20.0dip" android:layout_marginRight="20.0dip" android:text="提交评价" android:layout_below="@id/rl_comment" android:layout_alignParentLeft="true" android:layout_alignParentRight="true" android:layout_centerHorizontal="true" />
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

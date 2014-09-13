@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout android:orientation="vertical" android:background="#ffeeeeee" android:layout_width="wrap_content" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:id="@id/content_layout_title" android:background="@color/text_red_color_E9" android:layout_width="fill_parent" android:layout_height="48.0dip">
+        <ImageView android:id="@id/titile_back_imageview" android:padding="10.0dip" android:layout_width="wrap_content" android:layout_height="fill_parent" android:src="@drawable/button_title_back" android:scaleType="centerInside" android:layout_alignParentLeft="true" android:contentDescription="@string/description" />
+        <TextView android:textSize="18.0sp" android:textColor="@color/bai" android:id="@id/titile_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="切换位置" android:layout_centerInParent="true" />
+    </RelativeLayout>
+    <LinearLayout android:orientation="horizontal" android:id="@id/search_top" android:background="@color/text_red_color_E9" android:layout_width="fill_parent" android:layout_height="48.0dip">
+        <RelativeLayout android:orientation="horizontal" android:background="@drawable/bg_white" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginLeft="10.0dip" android:layout_marginTop="8.0dip" android:layout_marginBottom="8.0dip" android:layout_weight="1.0">
+            <ImageButton android:id="@id/search_clear_button" android:background="#00000000" android:padding="3.0dip" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/search_clear_icon" android:layout_alignParentRight="true" android:layout_centerVertical="true" android:contentDescription="@string/description" />
+            <EditText android:textSize="15.0sp" android:id="@id/et_search" android:background="@null" android:layout_width="fill_parent" android:layout_height="fill_parent" android:hint="请输入要切换的地址" android:maxLines="1" android:singleLine="true" android:layout_toLeftOf="@id/search_clear_button" android:layout_toRightOf="@id/imageView1" android:layout_alignParentBottom="true" />
+            <ImageView android:id="@id/imageView1" android:background="@drawable/ic_search" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="2.0dip" android:layout_alignParentLeft="true" android:layout_centerVertical="true" android:contentDescription="@null" />
+        </RelativeLayout>
+        <TextView android:textSize="18.0sp" android:textColor="@color/white" android:layout_gravity="center_vertical" android:id="@id/tv_sure" android:paddingLeft="15.0dip" android:paddingTop="10.0dip" android:paddingBottom="12.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="确定" android:layout_weight="4.0" />
+    </LinearLayout>
+    <View android:id="@id/line_view" android:background="@color/text_gray_color_e3" android:layout_width="fill_parent" android:layout_height="0.70000005dip" />
+    <RelativeLayout android:id="@id/location_layout" android:background="@drawable/change_position_item_selector" android:layout_width="fill_parent" android:layout_height="52.0dip">
+        <TextView android:textSize="17.0sp" android:textColor="#ffe93523" android:id="@id/location_address_textView" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15.0dip" android:text="@string/change_location_textview" android:layout_alignParentLeft="true" android:layout_centerVertical="true" />
+        <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="24.0dip" android:layout_alignParentRight="true" android:layout_centerVertical="true">
+            <ImageView android:id="@id/location_imageView" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/ic_change_location" android:contentDescription="@string/description" />
+            <ProgressBar android:layout_gravity="center_horizontal" android:id="@id/location_progressBar" android:visibility="gone" android:layout_width="20.0dip" android:layout_height="20.0dip" />
+        </FrameLayout>
+    </RelativeLayout>
+    <View android:id="@id/line_view_two" android:background="@color/text_gray_color_e3" android:layout_width="fill_parent" android:layout_height="0.70000005dip" />
+    <RelativeLayout android:id="@id/location_histroy_layout" android:background="@drawable/listview_item_selector" android:layout_width="fill_parent" android:layout_height="52.0dip">
+        <TextView android:textSize="17.0sp" android:textColor="#ff676767" android:id="@id/location_histroy_textView" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15.0dip" android:text="历史位置" android:layout_alignParentLeft="true" android:layout_centerVertical="true" />
+        <ImageView android:id="@id/del_all_imageView" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="24.0dip" android:src="@drawable/ic_location_del" android:layout_alignParentRight="true" android:layout_centerVertical="true" android:contentDescription="@string/description" />
+    </RelativeLayout>
+    <RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <com.jiukuaidao.client.swipelistview.SwipeListView android:id="@id/swipeListView" android:layout_width="fill_parent" android:layout_height="fill_parent" android:divider="@color/text_gray_color_e3" android:dividerHeight="0.5dip" swipe:swipeOpenOnLongPress="false" swipe:swipeOffsetLeft="200.0dip" swipe:swipeCloseAllItemsWhenMoveList="true" swipe:swipeFrontView="@id/front" swipe:swipeBackView="@id/back" swipe:swipeMode="left" swipe:swipeActionLeft="reveal" xmlns:swipe="http://schemas.android.com/apk/res-auto" />
+        <include layout="\@layout/error_msg_layout" />
+        <include layout="\@layout/load_data_layout" />
+    </RelativeLayout>
+</LinearLayout>

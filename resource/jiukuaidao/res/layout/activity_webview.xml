@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:id="@id/webview_top" android:background="@color/top_red" android:visibility="visible" android:layout_width="fill_parent" android:layout_height="48.0dip">
+        <ImageView android:id="@id/titile_back_imageview" android:paddingLeft="5.0dip" android:paddingRight="10.0dip" android:layout_width="wrap_content" android:layout_height="fill_parent" android:src="@drawable/button_title_back" android:scaleType="centerInside" android:layout_alignParentLeft="true" android:contentDescription="@string/description" />
+        <TextView android:textSize="@dimen/top_middle" android:textColor="@color/bai" android:id="@id/titile_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" style="\@style/text_marquee" />
+    </RelativeLayout>
+    <WebView android:id="@id/webview" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/webview_top" />
+    <include android:visibility="gone" layout="\@layout/load_data_layout" />
+    <include android:visibility="gone" layout="\@layout/error_msg_layout" />
+</RelativeLayout>

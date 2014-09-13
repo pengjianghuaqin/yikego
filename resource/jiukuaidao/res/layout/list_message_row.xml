@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FrameLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <FrameLayout android:layout_gravity="center" android:id="@id/back" android:tag="back" android:paddingTop="6.0dip" android:paddingBottom="6.0dip" android:clickable="true" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <Button android:textSize="13.0dip" android:textColor="#ffffffff" android:layout_gravity="right|center" android:id="@id/recent_del_btn" android:background="@drawable/red_del_btn_bg" android:layout_width="54.0dip" android:layout_height="24.0dip" android:layout_marginRight="10.0dip" android:text="删除" android:shadowColor="#7f000000" android:shadowDx="1.5" android:shadowDy="1.5" android:shadowRadius="1.5" />
+    </FrameLayout>
+    <RelativeLayout android:layout_gravity="center" android:id="@id/front" android:tag="front" android:background="@drawable/change_position_item_selector" android:layout_width="fill_parent" android:layout_height="50.0dip">
+        <TextView android:textSize="17.0sp" android:textColor="#ff040404" android:id="@id/message_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15.0dip" android:maxLines="1" android:singleLine="true" android:layout_alignParentLeft="true" android:layout_centerVertical="true" />
+    </RelativeLayout>
+</FrameLayout>

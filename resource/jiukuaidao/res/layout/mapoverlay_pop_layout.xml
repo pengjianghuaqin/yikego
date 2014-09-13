@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout android:background="@drawable/overlay_layout_bg" android:layout_width="wrap_content" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:id="@id/overlay_layout" android:layout_width="wrap_content" android:layout_height="50.0dip">
+        <ImageView android:id="@id/overlay_imag" android:layout_margin="2.0dip" android:layout_alignParentLeft="true" android:contentDescription="@null" style="\@style/user_face_image_map" />
+        <TextView android:textSize="15.0sp" android:textColor="@android:color/black" android:id="@id/overlay_info" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="1.0dip" android:singleLine="true" android:layout_toRightOf="@id/overlay_imag" android:layout_alignParentTop="true" android:layout_centerVertical="true" />
+        <TextView android:textSize="15.0sp" android:textColor="@android:color/black" android:id="@id/overlay_Distance" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2.0dip" android:maxWidth="100.0dip" android:singleLine="true" android:layout_toRightOf="@id/overlay_imag" android:layout_below="@id/overlay_info" android:layout_centerVertical="true" />
+    </RelativeLayout>
+    <ImageView android:id="@id/image_arror" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:layout_marginTop="18.0dip" android:layout_marginRight="5.0dip" android:src="@drawable/common_arror" android:layout_toRightOf="@id/overlay_layout" android:layout_alignParentRight="true" android:contentDescription="@null" />
+</RelativeLayout>

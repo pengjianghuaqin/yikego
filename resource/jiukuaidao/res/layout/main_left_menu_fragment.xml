@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout android:background="@drawable/bg_left" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:orientation="horizontal" android:id="@id/head_image_layout" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginRight="10.0dip">
+        <ImageView android:id="@id/headImageView" android:layout_width="72.0dip" android:layout_height="72.0dip" android:src="@drawable/ic_main_left_user" android:adjustViewBounds="true" android:maxWidth="80.0dip" android:maxHeight="80.0dip" android:layout_centerHorizontal="true" android:layout_centerVertical="true" android:contentDescription="@string/description" />
+        <TextView android:textSize="18.0sp" android:textColor="@color/white" android:id="@id/NameTextView" android:paddingTop="24.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="20.0dip" android:maxWidth="200.0dip" android:text="@string/main_left_login_user" android:singleLine="true" android:layout_below="@id/headImageView" android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+    <RelativeLayout android:id="@id/rl_quit" android:layout_width="wrap_content" android:layout_height="40.0dip" android:layout_marginLeft="10.0dip" android:layout_marginBottom="20.0dip" android:layout_alignParentLeft="true" android:layout_alignParentBottom="true">
+        <ImageView android:id="@id/iv_quit" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/ic_main_left_quit" android:layout_alignParentLeft="true" android:layout_alignParentBottom="true" android:contentDescription="@null" />
+        <TextView android:textSize="17.0sp" android:textColor="@color/white_trans_70" android:id="@id/tv_quit" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="退出登录" android:layout_toRightOf="@id/iv_quit" android:layout_centerVertical="true" />
+    </RelativeLayout>
+    <ListView android:id="@id/main_left_list" android:scrollbars="none" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="25.0dip" android:listSelector="@drawable/listview_left_item_selector" android:divider="@null" android:dividerHeight="22.0dip" android:layout_above="@id/rl_quit" android:layout_below="@id/head_image_layout" />
+</RelativeLayout>

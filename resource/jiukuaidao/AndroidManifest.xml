@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest android:versionCode="17" android:versionName="2.0.52" android:installLocation="auto" package="com.jiuxianwang.jiukuaidao"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="17" />
+    <supports-screens android:anyDensity="true" android:smallScreens="true" android:normalScreens="true" android:largeScreens="true" />
+    <uses-permission android:name="android.permission.BAIDU_LOCATION_SERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_GPS" />
+    <uses-permission android:name="android.permission.RESTART_PACKAGES" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <application android:label="@string/app_name" android:icon="@drawable/ic_launcher" android:name="com.jiukuaidao.client.comm.AppContext" android:allowBackup="true">
+        <activity android:theme="@android:style/Theme.Light.NoTitleBar" android:label="@string/app_name" android:name="com.jiukuaidao.client.ui.SplashScreen" android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.jiukuaidao.client.ui.MainActivity" android:launchMode="singleTask" android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation" />
+        <activity android:theme="@style/Theme.NoTitleBar" android:name="com.jiukuaidao.client.ui.MainSearchStoreActivity" android:launchMode="singleTask" android:screenOrientation="portrait" android:windowSoftInputMode="stateVisible|adjustPan" />
+        <activity android:theme="@style/Theme.NoTitleBar" android:name="com.jiukuaidao.client.ui.SeachGoodsStoreActivity" android:launchMode="singleTask" android:screenOrientation="portrait" android:windowSoftInputMode="stateVisible|adjustPan" />
+        <activity android:theme="@style/Theme.NoTitleBar" android:name="com.jiukuaidao.client.ui.MySeachGoodsStoreActivity" android:launchMode="singleTask" android:screenOrientation="portrait" android:windowSoftInputMode="stateVisible|adjustPan" />
+        <activity android:name="com.jiukuaidao.client.ui.GuideViewActivity" android:launchMode="singleTask" android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation" />
+        <activity android:theme="@style/Theme.NoTitleBar" android:name="com.jiukuaidao.client.ui.UserLoginActivity" android:launchMode="singleTask" android:screenOrientation="portrait" android:windowSoftInputMode="stateVisible|adjustPan" />
+        <activity android:theme="@style/Theme.NoTitleBar" android:name="com.jiukuaidao.client.ui.RegisterActivity" android:launchMode="singleTask" android:screenOrientation="portrait" android:windowSoftInputMode="stateVisible|adjustPan" />
+        <activity android:theme="@style/Theme.NoTitleBar" android:name="com.jiukuaidao.client.ui.QuickLoginActivity" android:launchMode="singleTask" android:screenOrientation="portrait" android:windowSoftInputMode="stateVisible|adjustPan" />
+        <activity android:theme="@style/Theme.NoTitleBar" android:name="com.jiukuaidao.client.ui.MyUserCenterActivity" android:launchMode="singleTask" android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation" />
+        <activity android:theme="@style/Theme.NoTitleBar" android:name="com.jiukuaidao.client.ui.ChangePositionActivity" android:launchMode="singleTask" android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation" android:windowSoftInputMode="adjustPan" />
+        <activity android:theme="@style/Theme.NoTitleBar" android:name="com.jiukuaidao.client.ui.SearchPlaceActivity" android:launchMode="singleTask" android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation" />
+        <activity android:theme="@style/Theme.NoTitleBar" android:name="com.jiukuaidao.client.ui.MapLocationOverlayActivity" android:launchMode="singleTask" android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation" />
+        <activity android:theme="@style/Theme.NoTitleBar" android:name="com.jiukuaidao.client.ui.BindMobileActivity" android:launchMode="singleTask" android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation" />
+        <activity android:theme="@style/Theme.NoTitleBar" android:name="com.jiukuaidao.client.ui.UserCenterActivity" android:launchMode="singleTask" android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation" />
+        <activity android:theme="@style/Theme.NoTitleBar" android:name="com.jiukuaidao.client.ui.StoreMapOverlayActivity" android:launchMode="singleTask" android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation" />
+        <activity android:theme="@style/Theme.NoTitleBar" android:name="com.jiukuaidao.client.ui.StoreDetailActivity" android:launchMode="singleTask" android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation" />
+        <activity android:theme="@style/Theme.NoTitleBar" android:name="com.jiukuaidao.client.ui.MyStoreDetailActivity" android:launchMode="singleTask" android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation" />
+        <activity android:theme="@style/Theme.NoTitleBar" android:name="com.jiukuaidao.client.ui.SearchGoodsActivity" android:launchMode="singleTask" android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation" android:windowSoftInputMode="stateVisible|adjustPan" />
+        <activity android:theme="@style/Theme.NoTitleBar" android:name="com.jiukuaidao.client.ui.GoodsDetailActivity" android:launchMode="singleTask" android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation" />
+        <activity android:theme="@style/Theme.HalfTranslucent" android:name="com.jiukuaidao.client.ui.PhoneDialActivity" android:launchMode="singleTask" android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation" />
+        <activity android:theme="@style/Theme.NoTitleBar" android:name="com.jiukuaidao.client.ui.SearchActivity" android:launchMode="singleTask" android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation" android:windowSoftInputMode="adjustPan" />
+        <activity android:theme="@style/Theme.NoTitleBar" android:name="com.jiuxianwang.jiukuaidao.ui.LoadingActivity" android:launchMode="singleTask" android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation" />
+        <service android:name="com.baidu.location.f" android:permission="android.permission.BAIDU_LOCATION_SERVICE" android:enabled="true" android:process=":remote" />
+        <meta-data android:name="UMENG_APPKEY" android:value="533e2e1456240be70d0b4861" />
+        <meta-data android:name="UMENG_CHANNEL" android:value="anzhi" />
+        <service android:name="com.umeng.common.net.DownloadingService" android:process=":DownloadingService" />
+        <activity android:theme="@android:style/Theme.Translucent.NoTitleBar" android:name="com.umeng.update.UpdateDialogActivity" />
+        <activity android:theme="@style/Theme.NoTitleBar" android:name="com.umeng.fb.ConversationActivity" />
+        <activity android:theme="@style/Theme.NoTitleBar" android:name="com.umeng.fb.ContactActivity" />
+        <activity android:theme="@style/Theme.NoTitleBar" android:label="@string/title_activity_setting" android:name="com.jiukuaidao.client.ui.SettingActivity" android:launchMode="singleTask" android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation" />
+        <activity android:theme="@style/Theme.NoTitleBar" android:name="com.jiukuaidao.client.ui.AboutActivity" android:launchMode="singleTask" android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation" />
+        <activity android:theme="@style/Theme.NoTitleBar" android:name="com.jiukuaidao.client.ui.WebViewActivity" android:launchMode="singleTask" android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation" />
+        <activity android:theme="@style/Theme.NoTitleBar" android:name="com.jiukuaidao.client.ui.TimerActivity" android:launchMode="singleTask" android:screenOrientation="portrait" android:windowSoftInputMode="stateVisible|adjustPan" />
+        <activity android:theme="@style/Theme.NoTitleBar" android:name="com.jiukuaidao.client.ui.OrderActivity" android:launchMode="singleTask" android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation" />
+        <activity android:theme="@style/Theme.NoTitleBar" android:name="com.jiukuaidao.client.ui.TestOrderActivity" android:launchMode="singleTask" android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation" />
+        <activity android:theme="@style/Theme.NoTitleBar" android:name="com.jiukuaidao.client.ui.CommentListActivity" android:launchMode="singleTask" android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation" />
+        <activity android:theme="@style/Theme.NoTitleBar" android:label="@string/title_activity_user_order" android:name="com.jiuxianwang.jiukuaidao.UserOrderActivity" android:launchMode="singleTask" />
+        <activity android:theme="@style/Theme.NoTitleBar" android:name="com.jiukuaidao.client.ui.StoreCommentActivity" android:launchMode="singleTask" android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation" android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity android:theme="@style/Theme.NoTitleBar" android:name="com.jiukuaidao.client.ui.NewOrderActivity" android:launchMode="singleTask" android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation" android:windowSoftInputMode="stateHidden|adjustPan" />
+    </application>
+</manifest>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout android:background="@color/bai" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:id="@id/content_layout_title" android:background="@drawable/bg_title" android:layout_width="fill_parent" android:layout_height="48.0dip">
+        <ImageView android:id="@id/titile_back_imageview" android:paddingLeft="5.0dip" android:paddingRight="10.0dip" android:layout_width="wrap_content" android:layout_height="fill_parent" android:src="@drawable/button_title_back" android:scaleType="centerInside" android:layout_alignParentLeft="true" android:contentDescription="@string/description" />
+        <TextView android:textSize="@dimen/top_middle" android:textColor="@color/bai" android:id="@id/titile_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="商品详情" android:maxLines="1" android:singleLine="true" android:layout_centerInParent="true" />
+    </RelativeLayout>
+    <Button android:textSize="@dimen/top_right" android:textColor="#ffffffff" android:id="@id/bt_phone" android:background="@drawable/select_button_dial" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="40.0dip" android:layout_margin="10.0dip" android:text="@string/buy_now" android:layout_alignParentBottom="true" />
+    <RelativeLayout android:orientation="vertical" android:id="@id/rl_view" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginBottom="10.0dip" android:layout_above="@id/bt_phone" android:layout_below="@id/content_layout_title">
+        <ScrollView android:id="@id/sv_scrollview" android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <FrameLayout android:orientation="vertical" android:id="@id/viewpager_layout" android:visibility="visible" android:layout_width="fill_parent" android:layout_height="160.0dip">
+                    <android.support.v4.view.ViewPager android:id="@id/guidePages" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+                    <RelativeLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                        <LinearLayout android:gravity="center_horizontal" android:orientation="horizontal" android:id="@id/viewGroup" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_alignParentBottom="true" />
+                    </RelativeLayout>
+                </FrameLayout>
+                <View android:id="@id/tv_line1_up" android:layout_below="@id/viewpager_layout" style="\@style/text_divider_normal" />
+                <View android:id="@id/tv_line1" android:layout_below="@id/tv_line1_up" style="\@style/text_divider_bold" />
+                <View android:id="@id/tv_line1_down" android:layout_below="@id/tv_line1" style="\@style/text_divider_normal" />
+                <RelativeLayout android:orientation="horizontal" android:id="@id/ll_goods_title" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@id/tv_line1_down" android:layout_alignParentLeft="true">
+                    <ImageView android:id="@id/iv_main" android:visibility="gone" android:layout_width="28.0dip" android:layout_height="16.0dip" android:layout_marginTop="15.0dip" android:layout_marginRight="10.0dip" android:src="@drawable/img_recommend" android:scaleType="centerInside" android:layout_alignParentRight="true" android:contentDescription="@null" />
+                    <TextView android:textSize="18.0sp" android:textColor="@color/text_balck_color_05" android:id="@id/tv_goods_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_marginRight="5.0dip" android:layout_toLeftOf="@id/iv_main" android:layout_alignParentLeft="true" android:layout_alignParentBottom="true" />
+                </RelativeLayout>
+                <RelativeLayout android:orientation="horizontal" android:id="@id/ll_price" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="5.0dip" android:layout_below="@id/ll_goods_title" android:layout_alignParentLeft="true">
+                    <TextView android:textSize="14.0sp" android:textColor="@color/text_red_color_DE" android:id="@id/flag_goodsdetail_price" android:paddingBottom="1.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:text="@string/flag_money" android:layout_alignBottom="@id/goodsdetail_current_price_point" android:layout_alignParentLeft="true" />
+                    <TextView android:textSize="18.0sp" android:textColor="@color/text_red_color_DE" android:id="@id/goodsdetail_current_price_point" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text=".00" android:layout_toRightOf="@id/goodsdetail_current_price" android:layout_alignParentBottom="true" />
+                    <TextView android:textSize="18.0sp" android:textColor="@color/text_red_color_DE" android:id="@id/goodsdetail_current_price" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="100" android:layout_toRightOf="@id/flag_goodsdetail_price" android:layout_alignParentBottom="true" />
+                    <TextView android:textSize="16.0sp" android:textColor="@color/text_black_color_95" android:id="@id/goodsdetail_market_price" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15.0dip" android:text="100.00" android:layout_toRightOf="@id/goodsdetail_current_price_point" android:layout_alignParentBottom="true" />
+                </RelativeLayout>
+                <View android:id="@id/line1_down" android:layout_marginLeft="10.0dip" android:layout_marginRight="10.0dip" android:layout_below="@id/ll_price" style="\@style/text_divider_normal" />
+                <LinearLayout android:orientation="vertical" android:id="@id/ll_sub_title" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@id/line1_down" android:layout_alignParentLeft="true">
+                    <LinearLayout android:orientation="horizontal" android:id="@id/tv_sub_layout" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                        <ImageView android:layout_gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="10.0dip" android:src="@drawable/img_sub_title" android:contentDescription="@null" />
+                        <TextView android:textSize="16.0sp" android:textColor="@color/text_black_color_59" android:layout_gravity="center_vertical" android:id="@id/tv_sub_title" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                    </LinearLayout>
+                    <View android:id="@id/tv_line2_up" style="\@style/text_divider_normal" />
+                    <View android:id="@id/tv_line2" style="\@style/text_divider_bold" />
+                    <View android:id="@id/tv_line2_down" style="\@style/text_divider_normal" />
+                </LinearLayout>
+                <LinearLayout android:orientation="horizontal" android:id="@id/goods_info" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@id/ll_sub_title">
+                    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1.0">
+                        <TextView android:textSize="16.0sp" android:textColor="@color/text_balck_color_04" android:layout_gravity="center_vertical" android:id="@id/goods_attr1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="10.0dip" android:text="" />
+                    </LinearLayout>
+                    <View android:layout_width="0.70000005dip" android:layout_height="fill_parent" android:layout_marginTop="4.0dip" android:layout_marginBottom="4.0dip" style="\@style/text_divider_normal" />
+                    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1.0">
+                        <TextView android:textSize="16.0sp" android:textColor="@color/text_black_color_50" android:layout_gravity="center_vertical" android:id="@id/goods_attr2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="10.0dip" android:text="" />
+                    </LinearLayout>
+                </LinearLayout>
+                <View android:id="@id/text_line3_up" android:layout_below="@id/goods_info" style="\@style/text_divider_normal" />
+                <View android:id="@id/text_line3" android:layout_below="@id/text_line3_up" style="\@style/text_divider_bold" />
+                <View android:id="@id/text_line3_down" android:layout_below="@id/text_line3" style="\@style/text_divider_normal" />
+                <RelativeLayout android:id="@id/rl_back_store" android:background="@drawable/change_position_item_selector" android:padding="10.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@id/text_line3_down">
+                    <TextView android:textSize="16.0sp" android:textColor="@color/text_balck_color_04" android:id="@id/tv_shop_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="10.0dip" android:text="" android:maxLines="1" android:singleLine="true" android:layout_toLeftOf="@id/tv_into_shop" android:layout_alignParentLeft="true" android:layout_centerVertical="true" />
+                    <TextView android:textSize="14.0sp" android:textColor="@color/text_black_color_59" android:gravity="center" android:id="@id/tv_into_shop" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="5.0dip" android:text="进入店铺" android:drawableRight="@drawable/common_arrow" android:drawablePadding="5.0dip" android:layout_alignParentRight="true" android:layout_centerVertical="true" />
+                </RelativeLayout>
+                <View android:id="@id/text_line4_down" android:layout_marginLeft="10.0dip" android:layout_marginRight="10.0dip" android:layout_below="@id/rl_back_store" style="\@style/text_divider_normal" />
+                <LinearLayout android:id="@id/line_commnet" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@id/text_line4_down">
+                    <RelativeLayout android:padding="10.0dip" android:layout_width="fill_parent" android:layout_height="36.0dip" android:layout_weight="2.9">
+                        <TextView android:textSize="12.0sp" android:textColor="@color/text_black_color_50" android:gravity="center_vertical" android:id="@id/textView1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="评分" android:layout_centerVertical="true" />
+                        <RatingBar android:id="@id/store_ratingbar" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="2.0dip" android:isIndicator="true" android:layout_toRightOf="@id/textView1" android:layout_centerVertical="true" style="\@style/roomRatingBarSmall" />
+                        <TextView android:textSize="12.0sp" android:textColor="@color/text_red_color_DE" android:id="@id/tv_score" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="2.0dip" android:layout_toRightOf="@id/store_ratingbar" android:layout_centerVertical="true" />
+                    </RelativeLayout>
+                    <View android:id="@id/textView3" android:layout_width="0.70000005dip" android:layout_height="fill_parent" android:layout_marginTop="4.0dip" android:layout_marginBottom="4.0dip" style="\@style/text_divider_normal" />
+                    <RelativeLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="36.0dip" android:layout_weight="4.0">
+                        <TextView android:textSize="12.0sp" android:textColor="@color/text_black_color_50" android:id="@id/tv_distance" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="" android:layout_centerHorizontal="true" android:layout_centerVertical="true" />
+                    </RelativeLayout>
+                    <View android:id="@id/textView4" android:layout_width="0.70000005dip" android:layout_height="fill_parent" android:layout_marginTop="4.0dip" android:layout_marginBottom="4.0dip" style="\@style/text_divider_normal" />
+                    <RelativeLayout android:layout_width="fill_parent" android:layout_height="36.0dip" android:layout_weight="4.0">
+                        <TextView android:textSize="12.0sp" android:textColor="@color/text_black_color_50" android:id="@id/tv_price" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="" android:layout_centerHorizontal="true" android:layout_centerVertical="true" />
+                    </RelativeLayout>
+                </LinearLayout>
+                <View android:id="@id/text_line5_up" android:layout_below="@id/line_commnet" style="\@style/text_divider_normal" />
+                <View android:id="@id/text_line5" android:layout_below="@id/text_line5_up" style="\@style/text_divider_bold" />
+                <View android:id="@id/text_line5_down" android:layout_below="@id/text_line5" style="\@style/text_divider_normal" />
+                <TextView android:textColor="#ff050505" android:layout_gravity="center_vertical" android:id="@id/textview_good_detail_describe" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="10.0dip" android:text="@string/good_detail_describe" android:layout_below="@id/text_line5_down" />
+                <TextView android:textColor="#ff464646" android:layout_gravity="center_vertical" android:id="@id/tv_good_detail_describe" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_marginRight="10.0dip" android:text="" android:maxLength="100" android:layout_below="@id/textview_good_detail_describe" />
+            </RelativeLayout>
+        </ScrollView>
+    </RelativeLayout>
+    <include layout="\@layout/load_data_layout" />
+    <include android:visibility="gone" layout="\@layout/error_msg_layout" />
+</RelativeLayout>

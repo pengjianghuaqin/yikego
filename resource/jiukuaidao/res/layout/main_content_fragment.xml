@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout android:orientation="vertical" android:background="@color/bai" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:id="@id/content_layout_title" android:background="@color/text_red_color_E9" android:layout_width="fill_parent" android:layout_height="48.0dip">
+        <ImageView android:id="@id/left_setting_image" android:padding="10.0dip" android:focusable="true" android:clickable="true" android:layout_width="wrap_content" android:layout_height="fill_parent" android:src="@drawable/ic_main_content_setting" android:layout_centerVertical="true" android:contentDescription="@string/description" />
+        <RelativeLayout android:id="@id/change_position_layout" android:background="@drawable/top_address_title_back_bg" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_marginTop="2.0dip" android:layout_marginBottom="2.0dip" android:scaleType="center" android:layout_centerInParent="true">
+            <ProgressBar android:id="@id/titile_progress" android:layout_width="30.0dip" android:layout_height="30.0dip" android:layout_alignParentLeft="true" android:layout_centerVertical="true" />
+            <TextView android:textSize="18.0sp" android:textColor="@color/bai" android:id="@id/titile_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="正在定位" android:singleLine="true" android:layout_toRightOf="@id/titile_progress" android:layout_centerVertical="true" style="\@style/text_marquee" />
+            <ImageView android:id="@id/image_maptop_center" android:paddingLeft="3.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/ic_maptop_center" android:scaleType="center" android:layout_toRightOf="@id/titile_text" android:layout_centerVertical="true" android:contentDescription="@string/description" />
+        </RelativeLayout>
+        <FrameLayout android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_alignParentRight="true">
+            <TextView android:textSize="18.0sp" android:textColor="@color/bai" android:layout_gravity="center" android:id="@id/titile_map_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="10.0dip" android:scaleType="centerInside" android:text="地图" android:maxLines="1" android:singleLine="true" android:contentDescription="@string/description" />
+            <TextView android:textSize="18.0sp" android:textColor="@color/bai" android:layout_gravity="center" android:id="@id/titile_list_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="10.0dip" android:scaleType="centerInside" android:text="列表" android:contentDescription="@string/description" />
+        </FrameLayout>
+    </RelativeLayout>
+    <FrameLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/content_layout_title">
+        <RelativeLayout android:id="@id/listViewLayout" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <LinearLayout android:orientation="horizontal" android:id="@id/search_top" android:background="@color/text_red_color_E9" android:layout_width="fill_parent" android:layout_height="58.0dip" android:layout_alignParentLeft="true" android:layout_alignParentTop="true">
+                <RelativeLayout android:orientation="horizontal" android:id="@id/search_relativelayout" android:background="@drawable/bg_white" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_margin="10.0dip">
+                    <TextView android:textSize="14.0sp" android:id="@id/et_search" android:layout_width="wrap_content" android:layout_height="wrap_content" android:hint="请输入酒品名称" android:layout_toRightOf="@id/imageView1" android:layout_centerVertical="true" />
+                    <ImageView android:id="@id/imageView1" android:background="@drawable/ic_search" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="2.0dip" android:layout_alignParentLeft="true" android:layout_centerVertical="true" android:contentDescription="@null" />
+                </RelativeLayout>
+            </LinearLayout>
+            <RelativeLayout android:id="@id/rl_lottery" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@id/search_top">
+                <ImageView android:id="@id/iv_lottery" android:layout_width="fill_parent" android:layout_height="40.0dip" android:scaleType="fitXY" android:layout_centerHorizontal="true" android:layout_centerVertical="true" android:contentDescription="@null" />
+                <ImageView android:id="@id/close_lottery" android:padding="6.0dip" android:layout_width="40.0dip" android:layout_height="40.0dip" android:src="@drawable/img_close_lottery" android:scaleType="centerInside" android:layout_alignParentRight="true" android:layout_centerVertical="true" android:contentDescription="@null" />
+            </RelativeLayout>
+            <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@id/rl_lottery">
+                <com.jiukuaidao.client.widget.PullToRefreshListView android:id="@id/common_listview_modle" style="\@style/widget_listview" />
+            </RelativeLayout>
+        </RelativeLayout>
+        <RelativeLayout android:id="@id/mapView_layout" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <com.jiukuaidao.client.map.MyLocationMapView android:id="@id/bmapView" android:clickable="true" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+            <ImageView android:id="@id/quest_location_image" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="30.0dip" android:src="@drawable/ic_location_bg" android:scaleType="centerInside" android:layout_alignParentBottom="true" android:contentDescription="@string/description" />
+        </RelativeLayout>
+    </FrameLayout>
+    <include layout="\@layout/error_msg_layout" />
+</RelativeLayout>

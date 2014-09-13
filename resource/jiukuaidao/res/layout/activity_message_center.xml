@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout android:orientation="vertical" android:background="#fff0f0f0" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:id="@id/content_layout_title" android:background="@drawable/bg_title" android:layout_width="fill_parent" android:layout_height="48.0dip">
+        <ImageView android:id="@id/titile_back_imageview" android:paddingLeft="5.0dip" android:paddingRight="10.0dip" android:layout_width="wrap_content" android:layout_height="fill_parent" android:src="@drawable/button_title_back" android:scaleType="centerInside" android:layout_alignParentLeft="true" />
+        <TextView android:textSize="20.0sp" android:textColor="@color/bai" android:id="@id/titile_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="消息中心" android:layout_centerInParent="true" />
+    </RelativeLayout>
+    <FrameLayout android:padding="2.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/content_layout_title">
+        <com.jiukuaidao.client.swipelistview.SwipeListView android:id="@id/swipeListView" android:layout_width="fill_parent" android:layout_height="fill_parent" android:divider="@null" swipe:swipeOpenOnLongPress="false" swipe:swipeOffsetLeft="200.0dip" swipe:swipeCloseAllItemsWhenMoveList="true" swipe:swipeFrontView="@id/front" swipe:swipeBackView="@id/back" swipe:swipeMode="left" swipe:swipeActionLeft="reveal" xmlns:swipe="http://schemas.android.com/apk/res-auto" />
+    </FrameLayout>
+    <include layout="\@layout/error_msg_layout" />
+</RelativeLayout>

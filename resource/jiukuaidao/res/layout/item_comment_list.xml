@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout android:background="@color/white" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView android:textSize="14.0sp" android:textColor="@color/text_gray_color_6e" android:id="@id/user_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15.0dip" android:layout_marginTop="5.0dip" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" />
+    <RatingBar android:id="@id/user_ratingbar" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="10.0dip" android:numStars="5" android:isIndicator="true" android:layout_alignTop="@id/user_name" android:layout_alignParentRight="true" style="\@style/roomRatingBarSmall" />
+    <TextView android:textSize="15.0sp" android:textColor="@color/text_black_color_46" android:id="@id/tv_comment" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:layout_marginRight="10.0dip" android:text="发的的的萨芬但是发多少发送到发多少发多少但是 是非得失但是收到收到但是 的是非得失的" android:layout_below="@id/user_name" android:layout_alignLeft="@id/user_name" />
+    <TextView android:textSize="14.0sp" android:textColor="@color/text_gray_color_6e" android:id="@id/tv_time" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="10.0dip" android:layout_below="@id/tv_comment" android:layout_alignParentRight="true" />
+    <View android:layout_marginTop="5.0dip" android:layout_below="@id/tv_time" style="\@style/text_divider_normal" />
+</RelativeLayout>

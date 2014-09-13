@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout android:background="#ffeeeeee" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <include android:id="@id/common_title" layout="\@layout/common_title" />
+    <WebView android:id="@id/wv_about" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/common_title" />
+    <ProgressBar android:id="@id/pb_about_load" android:layout_width="20.0dip" android:layout_height="20.0dip" android:layout_centerInParent="true" />
+    <include android:id="@id/error_view" layout="\@layout/error_msg_layout" />
+</RelativeLayout>

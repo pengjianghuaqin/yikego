@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout android:background="#ffeeeeee" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <include android:id="@id/common_title" android:layout_alignParentTop="true" layout="\@layout/common_title" />
+    <FrameLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/common_title">
+        <RelativeLayout android:id="@id/listViewLayout" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <RelativeLayout android:id="@id/rl_lottery" android:background="@color/bai" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@id/search_top">
+                <RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerHorizontal="true" android:layout_centerVertical="true">
+                    <ImageView android:id="@id/iv_lottery" android:padding="6.0dip" android:layout_width="40.0dip" android:layout_height="40.0dip" android:layout_marginLeft="5.0dip" android:src="@drawable/img_close_lottery" android:scaleType="centerInside" android:contentDescription="@null" />
+                    <TextView android:textColor="@color/black" android:id="@id/ad_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="确认收货有惊喜哦" android:layout_toRightOf="@id/iv_lottery" android:layout_centerVertical="true" />
+                </RelativeLayout>
+            </RelativeLayout>
+            <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@id/rl_lottery">
+                <View android:id="@id/textView_line" android:background="@color/text_red_color_E9" android:layout_width="fill_parent" android:layout_height="0.5dip" />
+                <ListView android:id="@id/user_order_list" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:listSelector="@drawable/listview_item_selector" android:divider="@null" android:dividerHeight="10.0dip" android:layout_below="@id/textView_line" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </FrameLayout>
+    <include layout="\@layout/order_error_msg_layout" />
+    <include layout="\@layout/load_data_layout" />
+</RelativeLayout>

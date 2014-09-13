@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout android:orientation="vertical" android:background="#ffeeeeee" android:descendantFocusability="blocksDescendants" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:orientation="vertical" android:background="@color/bai" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="5.0dip">
+        <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="3.0dip">
+            <TextView android:textSize="17.0sp" android:textColor="@color/black" android:id="@id/order_num" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:text="@string/order_list_item_orderNumb" />
+            <TextView android:textSize="16.0sp" android:textColor="#ff666666" android:id="@id/order_id" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:layout_toRightOf="@id/order_num" />
+        </RelativeLayout>
+        <RelativeLayout android:id="@id/ll_order_time" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="3.0dip">
+            <TextView android:textSize="17.0sp" android:textColor="@color/black" android:id="@id/tv_order_time_1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:text="@string/order_list_item_orderTime" />
+            <TextView android:textSize="16.0sp" android:textColor="#ff666666" android:id="@id/tv_order_date" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:layout_toRightOf="@id/tv_order_time_1" />
+            <TextView android:textSize="16.0sp" android:textColor="@color/text_red_color_E9" android:id="@id/tv_order_time" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:layout_toRightOf="@id/tv_order_date" />
+        </RelativeLayout>
+        <RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="3.0dip">
+            <TextView android:textSize="17.0sp" android:textColor="@color/black" android:id="@id/store_name_1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:text="@string/order_list_item_orderStore" />
+            <TextView android:textSize="16.0sp" android:textColor="#ff666666" android:id="@id/store_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:layout_toRightOf="@id/store_name_1" />
+        </RelativeLayout>
+        <View android:background="@color/text_gray_color_e3" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_marginTop="7.0dip" />
+    </LinearLayout>
+    <RelativeLayout android:id="@id/rl_timer" android:background="@color/bai" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <TextView android:textSize="16.0sp" android:textColor="@color/text_red_color_E9" android:id="@id/send_time_textView" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_marginTop="5.0dip" android:layout_marginBottom="5.0dip" android:text="@string/order_list_item_orderTimer" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" />
+        <TextView android:textSize="40.0sp" android:textColor="#ff464646" android:id="@id/count_time" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="00:00:00" android:layout_centerInParent="true" />
+        <View android:layout_below="@id/count_time" style="\@style/text_divider_normal" />
+    </RelativeLayout>
+    <RelativeLayout android:id="@id/rl_order_ok" android:background="@color/bai" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <Button android:textSize="16.0sp" android:textColor="@color/white" android:id="@id/but_order_ok" android:background="@drawable/ic_order_button_order" android:clickable="true" android:layout_width="fill_parent" android:layout_height="45.0dip" android:layout_marginLeft="30.0dip" android:layout_marginTop="35.0dip" android:layout_marginRight="30.0dip" android:layout_marginBottom="35.0dip" android:text="确认收货" android:layout_centerVertical="true" />
+    </RelativeLayout>
+    <View android:background="@color/text_gray_color_e3" android:layout_width="fill_parent" android:layout_height="0.70000005dip" />
+</LinearLayout>

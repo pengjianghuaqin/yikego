@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout android:orientation="vertical" android:background="#fff0f0f0" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:id="@id/content_layout_title" android:background="@drawable/bg_title" android:layout_width="fill_parent" android:layout_height="48.0dip">
+        <ImageView android:id="@id/titile_back_imageview" android:paddingLeft="5.0dip" android:paddingRight="10.0dip" android:layout_width="wrap_content" android:layout_height="fill_parent" android:src="@drawable/button_title_back" android:scaleType="centerInside" android:layout_alignParentLeft="true" android:contentDescription="@string/description" />
+        <TextView android:textSize="20.0sp" android:textColor="@color/bai" android:id="@id/titile_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="搜索" android:layout_centerHorizontal="true" android:layout_centerVertical="true" style="\@style/text_marquee" />
+    </RelativeLayout>
+    <ListView android:id="@id/place_list" android:layout_width="fill_parent" android:layout_height="fill_parent" android:listSelector="@drawable/listview_item_selector" android:divider="@color/hui_4" android:dividerHeight="1.0dip" android:layout_below="@id/content_layout_title" />
+    <include layout="\@layout/error_msg_layout" />
+    <include layout="\@layout/load_data_layout" />
+</RelativeLayout>
