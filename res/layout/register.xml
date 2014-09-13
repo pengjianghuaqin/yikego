@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout android:orientation="vertical" android:background="#ffeeeeee" android:layout_width="fill_parent" android:layout_height="fill_parent"
+                xmlns:android="http://schemas.android.com/apk/res/android">
+    <include
+            android:id="@+id/content_layout_title"
+            android:layout_width="match_parent" android:layout_height="50dip"
+            layout="@layout/actionbar" />
+    <FrameLayout
+            android:id="@+id/register_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30.0dip"
+            android:layout_below="@id/content_layout_title">
+        <EditText
+                android:textSize="17.0sp"
+                android:textColor="@color/editor_text_color"
+                android:textColorHint="@color/hint_color"
+                android:gravity="center_vertical"
+                android:id="@+id/tel_editText"
+                android:background="@color/bai"
+                android:paddingLeft="15.0dip"
+                android:layout_width="fill_parent"
+                android:layout_height="54.0dip"
+                android:hint="@string/phone_hint_text"
+                android:singleLine="true"
+                android:maxLength="11"
+                android:drawableLeft="@drawable/ic_main_user"
+                android:drawablePadding="15.0dip"
+                android:inputType="number" />
+        <Button
+                android:textSize="14.0sp"
+                android:textColor="#ffffffff"
+                android:layout_gravity="right|center"
+                android:id="@+id/acthCode_button"
+                android:background="@drawable/image_get_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10.0dip"
+                android:text="@string/authCode_button_text" />
+    </FrameLayout>
+    <View
+            android:id="@+id/line_view"
+            android:background="@color/text_gray_color_e3"
+            android:layout_width="fill_parent"
+            android:layout_height="0.70000005dip"
+            android:layout_marginLeft="15.0dip"
+            android:layout_below="@id/register_layout" />
+    <EditText
+            android:textSize="17.0sp"
+            android:textColor="@color/editor_text_color"
+            android:textColorHint="@color/hint_color"
+            android:id="@+id/pwd_editText"
+            android:background="@color/bai"
+            android:paddingLeft="15.0dip"
+            android:layout_width="fill_parent"
+            android:layout_height="54.0dip"
+            android:hint="@string/pwd_hint_text"
+            android:singleLine="true"
+            android:drawableLeft="@drawable/ic_pwd"
+            android:drawablePadding="15.0dip"
+            android:layout_below="@id/line_view"
+            android:inputType="textPassword" />
+    <View
+            android:id="@+id/line_view2"
+            android:background="@color/text_gray_color_e3"
+            android:layout_width="fill_parent"
+            android:layout_height="0.70000005dip"
+            android:layout_marginLeft="15.0dip"
+            android:layout_below="@id/pwd_editText" />
+    <EditText
+            android:textSize="17.0sp"
+            android:textColor="@color/editor_text_color"
+            android:textColorHint="@color/hint_color"
+            android:id="@+id/authCode_editText"
+            android:background="@color/bai"
+            android:paddingLeft="15.0dip"
+            android:layout_width="fill_parent"
+            android:layout_height="54.0dip"
+            android:hint="@string/authCode_hint_text"
+            android:singleLine="true"
+            android:drawableLeft="@drawable/image_code"
+            android:drawablePadding="15.0dip"
+            android:layout_below="@id/line_view2"
+            android:inputType="number" />
+    <Button
+            android:textSize="17.0sp"
+            android:textColor="#ffffffff"
+            android:id="@+id/register_Button"
+            android:background="@drawable/select_button_dial"
+            android:layout_width="fill_parent"
+            android:layout_height="40.0dip"
+            android:layout_marginLeft="20.0dip"
+            android:layout_marginTop="30.0dip"
+            android:layout_marginRight="20.0dip"
+            android:text="@string/register_title"
+            android:layout_below="@id/authCode_editText" />
+</RelativeLayout>

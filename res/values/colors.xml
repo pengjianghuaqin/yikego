@@ -2,8 +2,12 @@
 <resources>
     <color name="bg_color_blue">#ff69c2ee</color>
     <color name="white">#ffffffff</color>
+    <color name="bai">#ffffffff</color>
     <color name="bg_color_gray">#fff0f0f0</color>
     <color name="edit_text_color">#ff313333</color>
     <color name="black">#ff000000</color>
     <color name="red">#ffff0000</color>
+    <color name="editor_text_color">#ffc8c8c8</color>
+    <color name="hint_color">#ffbababa</color>
+    <color name="text_gray_color_e3">#ffe3e3e3</color>
 </resources>

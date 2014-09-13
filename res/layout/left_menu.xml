@@ -173,7 +173,7 @@
                 android:layout_marginLeft="@dimen/left_menu_textview_margin_left"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"
-                android:text="@string/main_left_feedback"
+                android:text="@string/main_left_setting"
                 android:textSize="18.0sp"
                 android:textColor="@color/white"
                 android:singleLine="true"

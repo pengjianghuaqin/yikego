@@ -22,4 +22,19 @@
     <string name="main_left_shop_quan">购物券</string>
     <string name="main_left_feedback">意见反馈</string>
     <string name="main_left_setting">设置</string>
+
+    <string name="user_login">用户登录</string>
+    <string name="yikego_login_title">海客社区超市用户登录</string>
+    <string name="user_login_hint">用户名/邮箱/手机号</string>
+    <string name="user_password_hint">密码</string>
+    <string name="pwd_hint_text">密码（6-24位）</string>
+    <string name="login">登录</string>
+    <string name="register_title">注册</string>
+    <string name="register">立即注册</string>
+    <string name="quick_login">无帐号快速登录</string>
+    <string name="phone_hint_text">手机号</string>
+    <string name="authCode_button_text">获取验证码</string>
+    <string name="authCode_hint_text">验证码</string>
+    <string name="authCode_login_text">验证并登录</string>
+
 </resources>
