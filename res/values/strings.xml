@@ -18,6 +18,7 @@
 	<string name="confirm_buy">立刻购买</string>
     <string name="main_left_login_user">登录/注册</string>
     <string name="main_left_order_search">订单查询</string>
+    <string name="user_order">我的订单</string>
     <string name="main_left_shop_score">购物积分</string>
     <string name="main_left_shop_quan">购物券</string>
     <string name="main_left_feedback">意见反馈</string>
@@ -44,4 +45,8 @@
     <string name="feedback_phone_title">连续方式（选填）</string>
     <string name="feedback_phone_hint">请输入手机号码</string>
 
+    <string name="score_exchange">积分兑换</string>
+    <string name="verify_ticket">验证购物券</string>
+    <string name="verify_ticket_title">请填写购物券号码</string>
+    <string name="verrify">验证</string>
 </resources>

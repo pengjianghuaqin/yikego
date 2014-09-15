@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:background="@color/white"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <include
+            android:id="@+id/common_title"
+            android:layout_width="match_parent" android:layout_height="50dip"
+            layout="@layout/actionbar" />
+    <TextView
+            android:id="@+id/verify_ticket_text"
+            android:layout_below="@+id/common_title"
+            android:background="@color/text_gray_color_e3"
+            android:text="@string/verify_ticket"
+            android:textSize="13sp"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:paddingLeft="10dp"
+            android:gravity="center_vertical"
+            />
+    <RelativeLayout
+            android:id="@+id/verify_ticket_layout"
+            android:layout_below="@+id/verify_ticket_text"
+            android:layout_marginTop="10dp"
+            android:background="@color/text_gray_color_e3"
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+
+        <TextView
+                android:id="@+id/verify_title"
+                android:text="@string/verify_ticket_title"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        <EditText
+                android:id="@+id/verify_edit"
+                android:layout_below="@+id/verify_title"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/ic_ok"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"/>
+        <TextView
+                android:id="@+id/btn_vefiry"
+                android:layout_alignParentRight="true"
+                android:text="@string/verrify"
+                android:textColor="@color/white"
+                android:textSize="17sp"
+                android:paddingRight="10dp"
+                android:layout_width="wrap_content"
+                android:layout_alignBaseline="@id/verify_edit"
+                android:layout_height="40dp"
+                />
+
+    </RelativeLayout>
+
+</RelativeLayout>

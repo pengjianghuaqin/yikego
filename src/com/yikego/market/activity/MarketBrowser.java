@@ -2,6 +2,7 @@ package com.yikego.market.activity;
 
 import java.util.ArrayList;
 
+import android.widget.ImageView;
 import com.slidingmenu.lib.SlidingMenu;
 import com.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.yikego.market.R;
@@ -20,6 +21,7 @@ import android.widget.ListView;
 public class MarketBrowser extends SlidingFragmentActivity{
 	private ListView mListView;
 	private MarketListAdapter mMarketListAdapter;
+    private ImageView mMenuButton;
 	private Context mContext;
 	private String TAG = "MarketBrowser";
 	public MarketBrowser(){
@@ -52,7 +54,14 @@ public class MarketBrowser extends SlidingFragmentActivity{
     }
 
     private void initView(){
-		mListView = (ListView) findViewById(android.R.id.list);
+        mMenuButton = (ImageView) findViewById(R.id.btn_menu);
+        mMenuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggle();
+            }
+        });
+        mListView = (ListView) findViewById(android.R.id.list);
 
         ArrayList<MarketData> marketList = new ArrayList<MarketData>();
 		marketList.add(new MarketData());

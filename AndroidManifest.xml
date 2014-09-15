@@ -85,6 +85,24 @@
                   android:launchMode="singleTask"
                   >
         </activity>
+        <activity android:name=".activity.UserOrderActivity"
+                  android:configChanges="keyboardHidden|orientation|screenLayout|uiMode"
+                  android:screenOrientation="portrait"
+                  android:launchMode="singleTask"
+                >
+        </activity>
+        <activity android:name=".activity.UserScoreActivity"
+                  android:configChanges="keyboardHidden|orientation|screenLayout|uiMode"
+                  android:screenOrientation="portrait"
+                  android:launchMode="singleTask"
+                >
+        </activity>
+        <activity android:name=".activity.TicketVerifyActivity"
+                  android:configChanges="keyboardHidden|orientation|screenLayout|uiMode"
+                  android:screenOrientation="portrait"
+                  android:launchMode="singleTask"
+                >
+        </activity>
 
     </application>
 

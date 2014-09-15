@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:background="@color/white"
+              android:layout_height="match_parent">
+    <include
+            android:id="@+id/common_title"
+            android:layout_width="match_parent" android:layout_height="50dip"
+            layout="@layout/actionbar" />
+    <ListView
+            android:id="@+id/list_score"
+            android:layout_width="match_parent"
+            android:layout_height="400dp">
+
+
+    </ListView>
+
+    <TextView
+            android:id="@+id/score_text"
+            android:layout_below="@+id/list_score"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/bg_color_blue"
+            android:text="总积分：170分"
+            android:textColor="@color/white"
+            android:singleLine="true"
+            android:gravity="center"
+            android:textSize="17sp"
+            />
+
+</RelativeLayout>

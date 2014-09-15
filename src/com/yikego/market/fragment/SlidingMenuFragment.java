@@ -10,9 +10,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import com.yikego.market.LogUtils;
 import com.yikego.market.R;
-import com.yikego.market.activity.FeedbackActivtiy;
-import com.yikego.market.activity.LoginActivity;
-import com.yikego.market.activity.Setting;
+import com.yikego.market.activity.*;
 
 /**
  * Created by wll on 14-9-11.
@@ -73,11 +71,17 @@ public class SlidingMenuFragment extends Fragment implements View.OnClickListene
                 startActivity(intent);
                 break;
             case R.id.left_menu_order_search:
+                intent.setClass(getActivity(), UserOrderActivity.class);
+                startActivity(intent);
                 break;
             case R.id.left_menu_shop_score:
+                intent.setClass(getActivity(), UserScoreActivity.class);
+                startActivity(intent);
 
                 break;
             case R.id.left_menu_shop_quan:
+                intent.setClass(getActivity(), TicketVerifyActivity.class);
+                startActivity(intent);
 
                 break;
             case R.id.left_menu_feedback:
