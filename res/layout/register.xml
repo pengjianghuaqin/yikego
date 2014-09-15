@@ -82,6 +82,28 @@
             android:drawablePadding="15.0dip"
             android:layout_below="@id/line_view2"
             android:inputType="number" />
+    <View
+            android:id="@+id/line_view3"
+            android:background="@color/text_gray_color_e3"
+            android:layout_width="fill_parent"
+            android:layout_height="0.70000005dip"
+            android:layout_marginLeft="15.0dip"
+            android:layout_below="@id/authCode_editText" />
+    <EditText
+            android:textSize="17.0sp"
+            android:textColor="@color/editor_text_color"
+            android:textColorHint="@color/hint_color"
+            android:id="@+id/address_editText"
+            android:background="@color/bai"
+            android:paddingLeft="15.0dip"
+            android:layout_width="fill_parent"
+            android:layout_height="54.0dip"
+            android:hint="@string/address_hint_text"
+            android:singleLine="true"
+            android:drawableLeft="@drawable/image_address"
+            android:drawablePadding="15.0dip"
+            android:layout_below="@id/line_view3"
+            />
     <Button
             android:textSize="17.0sp"
             android:textColor="#ffffffff"
@@ -93,5 +115,5 @@
             android:layout_marginTop="30.0dip"
             android:layout_marginRight="20.0dip"
             android:text="@string/register_title"
-            android:layout_below="@id/authCode_editText" />
+            android:layout_below="@id/address_editText" />
 </RelativeLayout>

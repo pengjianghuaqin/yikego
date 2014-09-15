@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:background="@color/text_gray_color_e3"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <include
+            android:id="@+id/common_title"
+            android:layout_width="match_parent" android:layout_height="50dip"
+            layout="@layout/actionbar" />
+
+    <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+        <RelativeLayout
+                android:id="@+id/feedback_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20.0dip">
+            <TextView
+                    android:textSize="17.0sp"
+                    android:textColor="#ff4f4f4f"
+                    android:id="@+id/yikego_feedback_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10.0dip"
+                    android:text="@string/yikego_feedback_title" />
+            <EditText
+                    android:textSize="17.0sp"
+                    android:textColor="@color/editor_text_color"
+                    android:textColorHint="@color/hint_color"
+                    android:id="@+id/feedback_editText"
+                    android:background="@color/white"
+                    android:layout_width="fill_parent"
+                    android:layout_height="200dip"
+                    android:layout_marginTop="10.0dip"
+                    android:hint="@string/feedback_hint"
+                    android:gravity="bottom|right"
+                    android:layout_below="@id/yikego_feedback_textView"
+                    android:layout_centerVertical="true" />
+        </RelativeLayout>
+        <RelativeLayout
+                android:id="@+id/feedback_phone_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/feedback_layout"
+                android:layout_marginTop="20.0dip">
+            <TextView
+                    android:textSize="17.0sp"
+                    android:textColor="#ff4f4f4f"
+                    android:id="@+id/feedback_phone_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10.0dip"
+                    android:text="@string/feedback_phone_title" />
+            <EditText
+                    android:textSize="17.0sp"
+                    android:textColor="@color/editor_text_color"
+                    android:textColorHint="@color/hint_color"
+                    android:id="@+id/feedback_phone_edit"
+                    android:background="@color/white"
+                    android:layout_width="fill_parent"
+                    android:layout_height="54dp"
+                    android:paddingLeft="10dp"
+                    android:layout_marginTop="10.0dip"
+                    android:hint="@string/feedback_phone_hint"
+                    android:singleLine="true"
+                    android:layout_below="@+id/feedback_phone_text"
+                    android:inputType="number"
+                    android:layout_centerVertical="true" />
+            <Button
+                    android:textSize="17.0sp"
+                    android:textColor="#ffffffff"
+                    android:id="@+id/loginOn_Button"
+                    android:background="@drawable/select_button_dial"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40.0dip"
+                    android:layout_marginLeft="20.0dip"
+                    android:layout_marginTop="30.0dip"
+                    android:layout_marginRight="20.0dip"
+                    android:text="@string/login"
+                    android:layout_below="@+id/feedback_phone_edit" />
+        </RelativeLayout>
+    </RelativeLayout>
+</LinearLayout>

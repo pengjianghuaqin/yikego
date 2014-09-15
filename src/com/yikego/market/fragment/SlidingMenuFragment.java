@@ -10,7 +10,9 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import com.yikego.market.LogUtils;
 import com.yikego.market.R;
+import com.yikego.market.activity.FeedbackActivtiy;
 import com.yikego.market.activity.LoginActivity;
+import com.yikego.market.activity.Setting;
 
 /**
  * Created by wll on 14-9-11.
@@ -64,9 +66,10 @@ public class SlidingMenuFragment extends Fragment implements View.OnClickListene
     @Override
     public void onClick(View view) {
         int id  = view.getId();
+        Intent intent = new Intent();
         switch (id){
             case R.id.head_image_layout:
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                intent.setClass(getActivity(), LoginActivity.class);
                 startActivity(intent);
                 break;
             case R.id.left_menu_order_search:
@@ -78,10 +81,12 @@ public class SlidingMenuFragment extends Fragment implements View.OnClickListene
 
                 break;
             case R.id.left_menu_feedback:
-
+                intent.setClass(getActivity(), FeedbackActivtiy.class);
+                startActivity(intent);
                 break;
             case R.id.left_menu_setting:
-
+                intent.setClass(getActivity(), Setting.class);
+                startActivity(intent);
                 break;
             default:
                 break;

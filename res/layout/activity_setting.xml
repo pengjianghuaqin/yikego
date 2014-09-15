@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:background="@color/bg_color_gray"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <include
+            android:id="@+id/common_title"
+            android:layout_width="match_parent" android:layout_height="50dip"
+            layout="@layout/actionbar" />
+    <LinearLayout
+            android:layout_below="@+id/common_title"
+            android:orientation="vertical"
+            android:id="@+id/setting_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+        <LinearLayout
+                android:orientation="horizontal"
+                android:id="@+id/update_app"
+                android:clickable="true"
+                style="@style/setting_layout">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:text="@string/update_app"
+                    android:layout_weight="1.0"
+                    style="@style/setting_tv" />
+            <ImageView
+                    android:id="@+id/app_version"
+                    android:layout_width="wrap_content"
+                    android:background="@drawable/ic_update"
+                    style="@style/setting_tv" />
+        </LinearLayout>
+        <View style="@style/text_divider_high" />
+        <LinearLayout
+                android:orientation="horizontal"
+                android:id="@+id/clearphone"
+                android:clickable="true"
+                android:layout_marginTop="0.0dip"
+                style="@style/setting_layout">
+            <TextView
+                    android:layout_width="0.0dip"
+                    android:text="@string/clear_photo"
+                    android:layout_weight="1.0"
+                    style="@style/setting_tv" />
+            <ImageView
+                    android:id="@+id/cachephoto"
+                    android:layout_width="wrap_content"
+                    android:background="@drawable/ic_clear_chace"
+                    style="@style/setting_tv" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

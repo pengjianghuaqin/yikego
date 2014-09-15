@@ -36,5 +36,12 @@
     <string name="authCode_button_text">获取验证码</string>
     <string name="authCode_hint_text">验证码</string>
     <string name="authCode_login_text">验证并登录</string>
+    <string name="address_hint_text">收货地址</string>
+    <string name="update_app">检测更新</string>
+    <string name="clear_photo">清除图片缓存</string>
+    <string name="yikego_feedback_title">反馈内容（必填）</string>
+    <string name="feedback_hint">500字以内</string>
+    <string name="feedback_phone_title">连续方式（选填）</string>
+    <string name="feedback_phone_hint">请输入手机号码</string>
 
 </resources>
