@@ -12,6 +12,7 @@
 	<string name="title_import">请输入超市名称</string>
 	<string name="title_import_goods">请输入商品名称</string>
 	<string name="text_define"> 确定</string>
+	<string name="text_settlement"> 去结算</string>
 	<string name="text_title_goods_detail"> 商品详情</string>
 	<string name="text_enter_market_detail">进入店铺</string>
 	<string name="text_goods_Description">商品描述</string>
@@ -23,6 +24,12 @@
     <string name="main_left_shop_quan">购物券</string>
     <string name="main_left_feedback">意见反馈</string>
     <string name="main_left_setting">设置</string>
+    <string name="text_shopping_car">购物车</string>
+    <string name="text_settlement_amount">结算</string>
+    <string name="cod_orders_completed">订单已完成</string>
+    <string name="cod_call_to_advisory">详情可电话咨询</string>
+    <string name="cod_phone_num1">136 2292 9009</string>
+    <string name="cod_phone_num2">021&#8211;4939 8988</string>
 
     <string name="user_login">用户登录</string>
     <string name="yikego_login_title">海客社区超市用户登录</string>

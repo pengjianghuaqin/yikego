@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/market_detail_actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:background="@color/bg_color_blue" >
+
+        <ImageView
+            android:id="@+id/market_detail_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dip"
+            android:background="@drawable/ic_back" />
+
+        <TextView
+            android:id="@+id/actionbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/text_settlement_amount"
+            android:textColor="@color/white"
+            android:textSize="20dip" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:layout_marginTop="5dip"
+        android:background="@color/edit_text_color" >
+
+        <ImageView
+            android:id="@+id/select_goods"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="30dip"
+            android:background="@drawable/ic_select_gray" />
+
+        <TextView
+            android:id="@+id/selected_settlement_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dip"
+            android:layout_toRightOf="@id/select_goods"
+            android:text="商品金额￥358.00"
+            android:textColor="@color/white"
+            android:textSize="12dip" />
+
+        <TextView
+            android:id="@+id/settlement_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dip"
+            android:text="总计 ￥ 358.00"
+            android:textColor="@color/white"
+            android:textSize="14dip" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dip" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dip"
+            android:text="使用已有购物券"
+            android:textColor="@color/bg_color_blue"
+            android:textSize="15dip" />
+
+        <Button
+            android:id="@+id/add_coupons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dip"
+            android:background="@drawable/add_coupons"
+            android:text="添加购物券"
+            android:textColor="@color/white"
+            android:textSize="13dip" />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="150dip"
+        android:layout_weight="0"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="@color/white"
+        android:dividerHeight="1px"
+        android:drawSelectorOnTop="false"
+        android:fadingEdge="none"
+        android:footerDividersEnabled="true" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dip"
+        android:background="@color/bg_color_blue" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="合计：￥  "
+            android:textColor="@color/white"
+            android:textSize="15dip" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="收货地址"
+        android:layout_marginLeft="15dip"
+        android:textColor="@color/edit_text_color"
+        android:textSize="10dip" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:background="@color/bg_color_gray"
+        android:layout_height="50dip" >
+
+        <TextView
+            android:id="@+id/user_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:layout_centerVertical="true"
+            android:text="这里地址没想好怎么写输入，似乎少个输入页面"
+            android:textColor="@color/bg_color_blue"
+            android:textSize="13dip" />
+
+        <ImageView
+            android:id="@+id/input_user_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dip"
+            android:background="@drawable/input_user_address" />
+
+        <ImageView
+            android:id="@+id/select_user_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dip"
+            android:layout_toLeftOf="@id/input_user_address"
+            android:background="@drawable/select_circle_down" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_cod"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="40dip"
+            android:background="@drawable/btn_payment"
+            android:text="货到付款"
+            android:textColor="@color/white" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_payment"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="40dip"
+            android:background="@drawable/btn_payment"
+            android:text="在线支付"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+</LinearLayout>

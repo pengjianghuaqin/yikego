@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_color_gray" >
+    android:background="@color/white" >
 
     <RelativeLayout
         android:id="@+id/goods_detail_actionbar"
@@ -43,7 +43,7 @@
     <ImageView
         android:id="@+id/goods_detail_img"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="130dip"
         android:layout_below="@id/goods_detail_actionbar"
         android:background="@drawable/img_bg_goods_detail" />
 
@@ -62,7 +62,7 @@
             android:layout_marginTop="5dip"
             android:text="￥ 5"
             android:textColor="@color/bg_color_blue"
-            android:textSize="20dip" />
+            android:textSize="25dip" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -107,6 +107,7 @@
         android:id="@+id/market_detail_area"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="2dip"
         android:layout_below="@id/goods_detail_area"
         android:background="@color/bg_color_gray" >
 
@@ -115,7 +116,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dip"
-            android:layout_marginTop="15dip"
+            android:layout_marginTop="10dip"
             android:text="全家便利超市"
             android:textColor="@color/bg_color_blue"
             android:textSize="20dip" />
@@ -128,7 +129,7 @@
             android:layout_below="@id/market_name"
             android:text="营业时间：8:00-21:00"
             android:textColor="@color/black"
-            android:textSize="10dip" />
+            android:textSize="12dip" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -173,15 +174,16 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_marginTop="2dip"
+        android:layout_height="match_parent"
         android:layout_below="@id/market_detail_area"
         android:background="@color/bg_color_gray" >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dip"
-            android:layout_marginTop="5dip"
+            android:layout_marginLeft="15dip"
+            android:layout_marginTop="10dip"
             android:text="@string/text_goods_Description"
             android:textColor="@color/bg_color_blue" />
     </RelativeLayout>
@@ -194,9 +196,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="25dip"
         android:background="@drawable/ic_btn_confirm"
-        android:gravity="center"
         android:text="@string/confirm_buy"
         android:textColor="@color/white"
-        android:textSize="20dip" />
+        android:textSize="25sp" />
 
 </RelativeLayout>

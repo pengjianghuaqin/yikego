@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/include1"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        layout="@layout/actionbar_cod" />
+
+    <TextView
+        android:id="@+id/cod_text1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/include1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="120dp"
+        android:text="@string/cod_orders_completed"
+        android:textColor="@color/bg_color_blue"
+        android:textSize="22sp" />
+
+    <TextView
+        android:id="@+id/cod_text2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/phone_num1"
+        android:layout_below="@+id/cod_text1"
+        android:layout_marginTop="16dp"
+        android:text="@string/cod_call_to_advisory"
+        android:textColor="@color/bg_color_blue"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/phone_num2"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:layout_alignLeft="@+id/phone_num1"
+        android:layout_below="@+id/phone_num1"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/corners_bg"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:text="@string/cod_phone_num2"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/phone_num1"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/cod_text2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/corners_bg"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:text="@string/cod_phone_num1"
+        android:textColor="@color/white" />
+
+</RelativeLayout>

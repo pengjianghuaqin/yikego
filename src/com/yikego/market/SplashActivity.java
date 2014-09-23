@@ -30,13 +30,12 @@ public class SplashActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
 		initHandler();
-		if (checkNetworkState()) {
-			 mHandler.sendEmptyMessageDelayed(ACTION_NEW_ACTIVITY, 2000);
-
-//			mHandler.sendEmptyMessage(ACTION_NEW_ACTIVITY);
-		} else {
-			mHandler.sendEmptyMessage(ACTION_NETWORK_ERROR);
-		}
+		mHandler.sendEmptyMessageDelayed(ACTION_NEW_ACTIVITY, 1000);
+//		if (checkNetworkState()) {
+//			 mHandler.sendEmptyMessageDelayed(ACTION_NEW_ACTIVITY, 1000);
+//		} else {
+//			mHandler.sendEmptyMessage(ACTION_NETWORK_ERROR);
+//		}
 	}
 	private void initHandler() {
 		// TODO Auto-generated method stub

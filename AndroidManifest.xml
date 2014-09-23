@@ -45,12 +45,27 @@
                   android:screenOrientation="portrait"
                   android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
+        <activity android:name=".activity.CodActivity"
+                  android:configChanges="keyboardHidden|orientation|screenLayout|uiMode"
+                  android:screenOrientation="portrait"
+                  android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+                <activity android:name=".activity.PaymentActivity"
+                  android:configChanges="keyboardHidden|orientation|screenLayout|uiMode"
+                  android:screenOrientation="portrait"
+                  android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
         <activity android:name=".activity.MarketGoodsListActivity"
                   android:configChanges="keyboardHidden|orientation|screenLayout|uiMode"
                   android:screenOrientation="portrait"
                   android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
         <activity android:name=".activity.MarketGoodsDetailActivity"
+                  android:configChanges="keyboardHidden|orientation|screenLayout|uiMode"
+                  android:screenOrientation="portrait"
+                  android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity android:name=".activity.MarketShoppingCarActivity"
                   android:configChanges="keyboardHidden|orientation|screenLayout|uiMode"
                   android:screenOrientation="portrait"
                   android:theme="@android:style/Theme.NoTitleBar" >
@@ -71,6 +86,11 @@
                   android:configChanges="keyboardHidden|orientation|screenLayout|uiMode"
                   android:screenOrientation="portrait"
                   android:launchMode="singleTask"
+                  android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity android:name=".activity.MarketSettlementActivity"
+                  android:configChanges="keyboardHidden|orientation|screenLayout|uiMode"
+                  android:screenOrientation="portrait"
                   android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
         <activity android:name=".activity.Setting"
@@ -103,7 +123,7 @@
                   android:launchMode="singleTask"
                 >
         </activity>
-
+        
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"/>
