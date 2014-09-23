@@ -6,9 +6,9 @@ import com.yikego.android.rom.sdk.rest.BaseResource;
 
 public class ClientInfo {
     
-//    public static String RESOURCE_ROOT_URL="http://121.40.182.230:8080/ykcore";
-    public static String RESOURCE_ROOT_URL="http://www.yikego.com:8080/ykcore";
-
+    public static String RESOURCE_ROOT_URL="http://121.40.182.230:8080/ykcore";
+//    public static String RESOURCE_ROOT_URL="http://www.yikego.com:8080/ykcore";
+    
     public static boolean GZIP_ENCODING=true;
     
     public static final String USER_AGENT=HTTP.USER_AGENT;
