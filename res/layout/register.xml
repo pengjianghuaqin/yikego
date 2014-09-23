@@ -55,6 +55,7 @@
             android:layout_width="fill_parent"
             android:layout_height="54.0dip"
             android:hint="@string/pwd_hint_text"
+            android:maxLength="24"
             android:singleLine="true"
             android:drawableLeft="@drawable/ic_pwd"
             android:drawablePadding="15.0dip"
@@ -81,7 +82,7 @@
             android:drawableLeft="@drawable/image_code"
             android:drawablePadding="15.0dip"
             android:layout_below="@id/line_view2"
-            android:inputType="number" />
+            />
     <View
             android:id="@+id/line_view3"
             android:background="@color/text_gray_color_e3"

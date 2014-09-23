@@ -144,5 +144,10 @@ public class ThemeService implements IThemeService {
 		// TODO Auto-generated method stub
 		mRequestQueues[THREAD_OTHER].pushRequest(request);
 	}
-	
+
+    @Override
+    public void postUserRegister(Request request) {
+        mRequestQueues[THREAD_THUMB].pushRequest(request);
+    }
+
 }

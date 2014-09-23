@@ -27,5 +27,6 @@ public class Constant {
 	public static final int WALLPAPER_LIST_COUNT_PER_TIME = 10;
 
 	public static final int TYPE_POST_USER_LOGIN = 268501006;
-	
+    public static final int TYPE_POST_USER_REGISTER = TYPE_POST_USER_LOGIN+1;
+
 }

@@ -16,5 +16,6 @@ public abstract interface IThemeService {
 	
 	public abstract void getThemePreviews(Request request);
 	public abstract void postMessageRecord(Request request);
-	
+    public abstract void postUserRegister(Request request);
+
 }

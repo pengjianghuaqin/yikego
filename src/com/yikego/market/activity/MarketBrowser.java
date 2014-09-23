@@ -8,6 +8,8 @@ import android.widget.ImageView;
 
 import com.slidingmenu.lib.SlidingMenu;
 import com.slidingmenu.lib.app.SlidingFragmentActivity;
+import com.yikego.android.rom.sdk.bean.MessageRecord;
+import com.yikego.android.rom.sdk.bean.UserLoginInfo;
 import com.yikego.market.R;
 import com.yikego.market.fragment.SlidingMenuFragment;
 import com.yikego.market.model.MarketData;
@@ -93,10 +95,14 @@ public class MarketBrowser extends SlidingFragmentActivity{
 		// TODO Auto-generated method stub
 		
 		Request request = new Request(0, Constant.TYPE_POST_USER_LOGIN);
-		Object[] params = new Object[2];
-		params[0] = "1234";
-		params[1] = "123123123123";
-		request.setData(params);
+//		Object[] params = new Object[2];
+        UserLoginInfo userLoginInfo = new UserLoginInfo();
+        userLoginInfo.messageRecordType = "1";
+        userLoginInfo.userPhone = "13816412339";
+//		params[0] = "1";
+//		params[1] = "13827658345";
+//		request.setData(params);
+        request.setData(userLoginInfo);
 		request.addObserver(new Observer() {
 
 			@Override
@@ -127,7 +133,8 @@ public class MarketBrowser extends SlidingFragmentActivity{
 				// TODO Auto-generated method stub
 				switch (msg.what) {
 				case ACTION_USER_LOGIN:
-					
+                    MessageRecord messageRecord = (MessageRecord) msg.obj;
+                    Log.d(TAG, "messageRecorde : " + messageRecord.messageRecordId);
 					break;
 
 				default:

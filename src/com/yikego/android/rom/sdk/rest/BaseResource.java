@@ -261,34 +261,33 @@ public class BaseResource {
         }
 	}
 
-	protected static <T> T post(String uri, Object entity, Class<T> resultClass) throws IOException, HttpException {
-		String json = GSON.toJson(entity);
-		HttpPost httpPost = new HttpPost(uri);
-		httpPost.setHeader("Accept", "application/json");
-		StringEntity jsonEntity = new StringEntity(json, "UTF-8");
-		jsonEntity.setContentType("application/json");
-		httpPost.setEntity(jsonEntity);
-		ResponseHandler<String> handler = new ResponseHandler<String>() {
+    protected static <T> T post(String uri, Object postClass,Class<T> resultClass) throws IOException, HttpException {
+        Log.v("post", "uri ="+uri);
+        HttpPost httpPost = new HttpPost(uri);
+        httpPost.setHeader("Accept", "application/json");
+        httpPost.setHeader("Content-Type", "application/json");
+        httpPost.setEntity(new StringEntity (GSON.toJson(postClass), "UTF-8"));
+        ResponseHandler<String> handler = new ResponseHandler<String>() {
 
-			public String handleResponse(HttpResponse response)
-					throws ClientProtocolException, IOException {
-				HttpEntity entity = response.getEntity();
-				if (entity != null) {
-					return EntityUtils.toString(entity, "UTF-8");
-				} else {
-					return null;
-				}
-			}
-		};
-
-		read.lock();
+            public String handleResponse(HttpResponse response)
+                    throws ClientProtocolException, IOException {
+                HttpEntity entity = response.getEntity();
+                if (entity != null) {
+                    return EntityUtils.toString(entity,"UTF-8");
+                } else {
+                    return null;
+                }
+            }
+        };
+        read.lock();
         try{
-    		String response = httpClient.execute(httpPost, handler);
-    		return GSON.fromJson(response, resultClass);
+            String response = httpClient.execute(httpPost, handler);
+            Log.v("post", "response ="+response);
+            return GSON.fromJson(response, resultClass);
         }finally{
             read.unlock();
         }
-	}
+    }
 
 	protected static byte[] getRawData(String uri, final String mediaType)throws IOException, HttpException {
 		HttpGet httpGet = new HttpGet(uri);

@@ -4,6 +4,8 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.yikego.android.rom.sdk.bean.UserLoginInfo;
+import com.yikego.android.rom.sdk.bean.UserRegisterInfo;
 import org.w3c.dom.Comment;
 
 
@@ -48,6 +50,7 @@ public class RequestHandler extends Thread {
 			Request request = null;
 			Object[] params = null;
 			Object param = null;
+            Object data = null;
 			try {
 				request = (Request) mService.popRequest(nThreadId);
 				if (request == null) {
@@ -70,20 +73,37 @@ public class RequestHandler extends Thread {
 			case Constant.TYPE_POST_USER_LOGIN:
 				if (request.getData() != null) {
 
-					params = (Object[]) request.getData();
+                    UserLoginInfo userLoginInfo = (UserLoginInfo) request.getData();
+                    messageRecordType = userLoginInfo.messageRecordType;
+                    userPhone = userLoginInfo.userPhone;
 
-					messageRecordType = (String) params[0];
-					userPhone = (String) params[1];
+                    Log.d("wll", "userlogin info : " + userLoginInfo.userPhone);
+//					params = (Object[]) request.getData();
+//					messageRecordType = (String) params[0];
+//					userPhone = (String) params[1];
 					try {
-						mAgent.postMessageRecord(messageRecordType, userPhone);
+						data = mAgent.postMessageRecord(messageRecordType, userPhone);
 						request.setStatus(Constant.STATUS_SUCCESS);
-						request.notifyObservers(null);
+						request.notifyObservers(data);
 					} catch (SocketException e) {
 						request.setStatus(Constant.STATUS_ERROR);
 						request.notifyObservers(null);
 					}
 				}
 				break;
+                case Constant.TYPE_POST_USER_REGISTER:
+                    if (request.getData() != null){
+                        UserRegisterInfo userRegisterInfo = (UserRegisterInfo) request.getData();
+                        try {
+                            data = mAgent.postUserRegister(userRegisterInfo);
+                            request.setStatus(Constant.STATUS_SUCCESS);
+                            request.notifyObservers(data);
+                        }catch (SocketException e){
+                            request.setStatus(Constant.STATUS_ERROR);
+                            request.notifyObservers(null);
+                        }
+                    }
+                    break;
 			
 			
 			default:

@@ -2,21 +2,14 @@ package com.yikego.market.webservice;
 
 import java.io.IOException;
 import java.net.SocketException;
-import java.util.ArrayList;
 
+import com.yikego.android.rom.sdk.bean.UserRegisterInfo;
 import org.apache.http.HttpException;
-import org.w3c.dom.Comment;
 
 import com.yikego.android.rom.sdk.ServiceProvider;
 import com.yikego.market.utils.GlobalUtil;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 
 public class ThemeServiceAgent {
 
@@ -64,13 +57,14 @@ public class ThemeServiceAgent {
 			return verifyType;
 		}
 	}
-	public String postMessageRecord(String messageRecordType,String userPhone)
+	public Object postMessageRecord(String messageRecordType,String userPhone)
 			throws SocketException {
+        Object data = null;
 		if (!GlobalUtil.checkNetworkState(mContext)) {
 			throw new SocketException();
 		} else {
 			try {
-				ServiceProvider.postMessageRecord(messageRecordType,userPhone);
+				data =  ServiceProvider.postMessageRecord(messageRecordType,userPhone);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -78,8 +72,25 @@ public class ThemeServiceAgent {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			return null;
+			return data;
 		}
 	}
+
+    public Object postUserRegister(UserRegisterInfo userRegisterInfo)
+            throws  SocketException{
+        Object data = null;
+        if (!GlobalUtil.checkNetworkState(mContext)){
+            throw new SocketException();
+        }else {
+            try {
+                data =ServiceProvider.postUserRegister(userRegisterInfo);
+            }catch (IOException e){
+                e.printStackTrace();
+            }catch (HttpException e){
+                e.printStackTrace();
+            }
+        }
+        return data;
+    }
 	
 }
