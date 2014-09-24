@@ -1,0 +1,6 @@
+*.iml
+.DS_Store
+.classpath
+.project
+/gen
+/bin
