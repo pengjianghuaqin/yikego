@@ -1,24 +1,14 @@
 package com.yikego.market.webservice;
 
 import java.net.SocketException;
-import java.util.ArrayList;
-import java.util.List;
 
+import com.yikego.android.rom.sdk.bean.AuthCodeInfo;
 import com.yikego.android.rom.sdk.bean.UserLoginInfo;
 import com.yikego.android.rom.sdk.bean.UserRegisterInfo;
-import org.w3c.dom.Comment;
-
 
 
 import com.yikego.market.utils.Constant;
 
-import android.app.Application;
-import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.drawable.Drawable;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
 import android.util.Log;
 
 public class RequestHandler extends Thread {
@@ -70,17 +60,14 @@ public class RequestHandler extends Thread {
 			String osVersion;
 			String content;
 			switch (request.getType()) {
-			case Constant.TYPE_POST_USER_LOGIN:
+			case Constant.TYPE_GET_AUTH_CODE:
 				if (request.getData() != null) {
 
-                    UserLoginInfo userLoginInfo = (UserLoginInfo) request.getData();
-                    messageRecordType = userLoginInfo.messageRecordType;
-                    userPhone = userLoginInfo.userPhone;
+                    AuthCodeInfo authCodeInfo = (AuthCodeInfo) request.getData();
+                    messageRecordType = authCodeInfo.messageRecordType;
+                    userPhone = authCodeInfo.userPhone;
 
-                    Log.d("wll", "userlogin info : " + userLoginInfo.userPhone);
-//					params = (Object[]) request.getData();
-//					messageRecordType = (String) params[0];
-//					userPhone = (String) params[1];
+//                    Log.d("wll", "userlogin info : " + authCodeInfo.userPhone);
 					try {
 						data = mAgent.postMessageRecord(messageRecordType, userPhone);
 						request.setStatus(Constant.STATUS_SUCCESS);
@@ -104,8 +91,20 @@ public class RequestHandler extends Thread {
                         }
                     }
                     break;
-			
-			
+                case Constant.TYPE_POST_USER_LOGIN:
+                    if (request.getData() != null){
+                        UserLoginInfo userLoginInfo = (UserLoginInfo) request.getData();
+                        try {
+                            data = mAgent.postUserLogin(userLoginInfo);
+                            request.setStatus(Constant.STATUS_SUCCESS);
+                            request.notifyObservers(data);
+                        }catch (SocketException e){
+                            request.setStatus(Constant.STATUS_ERROR);
+                            request.notifyObservers(null);
+                        }
+                    }
+                    break;
+
 			default:
 				break;
 			}

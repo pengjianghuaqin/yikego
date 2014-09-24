@@ -4,14 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.util.Log;
-import com.yikego.android.rom.sdk.bean.MessageRecord;
-import com.yikego.android.rom.sdk.bean.UserId;
-import com.yikego.android.rom.sdk.bean.UserRegisterInfo;
+import com.yikego.android.rom.sdk.bean.*;
 import org.apache.http.HttpException;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
-import com.yikego.android.rom.sdk.bean.UserLoginInfo;
 import com.yikego.android.rom.sdk.rest.BaseResource;
 
 
@@ -52,7 +49,7 @@ public class ServiceProvider extends BaseResource {
 	}
 
     public static Object postMessageRecord(String messageRecordType, String userPhone) throws IOException, HttpException{
-        UserLoginInfo userInfo = new UserLoginInfo();
+        AuthCodeInfo userInfo = new AuthCodeInfo();
         userInfo.messageRecordType = messageRecordType;
         userInfo.userPhone = userPhone;
 //	     post(ClientInfo.RESOURCE_ROOT_URL + "/messageRecord/authCode",userInfo);
@@ -70,6 +67,14 @@ public class ServiceProvider extends BaseResource {
         Log.d(TAG, "postUserRegister userRegisterInfo ; " + userRegisterInfo.matchContent);
         UserId userId = post(ClientInfo.RESOURCE_ROOT_URL + "/user/register", userRegisterInfo, UserId.class);
         return userId;
+    }
+
+    public static Object postUserLogin(UserLoginInfo userLoginInfo)
+        throws IOException, HttpException{
+        Log.d(TAG, "postUserLogin userLoginInfo loginType : " + userLoginInfo.loginType
+            + " login phone : " + userLoginInfo.userPhone);
+        UserInfo userInfo = post(ClientInfo.RESOURCE_ROOT_URL + "/user/userLogin", userLoginInfo, UserInfo.class);
+        return userInfo;
     }
 
  }

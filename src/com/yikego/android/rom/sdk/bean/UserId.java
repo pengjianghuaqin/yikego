@@ -5,4 +5,5 @@ package com.yikego.android.rom.sdk.bean;
  */
 public class UserId {
     public String userId;
+    public String resultCode;
 }

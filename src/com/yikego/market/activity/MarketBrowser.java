@@ -8,8 +8,8 @@ import android.widget.ImageView;
 
 import com.slidingmenu.lib.SlidingMenu;
 import com.slidingmenu.lib.app.SlidingFragmentActivity;
+import com.yikego.android.rom.sdk.bean.AuthCodeInfo;
 import com.yikego.android.rom.sdk.bean.MessageRecord;
-import com.yikego.android.rom.sdk.bean.UserLoginInfo;
 import com.yikego.market.R;
 import com.yikego.market.fragment.SlidingMenuFragment;
 import com.yikego.market.model.MarketData;
@@ -17,17 +17,13 @@ import com.yikego.market.utils.Constant;
 import com.yikego.market.webservice.Request;
 import com.yikego.market.webservice.ThemeService;
 
-import android.app.ListActivity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class MarketBrowser extends SlidingFragmentActivity{
 	private ListView mListView;
@@ -94,15 +90,15 @@ public class MarketBrowser extends SlidingFragmentActivity{
     private void userLogin() {
 		// TODO Auto-generated method stub
 		
-		Request request = new Request(0, Constant.TYPE_POST_USER_LOGIN);
+		Request request = new Request(0, Constant.TYPE_GET_AUTH_CODE);
 //		Object[] params = new Object[2];
-        UserLoginInfo userLoginInfo = new UserLoginInfo();
-        userLoginInfo.messageRecordType = "1";
-        userLoginInfo.userPhone = "13816412339";
+        AuthCodeInfo authCodeInfo = new AuthCodeInfo();
+        authCodeInfo.messageRecordType = "1";
+        authCodeInfo.userPhone = "13816412339";
 //		params[0] = "1";
 //		params[1] = "13827658345";
 //		request.setData(params);
-        request.setData(userLoginInfo);
+        request.setData(authCodeInfo);
 		request.addObserver(new Observer() {
 
 			@Override

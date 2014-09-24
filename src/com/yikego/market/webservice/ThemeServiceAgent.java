@@ -3,6 +3,7 @@ package com.yikego.market.webservice;
 import java.io.IOException;
 import java.net.SocketException;
 
+import com.yikego.android.rom.sdk.bean.UserLoginInfo;
 import com.yikego.android.rom.sdk.bean.UserRegisterInfo;
 import org.apache.http.HttpException;
 
@@ -84,6 +85,23 @@ public class ThemeServiceAgent {
         }else {
             try {
                 data =ServiceProvider.postUserRegister(userRegisterInfo);
+            }catch (IOException e){
+                e.printStackTrace();
+            }catch (HttpException e){
+                e.printStackTrace();
+            }
+        }
+        return data;
+    }
+
+    public Object postUserLogin(UserLoginInfo userLoginInfo)
+            throws SocketException{
+        Object data = null;
+        if (!GlobalUtil.checkNetworkState(mContext)){
+            throw new SocketException();
+        }else {
+            try {
+                data = ServiceProvider.postUserLogin(userLoginInfo);
             }catch (IOException e){
                 e.printStackTrace();
             }catch (HttpException e){

@@ -150,4 +150,8 @@ public class ThemeService implements IThemeService {
         mRequestQueues[THREAD_THUMB].pushRequest(request);
     }
 
+    @Override
+    public void postUserLogin(Request request) {
+        mRequestQueues[THREAD_THUMB].pushRequest(request);
+    }
 }

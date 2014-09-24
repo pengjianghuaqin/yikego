@@ -5,4 +5,5 @@ package com.yikego.android.rom.sdk.bean;
  */
 public class MessageRecord {
     public String messageRecordId;
+    public String resultCode;
 }

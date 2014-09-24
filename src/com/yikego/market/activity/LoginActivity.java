@@ -3,10 +3,22 @@ package com.yikego.market.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.yikego.android.rom.sdk.bean.UserInfo;
+import com.yikego.android.rom.sdk.bean.UserLoginInfo;
 import com.yikego.market.R;
+import com.yikego.market.utils.Constant;
+import com.yikego.market.webservice.Request;
+import com.yikego.market.webservice.ThemeService;
+
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Created by wll on 14-9-13.
@@ -15,10 +27,20 @@ public class LoginActivity extends Activity{
 
     private static final String TAG = "LoginActivity";
 
+    private ThemeService mThemeService;
+
+    //login type
+    private static final int TYPE_LOGIN_USERNAME = 1;
+    private UserLoginInfo userLoginInfo = new UserLoginInfo();
+
     private ImageView mSearchView;
     private TextView mSearchText;
     private TextView actionBarText;
     private ImageView actionBack;
+
+    private EditText mUserNameEdit;
+    private EditText mPassWordEdit;
+    private Button mLoginButton;
 
     private TextView quickLoginText;
     private TextView registerText;
@@ -27,6 +49,7 @@ public class LoginActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+        mThemeService = ThemeService.getServiceInstance(this);
 
         initActionBar();
         initView();
@@ -66,9 +89,49 @@ public class LoginActivity extends Activity{
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this, Register.class);
                 startActivity(intent);
+            }
+        });
+
+        mUserNameEdit = (EditText) findViewById(R.id.user_name_editText);
+        mPassWordEdit = (EditText) findViewById(R.id.password_editText);
+        mLoginButton = (Button) findViewById(R.id.loginOn_Button);
+        mLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                userLoginInfo.loginType = String.valueOf(TYPE_LOGIN_USERNAME);
+                userLoginInfo.userPhone = mUserNameEdit.getText().toString().trim();
+                userLoginInfo.passWord = mPassWordEdit.getText().toString().trim();
+
+                userLogin(userLoginInfo);
+
 
             }
         });
 
+    }
+
+    private void userLogin(UserLoginInfo userLoginInfo) {
+        Request request = new Request(0, Constant.TYPE_POST_USER_LOGIN);
+        request.setData(userLoginInfo);
+        request.addObserver(new Observer() {
+            @Override
+            public void update(Observable observable, Object data) {
+                if (data != null) {
+                    UserInfo userInfo = (UserInfo) data;
+
+                    Log.d(TAG, "userLogin update : " + userInfo.resultCode);
+//                    Message msg = Message.obtain(mHandler, ACTION_USER_REGISTER,
+//                            data);
+//                    mHandler.sendMessage(msg);
+                } else {
+                    Request request = (Request) observable;
+//                    if (request.getStatus() == Constant.STATUS_ERROR) {
+//                        mHandler.sendEmptyMessage(ACTION_NETWORK_ERROR);
+//                    }
+                }
+            }
+        });
+        mThemeService.postUserLogin(request);
     }
 }

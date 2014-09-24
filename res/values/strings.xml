@@ -32,6 +32,7 @@
     <string name="cod_phone_num2">021&#8211;4939 8988</string>
 
     <string name="user_login">用户登录</string>
+    <string name="user_register">用户注册</string>
     <string name="yikego_login_title">海客社区超市用户登录</string>
     <string name="user_login_hint">用户名/邮箱/手机号</string>
     <string name="user_password_hint">密码</string>
@@ -56,4 +57,9 @@
     <string name="verify_ticket">验证购物券</string>
     <string name="verify_ticket_title">请填写购物券号码</string>
     <string name="verrify">验证</string>
+
+    <string name="register_ok">注册成功，请登录</string>
+    <string name="register_exist">该账号已注册</string>
+    <string name="auth_code_error">验证码错误</string>
+    <string name="register_error">注册异常</string>
 </resources>

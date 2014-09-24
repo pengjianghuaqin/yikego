@@ -82,6 +82,7 @@
             android:drawableLeft="@drawable/image_code"
             android:drawablePadding="15.0dip"
             android:layout_below="@id/line_view2"
+            android:inputType="number"
             />
     <View
             android:id="@+id/line_view3"

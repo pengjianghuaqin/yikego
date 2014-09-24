@@ -2,12 +2,14 @@ package com.yikego.market.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.*;
+import com.yikego.android.rom.sdk.bean.AuthCodeInfo;
+import com.yikego.android.rom.sdk.bean.MessageRecord;
+import com.yikego.android.rom.sdk.bean.UserId;
 import com.yikego.android.rom.sdk.bean.UserRegisterInfo;
 import com.yikego.market.R;
 import com.yikego.market.utils.Constant;
@@ -36,9 +38,26 @@ public class Register extends Activity{
     private EditText addressEdit;
     private EditText authCodeEdit;
     private Button registerButton;
+    private Button authCodeButton;
+
+    private Handler mHandler;
+    private Request mCurrentRequest;
+    private static final int ACTION_NETWORK_ERROR = 0;
+    private static final int ACTION_GET_AUTH_CODE = 1;
+    private static final int ACTION_USER_REGISTER = 2;
+
+    //return for startactivityforresult code
+    private static final int RETURN_CODE = 10;
+
+    //
+    private static final int REGISTER_RESULT_CODE_OK = 0;
+    private static final int REGISTER_RESULT_CODE_EXIST = -1;
+    private static final int REGISTER_RESULT_CODE_AUTHCODE_ERROR = -2;
+    private static final int REGISTER_RESULT_CODE_ERROR = -3;
 
     private UserRegisterInfo userRegisterInfo = new UserRegisterInfo();
     private UserRegisterInfo.InnerUser user = userRegisterInfo.user;
+    private AuthCodeInfo authCodeInfo = new AuthCodeInfo();
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register);
@@ -46,6 +65,7 @@ public class Register extends Activity{
 
         initActionBar();
         initView();
+        initHandler();
     }
 
     private void initView() {
@@ -53,6 +73,7 @@ public class Register extends Activity{
         passwordEdit = (EditText) findViewById(R.id.pwd_editText);
         authCodeEdit = (EditText) findViewById(R.id.authCode_editText);
         addressEdit = (EditText) findViewById(R.id.address_editText);
+        authCodeButton = (Button) findViewById(R.id.acthCode_button);
         registerButton = (Button) findViewById(R.id.register_Button);
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,14 +81,47 @@ public class Register extends Activity{
 //                userRegisterInfo.matchContent = authCodeEdit.getText().toString();
                 userRegisterInfo.matchContent = "11111";
 
-                user.userPhone = telephoneEdit.getText().toString();
-                user.userAddress = addressEdit.getText().toString();
-                user.passWord = passwordEdit.getText().toString();
+                user.userPhone = telephoneEdit.getText().toString().trim();
+                user.userAddress = addressEdit.getText().toString().trim();
+                user.passWord = passwordEdit.getText().toString().trim();
 
                 userRegister(userRegisterInfo);
             }
         });
 
+        authCodeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                authCodeInfo.userPhone = telephoneEdit.getText().toString().trim();
+                authCodeInfo.messageRecordType = String.valueOf(Constant.TYPE_AUTH_CODE_REGISTER);
+                getAuthCode(authCodeInfo);
+            }
+        });
+
+    }
+
+    private void getAuthCode(AuthCodeInfo authCodeInfo) {
+        Request request = new Request(0, Constant.TYPE_GET_AUTH_CODE);
+        request.setData(authCodeInfo);
+        request.addObserver(new Observer() {
+
+            @Override
+            public void update(Observable observable, Object data) {
+                // TODO Auto-generated method stub
+                if (data != null) {
+                    Message msg = Message.obtain(mHandler, ACTION_GET_AUTH_CODE,
+                            data);
+                    mHandler.sendMessage(msg);
+                } else {
+                    Request request = (Request) observable;
+                    if (request.getStatus() == Constant.STATUS_ERROR) {
+                        mHandler.sendEmptyMessage(ACTION_NETWORK_ERROR);
+                    }
+                }
+            }
+        });
+        mCurrentRequest = request;
+        mThemeService.getThemeList(request);
     }
 
     private void userRegister(UserRegisterInfo userRegisterInfo) {
@@ -76,7 +130,17 @@ public class Register extends Activity{
         request.addObserver(new Observer() {
             @Override
             public void update(Observable observable, Object data) {
-                Log.d(TAG, "userRegister update : " + data.toString());
+                if (data != null) {
+                    Log.d(TAG, "userRegister update : " + data.toString());
+                    Message msg = Message.obtain(mHandler, ACTION_USER_REGISTER,
+                            data);
+                    mHandler.sendMessage(msg);
+                } else {
+                    Request request = (Request) observable;
+                    if (request.getStatus() == Constant.STATUS_ERROR) {
+                        mHandler.sendEmptyMessage(ACTION_NETWORK_ERROR);
+                    }
+                }
             }
         });
         mThemeService.postUserRegister(request);
@@ -88,7 +152,7 @@ public class Register extends Activity{
         mSearchText.setVisibility(View.GONE);
         mSearchView.setVisibility(View.GONE);
         actionBarText = (TextView) findViewById(R.id.actionbar_title);
-        actionBarText.setText(R.string.user_login);
+        actionBarText.setText(R.string.user_register);
         actionBack = (ImageView) findViewById(R.id.market_detail_back);
         actionBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,5 +160,39 @@ public class Register extends Activity{
                 finish();
             }
         });
+    }
+
+    private void initHandler() {
+        // TODO Auto-generated method stub
+        mHandler = new Handler() {
+
+            @Override
+            public void handleMessage(Message msg) {
+                // TODO Auto-generated method stub
+                switch (msg.what) {
+                    case ACTION_GET_AUTH_CODE:
+                        MessageRecord messageRecord = (MessageRecord) msg.obj;
+                        Log.d(TAG, "messageRecorde : " + messageRecord.messageRecordId);
+                        break;
+                    case ACTION_USER_REGISTER:
+                        UserId userId = (UserId) msg.obj;
+                        Log.d(TAG, "UserId : " + userId.userId);
+                        if (userId.resultCode.equals(String.valueOf(REGISTER_RESULT_CODE_OK))){
+                            Toast.makeText(Register.this, getString(R.string.register_ok), Toast.LENGTH_SHORT).show();
+                            finish();
+                        }else if (userId.equals(String.valueOf(REGISTER_RESULT_CODE_EXIST))){
+                            Toast.makeText(Register.this, getString(R.string.register_exist), Toast.LENGTH_SHORT).show();
+                        }else if (userId.equals(String.valueOf(REGISTER_RESULT_CODE_AUTHCODE_ERROR))){
+                            Toast.makeText(Register.this, getString(R.string.auth_code_error), Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(Register.this, getString(R.string.register_error), Toast.LENGTH_SHORT).show();
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        };
     }
 }
