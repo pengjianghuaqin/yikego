@@ -8,9 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import com.yikego.market.LogUtils;
 import com.yikego.market.R;
 import com.yikego.market.activity.*;
+import com.yikego.market.webservice.Request;
 
 /**
  * Created by wll on 14-9-11.
@@ -18,7 +20,13 @@ import com.yikego.market.activity.*;
  * Sliding menu list
  */
 public class SlidingMenuFragment extends Fragment implements View.OnClickListener{
+
     private static final String TAG = "SlidingMenu";
+
+    private static final int LOGIN_RESULT_OK = 1;
+
+    private String userPhone = null;
+    private String userId = null;
 
     private View mView;
     private RelativeLayout loginLayout;
@@ -27,7 +35,8 @@ public class SlidingMenuFragment extends Fragment implements View.OnClickListene
     private RelativeLayout shopQuanLayout;
     private RelativeLayout feedBackLayout;
     private RelativeLayout menuSettingLayout;
-
+    private RelativeLayout quitLayut;
+    private TextView mUserPhone;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,6 +60,8 @@ public class SlidingMenuFragment extends Fragment implements View.OnClickListene
         shopQuanLayout = (RelativeLayout) mView.findViewById(R.id.left_menu_shop_quan);
         feedBackLayout = (RelativeLayout) mView.findViewById(R.id.left_menu_feedback);
         menuSettingLayout = (RelativeLayout) mView.findViewById(R.id.left_menu_setting);
+        quitLayut = (RelativeLayout) mView.findViewById(R.id.rl_quit);
+        mUserPhone = (TextView) mView.findViewById(R.id.NameTextView);
 
         loginLayout.setOnClickListener(this);
         orderSearchLayout.setOnClickListener(this);
@@ -68,7 +79,7 @@ public class SlidingMenuFragment extends Fragment implements View.OnClickListene
         switch (id){
             case R.id.head_image_layout:
                 intent.setClass(getActivity(), LoginActivity.class);
-                startActivity(intent);
+                getActivity().startActivityForResult(intent, 0);
                 break;
             case R.id.left_menu_order_search:
                 intent.setClass(getActivity(), UserOrderActivity.class);
@@ -96,5 +107,16 @@ public class SlidingMenuFragment extends Fragment implements View.OnClickListene
                 break;
         }
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == LOGIN_RESULT_OK){
+            userId = data.getStringExtra("userId");
+            userPhone = data.getStringExtra("userPhone");
+            mUserPhone.setText(userPhone);
+            quitLayut.setVisibility(View.VISIBLE);
+        }
     }
 }
