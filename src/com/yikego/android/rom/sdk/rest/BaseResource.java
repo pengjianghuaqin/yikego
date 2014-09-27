@@ -2,6 +2,7 @@ package com.yikego.android.rom.sdk.rest;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +39,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.message.BasicHeaderElementIterator;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParamBean;
@@ -50,6 +52,7 @@ import android.util.Log;
 import com.repack.google.gson.Gson;
 import com.repack.google.gson.GsonBuilder;
 import com.yikego.android.rom.sdk.ClientInfo;
+import com.yikego.android.rom.sdk.bean.UserLoginInfo;
 
 public class BaseResource {
 

@@ -3,8 +3,15 @@ package com.yikego.market.webservice;
 import java.io.IOException;
 import java.net.SocketException;
 
+import com.yikego.android.rom.sdk.bean.MarketGoodsInfoListData;
+import com.yikego.android.rom.sdk.bean.PaginationStoreListInfo;
+import com.yikego.android.rom.sdk.bean.PostProductType;
+import com.yikego.android.rom.sdk.bean.PostUserLocationInfo;
+import com.yikego.android.rom.sdk.bean.ProductListInfo;
+import com.yikego.android.rom.sdk.bean.StoreId;
 import com.yikego.android.rom.sdk.bean.UserLoginInfo;
 import com.yikego.android.rom.sdk.bean.UserRegisterInfo;
+
 import org.apache.http.HttpException;
 
 import com.yikego.android.rom.sdk.ServiceProvider;
@@ -38,25 +45,6 @@ public class ThemeServiceAgent {
 			mInstance = new ThemeServiceAgent(context);
 		}
 		return mInstance;
-	}
-	
-	public String postUserLogin(String[] verifyData)
-			throws SocketException {
-		String verifyType = "0";
-		if (!GlobalUtil.checkNetworkState(mContext)) {
-			throw new SocketException();
-		} else {
-			try {
-				ServiceProvider.postUserLogin(verifyData[0],verifyData[1],verifyData[2],verifyData[3]);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (HttpException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return verifyType;
-		}
 	}
 	public Object postMessageRecord(String messageRecordType,String userPhone)
 			throws SocketException {
@@ -93,7 +81,6 @@ public class ThemeServiceAgent {
         }
         return data;
     }
-
     public Object postUserLogin(UserLoginInfo userLoginInfo)
             throws SocketException{
         Object data = null;
@@ -110,5 +97,54 @@ public class ThemeServiceAgent {
         }
         return data;
     }
-	
+    public PaginationStoreListInfo postUserLocationInfo(PostUserLocationInfo postUserLocationInfo)
+            throws  SocketException{
+    	PaginationStoreListInfo data = null;
+        if (!GlobalUtil.checkNetworkState(mContext)){
+            throw new SocketException();
+        }else {
+            try {
+                data =ServiceProvider.getStoreList(postUserLocationInfo);
+            }catch (IOException e){
+                e.printStackTrace();
+            }catch (HttpException e){
+                e.printStackTrace();
+            }
+        }
+        return data;
+    }
+    
+    public MarketGoodsInfoListData getMarketGoodsInfoListData(StoreId storeId)
+            throws  SocketException{
+    	MarketGoodsInfoListData data = null;
+        if (!GlobalUtil.checkNetworkState(mContext)){
+            throw new SocketException();
+        }else {
+            try {
+                data =ServiceProvider.getProductTypeList(storeId);
+            }catch (IOException e){
+                e.printStackTrace();
+            }catch (HttpException e){
+                e.printStackTrace();
+            }
+        }
+        return data;
+    }
+    
+    public ProductListInfo postUserLocationInfo(PostProductType postProductType)
+            throws  SocketException{
+    	ProductListInfo data = null;
+        if (!GlobalUtil.checkNetworkState(mContext)){
+            throw new SocketException();
+        }else {
+            try {
+                data =ServiceProvider.getProductList(postProductType);
+            }catch (IOException e){
+                e.printStackTrace();
+            }catch (HttpException e){
+                e.printStackTrace();
+            }
+        }
+        return data;
+    }
 }

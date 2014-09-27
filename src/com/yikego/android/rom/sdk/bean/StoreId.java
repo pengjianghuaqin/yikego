@@ -1,0 +1,1 @@
+package com.yikego.android.rom.sdk.bean;public class StoreId {    public int storeId;}

@@ -1,5 +1,9 @@
 package com.yikego.market.utils;
 
+import java.io.File;
+
+import android.os.Environment;
+
 public class Constant {
 	
 	public static final int THEME_LIST_TYPE = 0;
@@ -24,11 +28,12 @@ public class Constant {
 
     //request type for connect server
 	public static final int TYPE_GET_AUTH_CODE = 268501006;
-    public static final int TYPE_POST_USER_REGISTER = TYPE_GET_AUTH_CODE +1;
-    public static final int TYPE_POST_USER_LOGIN = TYPE_GET_AUTH_CODE + 2;
-
+    public static final int TYPE_POST_USER_REGISTER = 268501007;
+    public static final int TYPE_POST_USER_LOGIN = 268501008;
+    public static final int TYPE_POST_USER_LOCAL_INFO = 268501009;
+    public static final int TYPE_GET_GOODS_TYPE_INFO = 268501010;
+    public static final int TYPE_GET_GOODS_LIST_INFO = 268501011;
     //get auth code type 1:register  2:quick login
     public static final int TYPE_AUTH_CODE_REGISTER = 1;
     public static final int TYPE_AUTH_CODE_QUICK_LOGIN = 2;
-
 }

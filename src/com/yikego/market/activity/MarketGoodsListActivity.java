@@ -2,17 +2,28 @@ package com.yikego.market.activity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
+import com.yikego.android.rom.sdk.bean.MarketGoodsInfoListData;
+import com.yikego.android.rom.sdk.bean.PostProductType;
+import com.yikego.android.rom.sdk.bean.ProductListInfo;
+import com.yikego.android.rom.sdk.bean.StoreId;
 import com.yikego.market.R;
 import com.yikego.market.activity.MarketListAdapter.ViewHolder;
 import com.yikego.market.model.GoodsData;
 import com.yikego.market.model.MarketData;
+import com.yikego.market.utils.Constant;
+import com.yikego.market.webservice.Request;
+import com.yikego.market.webservice.ThemeService;
 
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,8 +43,18 @@ public class MarketGoodsListActivity extends ListActivity implements
 	private Context mContext;
 	private GoodsListAdapter mGoodsListAdapter;
 	private String TAG = "MarketGoodsListActivity";
+	private int productTypeId;
+	private int nowPage;
+	private int pageCount;
+	private static final int ACTION_NETWORK_ERROR = 0;
+	private static final int ACTION_GOODS_LIST = 1;
+	private Request mCurrentRequest;
+	private ThemeService mThemeService;
+	private Handler mHandler;
+	private boolean isEnd;
 
 	public MarketGoodsListActivity() {
+		isEnd = false;
 		mContext = this;
 	}
 
@@ -68,13 +89,89 @@ public class MarketGoodsListActivity extends ListActivity implements
 		// mListView.setVisibility(View.GONE);
 
 		ArrayList<GoodsData> goodstList = new ArrayList<GoodsData>();
-		goodstList.add(new GoodsData());
-		goodstList.add(new GoodsData());
-		goodstList.add(new GoodsData());
+
 		mGoodsListAdapter = new GoodsListAdapter(mContext, goodstList);
 
 		mListView.setAdapter(mGoodsListAdapter);
-		mListView.setOnItemClickListener(this);  
+		mListView.setOnItemClickListener(this);
+		initHandler();
+		GetGoodsList();
+	}
+
+	private void GetGoodsList() {
+		// TODO Auto-generated method stub
+		if (isEnd) {
+			return;
+		}
+		Request request = new Request(0, Constant.TYPE_GET_GOODS_LIST_INFO);
+		PostProductType mPostProductType = new PostProductType();
+		mPostProductType.nowPage = nowPage;
+		mPostProductType.productTypeId = productTypeId;
+		mPostProductType.pageCount = pageCount;
+		request.setData(mPostProductType);
+		request.addObserver(new Observer() {
+
+			@Override
+			public void update(Observable observable, Object data) {
+				// TODO Auto-generated method stub
+				if (data != null) {
+					Message msg = Message.obtain(mHandler, ACTION_GOODS_LIST,
+							data);
+					mHandler.sendMessage(msg);
+				} else {
+					Request request = (Request) observable;
+					if (request.getStatus() == Constant.STATUS_ERROR) {
+						mHandler.sendEmptyMessage(ACTION_NETWORK_ERROR);
+					}
+				}
+			}
+		});
+		mCurrentRequest = request;
+		mThemeService.getStoreList(request);
+	}
+
+	private void initHandler() {
+		// TODO Auto-generated method stub
+		mHandler = new Handler() {
+
+			@Override
+			public void handleMessage(Message msg) {
+				// TODO Auto-generated method stub
+				switch (msg.what) {
+				case ACTION_GOODS_LIST:
+					ProductListInfo productListInfo = (ProductListInfo) msg.obj;
+					if (productListInfo != null) {
+						ArrayList<GoodsData> marketGoodsList = new ArrayList<GoodsData>();
+						for (int i = 0; i < productListInfo.productList.size(); i++) {
+							marketGoodsList.add(new GoodsData(
+									productListInfo.productList.get(i)));
+						}
+
+						if (mGoodsListAdapter == null) {
+							mGoodsListAdapter = new GoodsListAdapter(mContext,
+									marketGoodsList);
+							mListView.setAdapter(mGoodsListAdapter);
+						} else {
+							for (int i = 0; i < marketGoodsList.size(); i++) {
+								mGoodsListAdapter.add(marketGoodsList.get(i));
+							}
+							mGoodsListAdapter.notifyDataSetChanged();
+							if (productListInfo.nowPage == productListInfo.totalCount) {
+								isEnd = true;
+							}
+						}
+
+						mListView.setAdapter(mGoodsListAdapter);
+					}
+					mListView.setVisibility(View.VISIBLE);
+
+					break;
+
+				default:
+					break;
+				}
+			}
+		};
 	}
 
 	private class GoodsListAdapter extends ArrayAdapter<GoodsData> {

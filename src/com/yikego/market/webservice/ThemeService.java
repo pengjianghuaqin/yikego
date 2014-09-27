@@ -149,7 +149,16 @@ public class ThemeService implements IThemeService {
     public void postUserRegister(Request request) {
         mRequestQueues[THREAD_THUMB].pushRequest(request);
     }
-
+    @Override
+	public void getStoreList(Request request) {
+		// TODO Auto-generated method stub
+		mRequestQueues[THREAD_LIST].pushRequest(request);
+	}
+    @Override
+	public void getStoreInfo(Request request) {
+		// TODO Auto-generated method stub
+		mRequestQueues[THREAD_LIST].pushRequest(request);
+	}
     @Override
     public void postUserLogin(Request request) {
         mRequestQueues[THREAD_THUMB].pushRequest(request);

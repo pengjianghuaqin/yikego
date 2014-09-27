@@ -1,158 +1,216 @@
 package com.yikego.market.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.yikego.android.rom.sdk.bean.MarketGoodsInfo;
+import com.yikego.android.rom.sdk.bean.MarketGoodsInfoListData;
+import com.yikego.android.rom.sdk.bean.PaginationStoreListInfo;
+import com.yikego.android.rom.sdk.bean.PostUserLocationInfo;
+import com.yikego.android.rom.sdk.bean.StoreId;
+import com.yikego.android.rom.sdk.bean.StoreInfo;
 import com.yikego.market.R;
+import com.yikego.market.activity.MarketListAdapter.ViewHolder;
+import com.yikego.market.utils.Constant;
+import com.yikego.market.webservice.Request;
+import com.yikego.market.webservice.ThemeService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.zip.Inflater;
 
 /**
  * Created by wll on 14-8-16.
  */
-public class MarketDetailActivity extends Activity
-	implements OnItemClickListener{
+public class MarketDetailActivity extends Activity{
 
-    private GridView mGridView;
-    private ImageView mBack;
-    private TextView mSearch;
-    private GridAdapter mGridAdapter;
-    private List<Map<String,String>> mapList;
-    private String[] title = new String[]{"特惠", "团购", "厨房", "卫生", "饮品", ""};
-    private String[] detail = new String[]{"", "", "米/油/调料/用具", "纸巾/洗涤/洁具", "啤酒/果汁/可乐", ""};
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_market_detail);
-    }
+	private GridView mGridView;
+	private ImageView mBack;
+	private TextView mSearch;
+	private GridAdapter mGridAdapter;
+	private int storeId;
+	private Context mContext;
+	private Request mCurrentRequest;
+	private ThemeService mThemeService;
+	private static final int ACTION_NETWORK_ERROR = 0;
+	private static final int ACTION_STORE_INFO = 1;
+	private Handler mHandler;
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        initViews();
-//        initActionBar();
-    }
+	public MarketDetailActivity() {
+		mContext = this;
+	}
 
-    private void initActionBar() {
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_market_detail);
+		storeId = getIntent().getIntExtra("storeId", 0);
+	}
 
-/*        ActionBar actionBar = getActionBar();
-//		actionBar.setDisplayUseLogoEnabled(false);
-//        actionBar.setDisplayShowHomeEnabled(false);
-//        actionBar.setDisplayShowTitleEnabled(false);
-//        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setCustomView(R.layout.actionbar);
-        actionBar.getCustomView().findViewById(R.id.actionbar_back)
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        finish();
-                    }
-                });
-        actionBar.getCustomView().findViewById(R.id.actionbar_search)
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onSearchRequested();
-                    }
-                });*/
-    }
+	@Override
+	protected void onResume() {
+		super.onResume();
+		initViews();
+		// initActionBar();
+	}
 
-    private void initViews() {
-        mGridView = (GridView) findViewById(R.id.market_detail_grid);
+	private void initViews() {
+		mGridView = (GridView) findViewById(R.id.market_detail_grid);
+		mBack = (ImageView) findViewById(R.id.market_detail_back);
+		mBack.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
 
-        mapList= new ArrayList<Map<String, String>>();
-        for (int i = 0; i< title.length; i++){
-            Map<String,String> item = new HashMap<String, String>();
-            item.put("title", title[i]);
-            item.put("detail", detail[i]);
-            mapList.add(item);
-        }
-
-        mGridAdapter = new GridAdapter(mapList);
-        mGridView.setAdapter(mGridAdapter);
-        mGridView.setOnItemClickListener(this);  
-        mBack = (ImageView) findViewById(R.id.market_detail_back);
-        mBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
-        mSearch = (TextView) findViewById(R.id.market_search);
-        mSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(MarketDetailActivity.this, SearchGoodActivity.class);
-                startActivity(intent);
-            }
-        });
-
-
-    }
-    @Override
-	 public void onItemClick(AdapterView<?> adapter,//The AdapterView where the click happened    
-	                                   View view,//The view within the AdapterView that was clicked   
-	                                   int position,//The position of the view in the adapter   
-	                                   long arg3//The row id of the item that was clicked   
-	                                   ) {  
-//		HashMap<String, Object> item=(HashMap<String, Object>) adapter.getItemAtPosition(position);  
-
-	     if(position < mGridAdapter.getCount()) {
-	    		Intent intent = new Intent(this, MarketGoodsListActivity.class);
-//				intent.putExtra("type",1);
+		mSearch = (TextView) findViewById(R.id.market_search);
+		mSearch.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent();
+				intent.setClass(MarketDetailActivity.this,
+						SearchGoodActivity.class);
 				startActivity(intent);
 			}
-	     
-	 }  
+		});
+		GetStoreInfo();
+	}
 
-    private class GridAdapter extends BaseAdapter{
-        private List<Map<String, String>> list ;
+	private void initHandler() {
+		// TODO Auto-generated method stub
+		mHandler = new Handler() {
 
-        private GridAdapter(List<Map<String, String>> list) {
-            this.list = list;
-        }
+			@Override
+			public void handleMessage(Message msg) {
+				// TODO Auto-generated method stub
+				switch (msg.what) {
+				case ACTION_STORE_INFO:
+					MarketGoodsInfoListData marketGoodsInfoList = (MarketGoodsInfoListData) msg.obj;
+					if (marketGoodsInfoList != null) {
+						if (marketGoodsInfoList.marketGoodsInfoList != null) {
+							mGridAdapter = new GridAdapter(mContext,
+									marketGoodsInfoList.marketGoodsInfoList);
 
-        @Override
-        public int getCount() {
-            return list.size();
-        }
+						}
+						mGridView.setAdapter(mGridAdapter);
+					}
+					mGridView.setVisibility(View.VISIBLE);
 
-        @Override
-        public Object getItem(int position) {
-            return list.get(position);
-        }
+					break;
 
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
+				default:
+					break;
+				}
+			}
+		};
+	}
+	private void GetStoreInfo() {
+		// TODO Auto-generated method stub
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = getLayoutInflater();
-            convertView = inflater.inflate(R.layout.market_detail_grid_item, null);
-            TextView title = (TextView) convertView.findViewById(R.id.grid_item_title);
-            TextView detail = (TextView) convertView.findViewById(R.id.grid_item_detail);
-            title.setText(list.get(position).get("title"));
-            detail.setText(list.get(position).get("detail"));
+		Request request = new Request(0, Constant.TYPE_POST_USER_LOCAL_INFO);
+		StoreId mStoreId = new StoreId();
+		mStoreId.storeId = storeId;
+		request.setData(mStoreId);
+		request.addObserver(new Observer() {
 
-            return convertView;
-        }
-    }
+			@Override
+			public void update(Observable observable, Object data) {
+				// TODO Auto-generated method stub
+				if (data != null) {
+					Message msg = Message.obtain(mHandler, ACTION_STORE_INFO,
+							data);
+					mHandler.sendMessage(msg);
+				} else {
+					Request request = (Request) observable;
+					if (request.getStatus() == Constant.STATUS_ERROR) {
+						mHandler.sendEmptyMessage(ACTION_NETWORK_ERROR);
+					}
+				}
+			}
+		});
+		mCurrentRequest = request;
+		mThemeService.getStoreList(request);
+	}
+
+	private class GridAdapter extends ArrayAdapter<MarketGoodsInfo> {
+		private Context mContext;
+		private ViewHolder viewHolder = null;
+		private LayoutInflater mLayoutInflater;
+
+		public GridAdapter(Context context, ArrayList<MarketGoodsInfo> objects) {
+			super(context, 0, objects);
+			// TODO Auto-generated constructor stub
+			mContext = context;
+			mLayoutInflater = (LayoutInflater) context
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+
+			MarketGoodsInfo marketGoodsInfo = null;
+			Log.v("asd", "position =" + position);
+			if (position >= 0) {
+				marketGoodsInfo = getItem(position);
+			}
+			convertView = mLayoutInflater.inflate(
+					R.layout.market_detail_grid_item, null);
+			if (convertView == null) {
+				// convertView = mLayoutInflater.inflate(R.layout.app_list_item,
+				// null);
+				convertView = mLayoutInflater.inflate(
+						R.layout.market_list_item, parent, false);
+				viewHolder = new ViewHolder();
+				viewHolder.mName = (TextView) convertView
+						.findViewById(R.id.grid_item_title);
+				viewHolder.detail = (TextView) convertView
+						.findViewById(R.id.grid_item_detail);
+				convertView.setTag(viewHolder);
+			} else {
+				viewHolder = (ViewHolder) convertView.getTag();
+			}
+			if (marketGoodsInfo != null) {
+				viewHolder.mName.setText(marketGoodsInfo.name);
+				viewHolder.detail.setText(marketGoodsInfo.shortDescription);
+			}
+			convertView.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					Intent intent = new Intent(mContext,
+							MarketGoodsListActivity.class);
+					startActivity(intent);
+				}
+			});
+			return convertView;
+		}
+
+		public class ViewHolder {
+			TextView mName;
+			TextView detail;
+		}
+	}
 }

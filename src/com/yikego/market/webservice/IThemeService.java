@@ -18,5 +18,10 @@ public abstract interface IThemeService {
 	public abstract void postMessageRecord(Request request);
     public abstract void postUserRegister(Request request);
 
+    public abstract void getStoreList(Request request);
+
+    public abstract void getStoreInfo(Request request);
+
     public abstract void postUserLogin(Request request);
+
 }

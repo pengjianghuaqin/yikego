@@ -1,14 +1,30 @@
 package com.yikego.market.webservice;
 
 import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.yikego.android.rom.sdk.bean.AuthCodeInfo;
+import com.yikego.android.rom.sdk.bean.PostUserLocationInfo;
+import com.yikego.android.rom.sdk.bean.StoreId;
 import com.yikego.android.rom.sdk.bean.UserLoginInfo;
 import com.yikego.android.rom.sdk.bean.UserRegisterInfo;
+
+import org.w3c.dom.Comment;
+
+
+
 
 
 import com.yikego.market.utils.Constant;
 
+import android.app.Application;
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.drawable.Drawable;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
 import android.util.Log;
 
 public class RequestHandler extends Thread {
@@ -91,6 +107,19 @@ public class RequestHandler extends Thread {
                         }
                     }
                     break;
+                case Constant.TYPE_POST_USER_LOCAL_INFO:
+                    if (request.getData() != null){
+                    	PostUserLocationInfo postUserLocationInfo = (PostUserLocationInfo) request.getData();
+                        try {
+                            data = mAgent.postUserLocationInfo(postUserLocationInfo);
+                            request.setStatus(Constant.STATUS_SUCCESS);
+                            request.notifyObservers(data);
+                        }catch (SocketException e){
+                            request.setStatus(Constant.STATUS_ERROR);
+                            request.notifyObservers(null);
+                        }
+                    }
+                    break;
                 case Constant.TYPE_POST_USER_LOGIN:
                     if (request.getData() != null){
                         UserLoginInfo userLoginInfo = (UserLoginInfo) request.getData();
@@ -104,7 +133,33 @@ public class RequestHandler extends Thread {
                         }
                     }
                     break;
-
+                case Constant.TYPE_GET_GOODS_TYPE_INFO:
+                    if (request.getData() != null){
+                    	StoreId storeId = (StoreId) request.getData();
+                        try {
+                            data = mAgent.getMarketGoodsInfoListData(storeId);
+                            request.setStatus(Constant.STATUS_SUCCESS);
+                            request.notifyObservers(data);
+                        }catch (SocketException e){
+                            request.setStatus(Constant.STATUS_ERROR);
+                            request.notifyObservers(null);
+                        }
+                    }
+                    break;
+                case Constant.TYPE_GET_GOODS_LIST_INFO:
+                    if (request.getData() != null){
+                    	StoreId storeId = (StoreId) request.getData();
+                        try {
+                            data = mAgent.getMarketGoodsInfoListData(storeId);
+                            request.setStatus(Constant.STATUS_SUCCESS);
+                            request.notifyObservers(data);
+                        }catch (SocketException e){
+                            request.setStatus(Constant.STATUS_ERROR);
+                            request.notifyObservers(null);
+                        }
+                    }
+                    break;
+                    
 			default:
 				break;
 			}
