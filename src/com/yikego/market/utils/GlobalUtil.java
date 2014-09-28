@@ -2,19 +2,25 @@ package com.yikego.market.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.provider.Settings.Secure;
+import android.text.TextUtils;
+import android.view.Gravity;
+import android.widget.Toast;
+import com.yikego.market.R;
 
 public class GlobalUtil {
 
 	public static boolean bAutoCheckUpdate;
 	public static boolean bAutoCreateShortcut;
+
+    //phone is valid
+    private static final String PHONE_PATTERN = "[1]{1}[3,4,5,8]{1}[0-9]{9}";
 
 	/*
 	 * Check system setting for whether allow to install 3rd party applications
@@ -55,4 +61,43 @@ public class GlobalUtil {
 		}
 		return true;
 	}
-}
+
+   /*
+   * show toast
+   * */
+    public static void showToastString(Context context,int resId){
+        Toast toast =  Toast.makeText(context, resId, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
+    }
+   /*
+   * is phone valid
+   * */
+   public static boolean isValidPhone(String phone) {
+       if (TextUtils.isEmpty(phone))
+           return false;
+       return phone.matches(PHONE_PATTERN);
+   }
+
+    /**
+     * 验证输入密码条件(字符与数据同时出现)
+     *
+     * @param 待验证的字符串
+     * @return 如果是符合格式的字符串,返回 <b>true </b>,否则为 <b>false </b>
+     */
+    public static boolean isPassword(String str) {
+        String regex = "[A-Za-z0-9]+";
+        return str.matches(regex);
+    }
+
+    /**
+     * 验证输入密码长度 (6-24位)
+     *
+     * @param 待验证的字符串
+     * @return 如果是符合格式的字符串,返回 <b>true </b>,否则为 <b>false </b>
+     */
+    public static boolean isPasswLength(String str) {
+        String regex = "^\\d{6,24}$";
+        return str.matches(regex);
+    }
+ }

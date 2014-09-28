@@ -1,7 +1,13 @@
 package com.yikego.android.rom.sdk.bean;
 
-public class ProductImgInfo {
-    public int productPicId;
+import java.io.Serializable;
+
+public class ProductImgInfo implements Serializable{
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2387824253271681301L;
+	public int productPicId;
     public int productId;
     public String picPath;
     public int picStatus;

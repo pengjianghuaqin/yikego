@@ -5,6 +5,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import android.widget.ImageView;
+
 import com.slidingmenu.lib.SlidingMenu;
 import com.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.yikego.android.rom.sdk.bean.MessageRecord;
@@ -13,6 +14,7 @@ import com.yikego.android.rom.sdk.bean.PostUserLocationInfo;
 import com.yikego.android.rom.sdk.bean.StoreInfo;
 import com.yikego.android.rom.sdk.bean.UserLoginInfo;
 import com.yikego.market.R;
+import com.yikego.market.activity.MarketListAdapter.ViewHolder;
 import com.yikego.market.fragment.SlidingMenuFragment;
 import com.yikego.market.model.MarketData;
 import com.yikego.market.utils.Constant;
@@ -22,16 +24,19 @@ import com.yikego.market.webservice.ThemeService;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class MarketBrowser extends SlidingFragmentActivity {
+public class MarketBrowser extends SlidingFragmentActivity implements
+		AdapterView.OnItemClickListener {
 	private ListView mListView;
 	private MarketListAdapter mMarketListAdapter;
 	private ImageView mMenuButton;
@@ -42,9 +47,12 @@ public class MarketBrowser extends SlidingFragmentActivity {
 	private static final int ACTION_NETWORK_ERROR = 0;
 	private static final int ACTION_USER_LOCAL_INFO = 1;
 	private Handler mHandler;
+	private boolean isEnd;
+	private AbsListView.OnScrollListener mScrollListener;
 
 	public MarketBrowser() {
 		Log.v(TAG, "MarketBrowser");
+		isEnd = false;
 		mContext = this;
 	}
 
@@ -54,9 +62,10 @@ public class MarketBrowser extends SlidingFragmentActivity {
 		Log.v(TAG, "onCreate");
 		setContentView(R.layout.activity_market_browser);
 		mThemeService = ThemeService.getServiceInstance(mContext);
+		initHandler();
+		initListener();
 		initView();
 		initSlidingMenu();
-		initHandler();
 		// userLogin();
 	}
 
@@ -77,6 +86,8 @@ public class MarketBrowser extends SlidingFragmentActivity {
 
 	private void initView() {
 		mListView = (ListView) findViewById(android.R.id.list);
+		mListView.setOnScrollListener(mScrollListener);
+		mListView.setOnItemClickListener(this);
 		mMenuButton = (ImageView) findViewById(R.id.btn_menu);
 		mMenuButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -87,16 +98,65 @@ public class MarketBrowser extends SlidingFragmentActivity {
 		PostUserLocalInfo();
 	}
 
+	private void initListener() {
+		// TODO Auto-generated method stub
+		mScrollListener = new AbsListView.OnScrollListener() {
+
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				// TODO Auto-generated method stub
+				return;
+			}
+
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				// TODO Auto-generated method stub
+				switch (scrollState) {
+				case SCROLL_STATE_IDLE:
+					int position = 0;
+					// for (int i = 0; i < counts; i++) {
+					// View localView = view.getChildAt(i);
+					//
+					// ViewHolder viewHolder = (ViewHolder) localView.getTag();
+					// if (viewHolder != null) {
+					// //
+					// mAppListAdapter.initBtnStatus(viewHolder,(Application2)viewHolder.mButton.getTag());
+					// int id = (int) mAppListAdapter.getItemId(position);
+					// Drawable drawable = getThumbnail(position, id);
+					// // drawable.setCallback(null);
+					// viewHolder.mThumbnail.setImageDrawable(drawable);
+					// }
+					// }
+
+					// as list scrolled to end, send request to get above data
+					if (isEnd) {
+						PostUserLocalInfo();
+					}
+					break;
+				case SCROLL_STATE_TOUCH_SCROLL:
+				case SCROLL_STATE_FLING:
+					// if (!bBusy) {
+					// clearPendingThumbRequest();
+					// bBusy = true;
+					// }
+				default:
+					break;
+				}
+			}
+		};
+	}
+
 	private void PostUserLocalInfo() {
 		// TODO Auto-generated method stub
 
 		Request request = new Request(0, Constant.TYPE_POST_USER_LOCAL_INFO);
 		// Object[] params = new Object[2];
 		PostUserLocationInfo postUserLocationInfo = new PostUserLocationInfo();
-		postUserLocationInfo.distance = 5.0f;
-		postUserLocationInfo.lat = 121.38842553522f;
-		postUserLocationInfo.lng = 31.202108422061f;
-		postUserLocationInfo.nowPage = 0;
+		postUserLocationInfo.distance = 25.0f;
+		postUserLocationInfo.lat = 31.159488f;
+		postUserLocationInfo.lng = 121.579398f;
+		postUserLocationInfo.nowPage = 1;
 		postUserLocationInfo.pageCount = 25;
 		request.setData(postUserLocationInfo);
 		request.addObserver(new Observer() {
@@ -129,23 +189,22 @@ public class MarketBrowser extends SlidingFragmentActivity {
 				// TODO Auto-generated method stub
 				switch (msg.what) {
 				case ACTION_USER_LOCAL_INFO:
-					int storeListIndex = 0;
 					PaginationStoreListInfo paginationStoreListInfo = (PaginationStoreListInfo) msg.obj;
 					if (paginationStoreListInfo != null) {
-						
-						ArrayList<StoreInfo> marketList = new ArrayList<StoreInfo>();
-
 						if (mMarketListAdapter == null) {
 							mMarketListAdapter = new MarketListAdapter(
-									mContext,
-									marketList);
+									mContext, paginationStoreListInfo.storelist);
 							mListView.setAdapter(mMarketListAdapter);
 						} else {
-							for (; storeListIndex < paginationStoreListInfo.totalCount; storeListIndex++) {
-								mMarketListAdapter.add(paginationStoreListInfo.storeList.get(storeListIndex));
+							for (int i = 0; i < paginationStoreListInfo.storelist
+									.size(); i++) {
+								mMarketListAdapter
+										.add(paginationStoreListInfo.storelist
+												.get(i));
 							}
-							if (storeListIndex >= paginationStoreListInfo.totalCount && storeListIndex != 0) {
-								mMarketListAdapter.notifyDataSetChanged();
+							mMarketListAdapter.notifyDataSetChanged();
+							if (paginationStoreListInfo.nowPage >= paginationStoreListInfo.pageCount) {
+								isEnd = true;
 							}
 						}
 						mListView.setAdapter(mMarketListAdapter);
@@ -158,5 +217,15 @@ public class MarketBrowser extends SlidingFragmentActivity {
 				}
 			}
 		};
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		// TODO Auto-generated method stub
+				StoreInfo storeInfo= mMarketListAdapter.getItem(position);
+				Intent intent = new Intent(mContext, MarketDetailActivity.class);
+				intent.putExtra("storeInfo",storeInfo);
+				mContext.startActivity(intent);
 	}
 }

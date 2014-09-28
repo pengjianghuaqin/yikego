@@ -43,13 +43,14 @@ import java.util.zip.Inflater;
 /**
  * Created by wll on 14-8-16.
  */
-public class MarketDetailActivity extends Activity{
+public class MarketDetailActivity extends Activity implements
+AdapterView.OnItemClickListener{
 
 	private GridView mGridView;
 	private ImageView mBack;
 	private TextView mSearch;
 	private GridAdapter mGridAdapter;
-	private int storeId;
+	private StoreInfo storeInfo;
 	private Context mContext;
 	private Request mCurrentRequest;
 	private ThemeService mThemeService;
@@ -65,13 +66,16 @@ public class MarketDetailActivity extends Activity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_market_detail);
-		storeId = getIntent().getIntExtra("storeId", 0);
+		storeInfo = (StoreInfo) getIntent().getSerializableExtra("storeInfo");
+		mThemeService = ThemeService.getServiceInstance(mContext);
+		initHandler();
+		initViews();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		initViews();
+
 		// initActionBar();
 	}
 
@@ -95,6 +99,18 @@ public class MarketDetailActivity extends Activity{
 				startActivity(intent);
 			}
 		});
+		TextView marketName = (TextView) findViewById(R.id.market_detail_name);
+		marketName.setText(storeInfo.name);
+		TextView marketDistance = (TextView) findViewById(R.id.market_detail_distance);
+		marketDistance.setText("距离 :"+storeInfo.aboutDistance+"米");
+		TextView marketWorkTime = (TextView) findViewById(R.id.market_detail_work_time);
+		marketWorkTime.setText("营业时间"+storeInfo.openHour+":"+storeInfo.openMinute+"-"+storeInfo.closeHour+":"+storeInfo.closeMinute);
+		TextView marketAddress = (TextView) findViewById(R.id.market_detail_address);
+		marketAddress.setText(storeInfo.address);
+		TextView marketTel = (TextView) findViewById(R.id.market_detail_tel);
+		marketTel.setText(storeInfo.storeTel);
+		TextView marketPhone = (TextView) findViewById(R.id.market_detail_phone);
+		marketPhone.setText(storeInfo.storePhone);
 		GetStoreInfo();
 	}
 
@@ -108,10 +124,11 @@ public class MarketDetailActivity extends Activity{
 				switch (msg.what) {
 				case ACTION_STORE_INFO:
 					MarketGoodsInfoListData marketGoodsInfoList = (MarketGoodsInfoListData) msg.obj;
+					Log.v("ACTION_STORE_INFO", "productTypeList ="+marketGoodsInfoList.productTypeList.size());
 					if (marketGoodsInfoList != null) {
-						if (marketGoodsInfoList.marketGoodsInfoList != null) {
+						if (marketGoodsInfoList.productTypeList != null) {
 							mGridAdapter = new GridAdapter(mContext,
-									marketGoodsInfoList.marketGoodsInfoList);
+									marketGoodsInfoList.productTypeList);
 
 						}
 						mGridView.setAdapter(mGridAdapter);
@@ -126,12 +143,13 @@ public class MarketDetailActivity extends Activity{
 			}
 		};
 	}
+
 	private void GetStoreInfo() {
 		// TODO Auto-generated method stub
 
-		Request request = new Request(0, Constant.TYPE_POST_USER_LOCAL_INFO);
+		Request request = new Request(0, Constant.TYPE_GET_GOODS_TYPE_INFO);
 		StoreId mStoreId = new StoreId();
-		mStoreId.storeId = storeId;
+		mStoreId.storeId = storeInfo.storeId;
 		request.setData(mStoreId);
 		request.addObserver(new Observer() {
 
@@ -170,18 +188,15 @@ public class MarketDetailActivity extends Activity{
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 
-			MarketGoodsInfo marketGoodsInfo = null;
+			MarketGoodsInfo marketGoodsInfo = new MarketGoodsInfo();
 			Log.v("asd", "position =" + position);
 			if (position >= 0) {
 				marketGoodsInfo = getItem(position);
 			}
-			convertView = mLayoutInflater.inflate(
-					R.layout.market_detail_grid_item, null);
+			Log.v("asd", "marketGoodsInfo =" + marketGoodsInfo);
 			if (convertView == null) {
-				// convertView = mLayoutInflater.inflate(R.layout.app_list_item,
-				// null);
 				convertView = mLayoutInflater.inflate(
-						R.layout.market_list_item, parent, false);
+						R.layout.market_detail_grid_item, parent, false);
 				viewHolder = new ViewHolder();
 				viewHolder.mName = (TextView) convertView
 						.findViewById(R.id.grid_item_title);
@@ -193,18 +208,10 @@ public class MarketDetailActivity extends Activity{
 			}
 			if (marketGoodsInfo != null) {
 				viewHolder.mName.setText(marketGoodsInfo.name);
-				viewHolder.detail.setText(marketGoodsInfo.shortDescription);
-			}
-			convertView.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					Intent intent = new Intent(mContext,
-							MarketGoodsListActivity.class);
-					startActivity(intent);
+				if(marketGoodsInfo.shortDescription!=null){
+					viewHolder.detail.setText(marketGoodsInfo.shortDescription);
 				}
-			});
+			}
 			return convertView;
 		}
 
@@ -212,5 +219,16 @@ public class MarketDetailActivity extends Activity{
 			TextView mName;
 			TextView detail;
 		}
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		// TODO Auto-generated method stub
+		MarketGoodsInfo marketGoodsInfo= mGridAdapter.getItem(position);
+		Intent intent = new Intent(mContext,
+				MarketGoodsListActivity.class);
+		intent.putExtra("productTypeId",marketGoodsInfo.productTypeId);
+		startActivity(intent);
 	}
 }

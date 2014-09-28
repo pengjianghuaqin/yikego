@@ -32,6 +32,8 @@
             android:name=".activity.MarketBrowser"
             android:configChanges="keyboardHidden|orientation|screenLayout|uiMode"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
+            android:taskAffinity="com.yikego.main"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
         <activity
@@ -80,6 +82,7 @@
                   android:configChanges="keyboardHidden|orientation|screenLayout|uiMode"
                   android:screenOrientation="portrait"
                   android:launchMode="singleTask"
+                  android:taskAffinity="com.yikego.main"
                   android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
         <activity android:name=".activity.Register"

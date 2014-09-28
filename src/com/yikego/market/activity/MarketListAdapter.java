@@ -53,16 +53,6 @@ public class MarketListAdapter extends ArrayAdapter<StoreInfo> {
 		}else{
 				viewHolder = (ViewHolder) convertView.getTag();
 			}
-		convertView.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				int storeId = ((ViewHolder)(v.getTag()))._id;
-				Intent intent = new Intent(mContext, MarketDetailActivity.class);
-				intent.putExtra("storeId", storeId);
-				mContext.startActivity(intent);
-			}});
 		if(marketInfo !=null){
 			viewHolder.mName.setText(marketInfo.name);
 			viewHolder.mPath.setText(marketInfo.aboutDistance+"米");

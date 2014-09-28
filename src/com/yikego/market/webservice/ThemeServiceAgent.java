@@ -18,6 +18,7 @@ import com.yikego.android.rom.sdk.ServiceProvider;
 import com.yikego.market.utils.GlobalUtil;
 
 import android.content.Context;
+import android.util.Log;
 
 public class ThemeServiceAgent {
 

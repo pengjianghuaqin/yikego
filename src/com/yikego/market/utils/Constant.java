@@ -36,4 +36,6 @@ public class Constant {
     //get auth code type 1:register  2:quick login
     public static final int TYPE_AUTH_CODE_REGISTER = 1;
     public static final int TYPE_AUTH_CODE_QUICK_LOGIN = 2;
+    //login status
+    public static final String LOGIN_OK = "com.yikego.market.loginok";
 }

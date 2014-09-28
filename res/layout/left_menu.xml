@@ -183,12 +183,13 @@
     <RelativeLayout
                 android:id="@+id/rl_quit"
                 android:layout_width="wrap_content"
-                android:layout_height="40.0dip"
-                android:visibility="gone"
-                android:layout_marginLeft="10.0dip"
-                android:layout_marginBottom="20.0dip"
+                android:layout_height="40.0dp"
+                android:visibility="invisible"
+                android:layout_below="@+id/left_menu_setting"
+                android:layout_marginLeft="@dimen/left_menu_imageview_margin_left"
+                android:layout_marginTop="@dimen/left_menu_item_margin_top"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentBottom="true">
+                >
             <ImageView
                     android:id="@+id/iv_quit"
                     android:layout_width="wrap_content"
@@ -198,12 +199,15 @@
                     android:layout_alignParentBottom="true"
                     android:contentDescription="@null" />
             <TextView
-                    android:textSize="17.0sp"
-                    android:textColor="#f3f3f3"
                     android:id="@+id/tv_quit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="退出登录"
+                    android:text="@string/quit_login"
+                    android:textSize="18.0sp"
+                    android:textColor="@color/white"
+                    android:singleLine="true"
+                    android:layout_marginLeft="@dimen/left_menu_textview_margin_left"
+                    android:layout_centerHorizontal="true"
                     android:layout_toRightOf="@id/iv_quit"
                     android:layout_centerVertical="true" />
         </RelativeLayout>

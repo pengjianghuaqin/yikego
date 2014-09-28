@@ -2,18 +2,18 @@ package com.yikego.market.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.*;
 import com.yikego.android.rom.sdk.bean.UserInfo;
 import com.yikego.android.rom.sdk.bean.UserLoginInfo;
 import com.yikego.market.R;
 import com.yikego.market.utils.Constant;
+import com.yikego.market.utils.GlobalUtil;
 import com.yikego.market.webservice.Request;
 import com.yikego.market.webservice.ThemeService;
 
@@ -31,10 +31,13 @@ public class LoginActivity extends Activity{
 
     //login type
     private static final int TYPE_LOGIN_USERNAME = 1;
-    private static final String LOGIN_RESULT_CODE_OK = "1";
+    private static final String LOGIN_RESULT_CODE_OK = "0";
     private static final String LOGIN_RESULT_CODE_PWD_ERROR = "-1";
     private static final String LOGIN_RESULT_CODE_AUTHCODE_ERROR = "-2";
     private static final String LOGIN_RESULT_CODE_ERROR = "-3";
+
+    private static final int ACTION_NETWORK_ERROR = 0;
+    private static final int ACTION_USER_LOGIN = 1;
 
     private UserLoginInfo userLoginInfo = new UserLoginInfo();
 
@@ -49,6 +52,8 @@ public class LoginActivity extends Activity{
 
     private TextView quickLoginText;
     private TextView registerText;
+    private Handler mHandler;
+    SharedPreferences mSharePreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +61,57 @@ public class LoginActivity extends Activity{
         setContentView(R.layout.login);
         mThemeService = ThemeService.getServiceInstance(this);
 
+        mSharePreferences = this.getSharedPreferences("userInfo", MODE_PRIVATE);
+
         initActionBar();
         initView();
+        initHandler();
+    }
+
+    private void initHandler() {
+        mHandler = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what){
+                    case ACTION_USER_LOGIN:
+                        Intent intent = new Intent();
+                        UserInfo userInfo = (UserInfo) msg.obj;
+
+                        Log.d(TAG, "userLogin update : " + userInfo.resultCode);
+                        if (userInfo.resultCode.equals(LOGIN_RESULT_CODE_OK)){
+                            intent.setAction(Constant.LOGIN_OK);
+
+                            SharedPreferences.Editor editor = mSharePreferences.edit();
+                            editor.putString("userId", userInfo.user.userId);
+                            editor.putString("userPhone", userInfo.user.userPhone);
+                            editor.putString("passWord", userInfo.user.passWord);
+                            editor.putString("userAddress", userInfo.user.userAddress);
+                            editor.putString("userStatus", userInfo.user.userStatus);
+                            editor.putString("createTime", userInfo.user.createTime);
+                            editor.commit();
+
+                            try {
+                                Thread.sleep(100);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            GlobalUtil.showToastString(LoginActivity.this, R.string.login_ok);
+                            sendBroadcast(intent);
+                            finish();
+                        }else if (userInfo.resultCode.equals(LOGIN_RESULT_CODE_PWD_ERROR)){
+                            GlobalUtil.showToastString(LoginActivity.this, R.string.login_password_error);
+                        }else if (userInfo.resultCode.equals(LOGIN_RESULT_CODE_AUTHCODE_ERROR)){
+                            GlobalUtil.showToastString(LoginActivity.this, R.string.auth_code_error);
+                        }else {
+                            GlobalUtil.showToastString(LoginActivity.this, R.string.login_error);
+                        }
+
+                        break;
+                    default:
+                        break;
+                }
+            }
+        };
     }
 
     private void initActionBar() {
@@ -85,6 +139,7 @@ public class LoginActivity extends Activity{
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this, QuickLoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
         });
@@ -107,13 +162,18 @@ public class LoginActivity extends Activity{
                 userLoginInfo.loginType = String.valueOf(TYPE_LOGIN_USERNAME);
                 userLoginInfo.userPhone = mUserNameEdit.getText().toString().trim();
                 userLoginInfo.passWord = mPassWordEdit.getText().toString().trim();
-
+                if (!GlobalUtil.isValidPhone(userLoginInfo.userPhone)){
+                    GlobalUtil.showToastString(LoginActivity.this, R.string.phone_invalid);
+                    return;
+                }
+                if (!GlobalUtil.isPassword(userLoginInfo.passWord)||
+                        !GlobalUtil.isPasswLength(userLoginInfo.passWord)){
+                    GlobalUtil.showToastString(LoginActivity.this, R.string.password_invalid);
+                    return;
+                }
                 userLogin(userLoginInfo);
-
-
             }
         });
-
     }
 
     private void userLogin(UserLoginInfo userLoginInfo) {
@@ -122,28 +182,19 @@ public class LoginActivity extends Activity{
         request.addObserver(new Observer() {
             @Override
             public void update(Observable observable, Object data) {
-                Intent intent = new Intent();
                 if (data != null) {
-                    UserInfo userInfo = (UserInfo) data;
-
-                    Log.d(TAG, "userLogin update : " + userInfo.resultCode);
-                    if (userInfo.resultCode.equals(LOGIN_RESULT_CODE_OK)){
-                        intent.putExtra("userId", userInfo.user.userId);
-                        intent.putExtra("userPhone", userInfo.user.userPhone);
-
-                        setResult(Integer.valueOf(LOGIN_RESULT_CODE_OK), intent);
-                    }
-//                    Message msg = Message.obtain(mHandler, ACTION_USER_REGISTER,
-//                            data);
-//                    mHandler.sendMessage(msg);
+                    Message msg = Message.obtain(mHandler, ACTION_USER_LOGIN,
+                            data);
+                    mHandler.sendMessage(msg);
                 } else {
                     Request request = (Request) observable;
-//                    if (request.getStatus() == Constant.STATUS_ERROR) {
-//                        mHandler.sendEmptyMessage(ACTION_NETWORK_ERROR);
-//                    }
+                    if (request.getStatus() == Constant.STATUS_ERROR) {
+                        mHandler.sendEmptyMessage(ACTION_NETWORK_ERROR);
+                    }
                 }
             }
         });
         mThemeService.postUserLogin(request);
     }
 }
+

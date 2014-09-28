@@ -136,6 +136,7 @@ public class RequestHandler extends Thread {
                 case Constant.TYPE_GET_GOODS_TYPE_INFO:
                     if (request.getData() != null){
                     	StoreId storeId = (StoreId) request.getData();
+                    	Log.v("TYPE_GET_GOODS_TYPE_INFO", "storeId ="+storeId.storeId);
                         try {
                             data = mAgent.getMarketGoodsInfoListData(storeId);
                             request.setStatus(Constant.STATUS_SUCCESS);

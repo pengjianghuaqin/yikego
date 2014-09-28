@@ -1,6 +1,10 @@
 package com.yikego.android.rom.sdk.bean;
 
-public class StoreInfo {
+import java.io.Serializable;
+import java.util.List;
+
+public class StoreInfo implements Serializable{
+	private static final long serialVersionUID = -2387824253271681301L;
     public int storeId;
     public String name;
     public String nickname;
@@ -16,7 +20,7 @@ public class StoreInfo {
     public int closeHour;
     public int closeMinute;
     public int storeStatus;
-    public String[] pictures;
+    public List<ProductImgInfo> pictures;
     public String createTime;
     public int aboutDistance;
 } 

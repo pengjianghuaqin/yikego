@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.*;
@@ -13,11 +14,14 @@ import com.yikego.android.rom.sdk.bean.UserId;
 import com.yikego.android.rom.sdk.bean.UserRegisterInfo;
 import com.yikego.market.R;
 import com.yikego.market.utils.Constant;
+import com.yikego.market.utils.GlobalUtil;
 import com.yikego.market.webservice.Request;
 import com.yikego.market.webservice.ThemeService;
 
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by wll on 14-9-13.
@@ -46,9 +50,7 @@ public class Register extends Activity{
     private static final int ACTION_GET_AUTH_CODE = 1;
     private static final int ACTION_USER_REGISTER = 2;
 
-    //return for startactivityforresult code
-    private static final int RETURN_CODE = 10;
-
+    private int time = 60;
     //
     private static final int REGISTER_RESULT_CODE_OK = 0;
     private static final int REGISTER_RESULT_CODE_EXIST = -1;
@@ -58,6 +60,10 @@ public class Register extends Activity{
     private UserRegisterInfo userRegisterInfo = new UserRegisterInfo();
     private UserRegisterInfo.InnerUser user = userRegisterInfo.user;
     private AuthCodeInfo authCodeInfo = new AuthCodeInfo();
+
+    private Timer timer = new Timer();
+    private TimerTask timerTask;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register);
@@ -85,6 +91,14 @@ public class Register extends Activity{
                 user.userAddress = addressEdit.getText().toString().trim();
                 user.passWord = passwordEdit.getText().toString().trim();
 
+                if (!GlobalUtil.isValidPhone(user.userPhone)){
+                    GlobalUtil.showToastString(Register.this, R.string.phone_invalid);
+                    return;
+                }
+                if (!GlobalUtil.isPassword(user.passWord)|| !GlobalUtil.isPasswLength(user.passWord)){
+                    GlobalUtil.showToastString(Register.this, R.string.password_invalid);
+                    return;
+                }
                 userRegister(userRegisterInfo);
             }
         });
@@ -94,7 +108,34 @@ public class Register extends Activity{
             public void onClick(View v) {
                 authCodeInfo.userPhone = telephoneEdit.getText().toString().trim();
                 authCodeInfo.messageRecordType = String.valueOf(Constant.TYPE_AUTH_CODE_REGISTER);
-                getAuthCode(authCodeInfo);
+                if (GlobalUtil.isValidPhone(authCodeInfo.userPhone)){
+                    getAuthCode(authCodeInfo);
+                    authCodeButton.setEnabled(false);
+                    timerTask = new TimerTask() {
+                        @Override
+                        public void run() {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (authCodeButton!=null){
+                                        if (time <= 0) {
+                                            authCodeButton.setEnabled(true);
+                                            authCodeButton.setText(R.string.authCode_button_text);
+                                            timerTask.cancel();
+                                        } else {
+                                            authCodeButton.setText("" + time);
+                                        }
+                                        time--;
+                                    }
+                                }
+                            });
+                        }
+                    };
+
+                    timer.schedule(timerTask,0,1000);
+                }else {
+                    GlobalUtil.showToastString(Register.this, R.string.phone_invalid);
+                }
             }
         });
 

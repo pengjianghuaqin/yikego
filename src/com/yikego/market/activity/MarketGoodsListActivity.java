@@ -9,6 +9,7 @@ import com.yikego.android.rom.sdk.bean.MarketGoodsInfoListData;
 import com.yikego.android.rom.sdk.bean.PostProductType;
 import com.yikego.android.rom.sdk.bean.ProductListInfo;
 import com.yikego.android.rom.sdk.bean.StoreId;
+import com.yikego.android.rom.sdk.bean.StoreInfo;
 import com.yikego.market.R;
 import com.yikego.market.activity.MarketListAdapter.ViewHolder;
 import com.yikego.market.model.GoodsData;
@@ -54,6 +55,7 @@ public class MarketGoodsListActivity extends ListActivity implements
 	private boolean isEnd;
 
 	public MarketGoodsListActivity() {
+		nowPage = 1;
 		isEnd = false;
 		mContext = this;
 	}
@@ -62,6 +64,8 @@ public class MarketGoodsListActivity extends ListActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_goods_list);
+		mThemeService = ThemeService.getServiceInstance(mContext);
+		productTypeId = getIntent().getIntExtra("productTypeId", 0);
 		initView();
 	}
 
@@ -156,6 +160,7 @@ public class MarketGoodsListActivity extends ListActivity implements
 								mGoodsListAdapter.add(marketGoodsList.get(i));
 							}
 							mGoodsListAdapter.notifyDataSetChanged();
+							nowPage+=1;
 							if (productListInfo.nowPage == productListInfo.totalCount) {
 								isEnd = true;
 							}

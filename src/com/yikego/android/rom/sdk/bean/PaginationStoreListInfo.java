@@ -7,5 +7,5 @@ public class PaginationStoreListInfo {
     public int resultCode;
     public int totalCount;
     public int nowPage;
-    public ArrayList<StoreInfo> storeList = new ArrayList<StoreInfo>();
+    public ArrayList<StoreInfo> storelist;
 }

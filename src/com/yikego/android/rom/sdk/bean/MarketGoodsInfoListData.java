@@ -4,5 +4,5 @@ import java.util.ArrayList;
 
 public class MarketGoodsInfoListData {
 	public int resultCode;
-    public ArrayList<MarketGoodsInfo> marketGoodsInfoList;
+    public ArrayList<MarketGoodsInfo> productTypeList;
 }
