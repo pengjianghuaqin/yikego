@@ -2,8 +2,10 @@ package com.yikego.market.activity;
 
 import java.net.URL;
 
+import com.yikego.android.rom.sdk.bean.StoreInfo;
 import com.yikego.market.R;
 import com.yikego.market.model.EnterShoppingCarDialog;
+import com.yikego.market.model.GoodsData;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -23,6 +25,7 @@ import android.widget.RelativeLayout;
 
 public class MarketGoodsDetailActivity extends Activity{
 	private Context mContext;
+	private GoodsData mGoodsData;
 	public MarketGoodsDetailActivity(){
 		mContext = this;
 	}
@@ -31,6 +34,7 @@ public class MarketGoodsDetailActivity extends Activity{
         super.onCreate(savedInstanceState);
         Log.v("MarketGoodsDetailActivity", "onCreate");
         setContentView(R.layout.activity_goods_detail);
+        mGoodsData = (GoodsData) getIntent().getSerializableExtra("goodsData");
         initView();
     }
 	

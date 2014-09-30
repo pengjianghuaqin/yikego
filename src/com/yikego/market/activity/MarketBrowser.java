@@ -1,6 +1,7 @@
 package com.yikego.market.activity;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -16,6 +17,7 @@ import com.yikego.android.rom.sdk.bean.UserLoginInfo;
 import com.yikego.market.R;
 import com.yikego.market.activity.MarketListAdapter.ViewHolder;
 import com.yikego.market.fragment.SlidingMenuFragment;
+import com.yikego.market.model.Latitude;
 import com.yikego.market.model.MarketData;
 import com.yikego.market.utils.Constant;
 import com.yikego.market.webservice.Request;
@@ -33,6 +35,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MarketBrowser extends SlidingFragmentActivity implements
@@ -49,11 +52,17 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 	private Handler mHandler;
 	private boolean isEnd;
 	private AbsListView.OnScrollListener mScrollListener;
+	private Latitude mLatitude;
+	public static List<Latitude> storeLatitude;
 
 	public MarketBrowser() {
 		Log.v(TAG, "MarketBrowser");
 		isEnd = false;
 		mContext = this;
+		mLatitude = new Latitude();
+		mLatitude.lat = 31.159488f;
+		mLatitude.lng = 121.579398f;
+		storeLatitude = new ArrayList<Latitude>();
 	}
 
 	@Override
@@ -66,6 +75,7 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 		initListener();
 		initView();
 		initSlidingMenu();
+
 		// userLogin();
 	}
 
@@ -93,6 +103,14 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 			@Override
 			public void onClick(View view) {
 				toggle();
+			}
+		});
+		TextView map = (TextView)findViewById(R.id.title_map);
+		map.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+						 Intent intent = new Intent(mContext,LocationActivity.class);
+						 startActivity(intent);
 			}
 		});
 		PostUserLocalInfo();
@@ -154,8 +172,8 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 		// Object[] params = new Object[2];
 		PostUserLocationInfo postUserLocationInfo = new PostUserLocationInfo();
 		postUserLocationInfo.distance = 25.0f;
-		postUserLocationInfo.lat = 31.159488f;
-		postUserLocationInfo.lng = 121.579398f;
+		postUserLocationInfo.lat = mLatitude.lat;
+		postUserLocationInfo.lng = mLatitude.lng;
 		postUserLocationInfo.nowPage = 1;
 		postUserLocationInfo.pageCount = 25;
 		request.setData(postUserLocationInfo);
@@ -190,7 +208,17 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 				switch (msg.what) {
 				case ACTION_USER_LOCAL_INFO:
 					PaginationStoreListInfo paginationStoreListInfo = (PaginationStoreListInfo) msg.obj;
+
 					if (paginationStoreListInfo != null) {
+						for (int i = 0; i < paginationStoreListInfo.storelist
+								.size(); i++) {
+							Latitude tmpLatitude = new Latitude();
+							tmpLatitude.lat = paginationStoreListInfo.storelist
+									.get(i).lat;
+							tmpLatitude.lng = paginationStoreListInfo.storelist
+									.get(i).lng;
+							storeLatitude.add(tmpLatitude);
+						}
 						if (mMarketListAdapter == null) {
 							mMarketListAdapter = new MarketListAdapter(
 									mContext, paginationStoreListInfo.storelist);
@@ -223,9 +251,9 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		// TODO Auto-generated method stub
-				StoreInfo storeInfo= mMarketListAdapter.getItem(position);
-				Intent intent = new Intent(mContext, MarketDetailActivity.class);
-				intent.putExtra("storeInfo",storeInfo);
-				mContext.startActivity(intent);
+		StoreInfo storeInfo = mMarketListAdapter.getItem(position);
+		Intent intent = new Intent(mContext, MarketDetailActivity.class);
+		intent.putExtra("storeInfo", storeInfo);
+		mContext.startActivity(intent);
 	}
 }

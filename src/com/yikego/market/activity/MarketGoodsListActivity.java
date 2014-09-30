@@ -22,6 +22,12 @@ import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Bitmap.Config;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -30,8 +36,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AnimationSet;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -53,9 +65,13 @@ public class MarketGoodsListActivity extends ListActivity implements
 	private ThemeService mThemeService;
 	private Handler mHandler;
 	private boolean isEnd;
+	private ImageView mShoppingcar;
+	private TextView mShoppingcarIndex;
+	private ImageView img;
 
 	public MarketGoodsListActivity() {
 		nowPage = 1;
+		pageCount = 25;
 		isEnd = false;
 		mContext = this;
 	}
@@ -66,6 +82,8 @@ public class MarketGoodsListActivity extends ListActivity implements
 		setContentView(R.layout.activity_goods_list);
 		mThemeService = ThemeService.getServiceInstance(mContext);
 		productTypeId = getIntent().getIntExtra("productTypeId", 0);
+		img = (ImageView)findViewById(R.id.img);
+		img.setVisibility(View.INVISIBLE);
 		initView();
 	}
 
@@ -76,11 +94,10 @@ public class MarketGoodsListActivity extends ListActivity implements
 			int position,// The position of the view in the adapter
 			long arg3// The row id of the item that was clicked
 	) {
-		Log.v(TAG, "position =" + position);
-		Log.v(TAG, "mGoodsListAdapter =" + mGoodsListAdapter.getCount());
 		if (position < mGoodsListAdapter.getCount()) {
+			GoodsData goodsData = mGoodsListAdapter.getItem(position);
 			Intent intent = new Intent(this, MarketGoodsDetailActivity.class);
-			// intent.putExtra("type",1);
+			intent.putExtra("goodsData", goodsData);
 			startActivity(intent);
 		}
 	}
@@ -98,6 +115,9 @@ public class MarketGoodsListActivity extends ListActivity implements
 
 		mListView.setAdapter(mGoodsListAdapter);
 		mListView.setOnItemClickListener(this);
+		mShoppingcar = (ImageView) findViewById(R.id.img_shopping_car);
+		mShoppingcarIndex = (TextView) findViewById(R.id.goods_index);
+
 		initHandler();
 		GetGoodsList();
 	}
@@ -160,7 +180,7 @@ public class MarketGoodsListActivity extends ListActivity implements
 								mGoodsListAdapter.add(marketGoodsList.get(i));
 							}
 							mGoodsListAdapter.notifyDataSetChanged();
-							nowPage+=1;
+							nowPage += 1;
 							if (productListInfo.nowPage == productListInfo.totalCount) {
 								isEnd = true;
 							}
@@ -182,6 +202,10 @@ public class MarketGoodsListActivity extends ListActivity implements
 	private class GoodsListAdapter extends ArrayAdapter<GoodsData> {
 		private ViewHolder viewHolder = null;
 		private LayoutInflater mLayoutInflater;
+		private Drawable mAnimationThumb = null;
+		private ViewHolder mAnimationViewHolder = null;
+		private Bitmap mSelectedItemBitmap;
+		private Bitmap mBitmap;
 
 		public GoodsListAdapter(Context context, List<GoodsData> objects) {
 			// TODO Auto-generated constructor stub
@@ -212,6 +236,9 @@ public class MarketGoodsListActivity extends ListActivity implements
 						.findViewById(R.id.goods_listitem_price);
 				viewHolder.mThumbnail = (ImageView) convertView
 						.findViewById(R.id.goods_listitem_thumb);
+				viewHolder.mShoppingCar = (ImageView) convertView
+						.findViewById(R.id.btn_shopping_car);
+
 				convertView.setTag(viewHolder);
 			} else {
 				viewHolder = (ViewHolder) convertView.getTag();
@@ -230,9 +257,99 @@ public class MarketGoodsListActivity extends ListActivity implements
 				viewHolder.mName.setText(goodsInfo.getGoodsName());
 				viewHolder.mDetail.setText(goodsInfo.getGoodsDetail());
 				viewHolder.mPrice.setText("￥     " + goodsInfo.getGoodsPrice());
+				GoodEXInfo exInfo = new GoodEXInfo();
+				exInfo.listItem = convertView;
+				exInfo.icon = mContext.getResources().getDrawable(
+						R.drawable.ic_item_thumb);
+				viewHolder.mShoppingCar.setTag(exInfo);
+				viewHolder.mShoppingCar
+						.setOnClickListener(new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								// TODO Auto-generated method stub
+								IconAnimation(v);
+							}
+						});
 			}
 
 			return convertView;
+		}
+
+		class GoodEXInfo {
+			Drawable icon;
+			View listItem;
+		}
+
+		private void IconAnimation(View v) {
+			mAnimationThumb = ((GoodEXInfo) v.getTag()).icon;
+			mAnimationViewHolder = (ViewHolder) ((GoodEXInfo) v.getTag()).listItem
+					.getTag();
+			mAnimationViewHolder.mThumbnail.setDrawingCacheEnabled(true);
+			mSelectedItemBitmap = Bitmap
+					.createBitmap(mAnimationViewHolder.mThumbnail
+							.getDrawingCache());
+			mAnimationViewHolder.mThumbnail.setDrawingCacheEnabled(false);
+			mBitmap = toConformBitmap(BitmapFactory.decodeResource(
+					mContext.getResources(), R.drawable.animation_icon),
+					mSelectedItemBitmap);
+			img.setPadding(0, 0, 0, 0);
+			img.setBackgroundDrawable(new BitmapDrawable(mBitmap));
+			img.bringToFront();
+
+			int left = ((GoodEXInfo) v.getTag()).listItem.getLeft();
+			int bottom = ((GoodEXInfo) v.getTag()).listItem.getBottom();
+			int right = ((GoodEXInfo) v.getTag()).listItem.getRight();
+			
+			int toleft = mShoppingcar.getLeft();
+			int tobottom = mShoppingcar.getBottom();
+			int toright = mShoppingcar.getRight();
+			int totop = mShoppingcar.getTop();
+			Log.v(TAG, "left ="+left);
+			Log.v(TAG, "bottom ="+bottom);
+			Log.v(TAG, "toleft ="+toleft);
+			Log.v(TAG, "left ="+left);
+			Log.v(TAG, "toright ="+toright);
+			Log.v(TAG, "tobottom ="+tobottom);
+			Log.v(TAG, "totop ="+totop);
+			AnimationSet set = new AnimationSet(false);
+			ScaleAnimation scaleAnim = new ScaleAnimation(1.0f, 0.2f, 1.0f,
+					0.2f, 0.5f, 0.5f);
+			set.addAnimation(scaleAnim);
+			TranslateAnimation translateAnimationX = new TranslateAnimation(
+					left, toright, 0, 0);
+			translateAnimationX.setInterpolator(new LinearInterpolator());
+			translateAnimationX.setRepeatCount(0);
+			TranslateAnimation translateAnimationY = new TranslateAnimation(0,
+					0, bottom, totop);
+			translateAnimationY.setInterpolator(new AccelerateInterpolator());
+			translateAnimationY.setRepeatCount(0);
+			set.addAnimation(translateAnimationX);
+			set.addAnimation(translateAnimationY);
+			set.setDuration(500);
+
+			img.startAnimation(set);
+		}
+
+		private Bitmap toConformBitmap(Bitmap background, Bitmap foreground) {
+			if (background == null) {
+				return null;
+			}
+			int bgWidth = background.getWidth();
+			int bgHeight = background.getHeight();
+			// int fgWidth = foreground.getWidth();
+			// int fgHeight = foreground.getHeight();
+			Bitmap newbmp = Bitmap.createBitmap(bgWidth, bgHeight,
+					Config.ARGB_8888);
+			Canvas cv = new Canvas(newbmp);
+			// draw bg into
+			cv.drawBitmap(background, 0, 0, null);
+			// draw fg into
+			cv.drawBitmap(foreground, 0, 0, null);
+			// save all clip
+			cv.save(Canvas.ALL_SAVE_FLAG);
+			// store
+			cv.restore();
+			return newbmp;
 		}
 
 		class ViewHolder {
@@ -241,6 +358,7 @@ public class MarketGoodsListActivity extends ListActivity implements
 			TextView mName;
 			TextView mDetail;
 			TextView mPrice;
+			ImageView mShoppingCar;
 			RelativeLayout mListItem;
 		}
 	}

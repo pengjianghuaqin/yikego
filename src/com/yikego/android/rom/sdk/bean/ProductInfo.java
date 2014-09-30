@@ -1,6 +1,6 @@
 package com.yikego.android.rom.sdk.bean;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class ProductInfo {
     public int productId;
@@ -10,6 +10,7 @@ public class ProductInfo {
     public float price;
     public String remark;
     public String productStatus;
-    public ArrayList<ProductImgInfo> pictures;
+    public List<ProductImgInfo> pictures;
+    
 }
 

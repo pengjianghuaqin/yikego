@@ -132,7 +132,7 @@ public class ThemeServiceAgent {
         return data;
     }
     
-    public ProductListInfo postUserLocationInfo(PostProductType postProductType)
+    public ProductListInfo getMarketGoodsInfoList(PostProductType postProductType)
             throws  SocketException{
     	ProductListInfo data = null;
         if (!GlobalUtil.checkNetworkState(mContext)){

@@ -81,6 +81,7 @@ AdapterView.OnItemClickListener{
 
 	private void initViews() {
 		mGridView = (GridView) findViewById(R.id.market_detail_grid);
+		mGridView.setOnItemClickListener(this);
 		mBack = (ImageView) findViewById(R.id.market_detail_back);
 		mBack.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -124,12 +125,12 @@ AdapterView.OnItemClickListener{
 				switch (msg.what) {
 				case ACTION_STORE_INFO:
 					MarketGoodsInfoListData marketGoodsInfoList = (MarketGoodsInfoListData) msg.obj;
-					Log.v("ACTION_STORE_INFO", "productTypeList ="+marketGoodsInfoList.productTypeList.size());
+					
 					if (marketGoodsInfoList != null) {
 						if (marketGoodsInfoList.productTypeList != null) {
 							mGridAdapter = new GridAdapter(mContext,
 									marketGoodsInfoList.productTypeList);
-
+							Log.v("ACTION_STORE_INFO", "productTypeList ="+marketGoodsInfoList.productTypeList.size());
 						}
 						mGridView.setAdapter(mGridAdapter);
 					}
@@ -189,7 +190,6 @@ AdapterView.OnItemClickListener{
 		public View getView(int position, View convertView, ViewGroup parent) {
 
 			MarketGoodsInfo marketGoodsInfo = new MarketGoodsInfo();
-			Log.v("asd", "position =" + position);
 			if (position >= 0) {
 				marketGoodsInfo = getItem(position);
 			}

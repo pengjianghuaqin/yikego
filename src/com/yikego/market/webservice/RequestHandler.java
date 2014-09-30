@@ -5,12 +5,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.yikego.android.rom.sdk.bean.AuthCodeInfo;
+import com.yikego.android.rom.sdk.bean.PostProductType;
 import com.yikego.android.rom.sdk.bean.PostUserLocationInfo;
+import com.yikego.android.rom.sdk.bean.ProductListInfo;
 import com.yikego.android.rom.sdk.bean.StoreId;
 import com.yikego.android.rom.sdk.bean.UserLoginInfo;
 import com.yikego.android.rom.sdk.bean.UserRegisterInfo;
 
 import org.w3c.dom.Comment;
+
+
 
 
 
@@ -149,9 +153,12 @@ public class RequestHandler extends Thread {
                     break;
                 case Constant.TYPE_GET_GOODS_LIST_INFO:
                     if (request.getData() != null){
-                    	StoreId storeId = (StoreId) request.getData();
+                    	PostProductType postProductType = (PostProductType) request.getData();
+                    	Log.v("TYPE_GET_GOODS_LIST_INFO","postProductType nowPage="+postProductType.nowPage);
+                    	Log.v("TYPE_GET_GOODS_LIST_INFO","postProductType pageCount="+postProductType.pageCount);
+                    	Log.v("TYPE_GET_GOODS_LIST_INFO","postProductType productTypeId="+postProductType.productTypeId);
                         try {
-                            data = mAgent.getMarketGoodsInfoListData(storeId);
+                            data = mAgent.getMarketGoodsInfoList(postProductType);
                             request.setStatus(Constant.STATUS_SUCCESS);
                             request.notifyObservers(data);
                         }catch (SocketException e){

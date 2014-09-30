@@ -1,18 +1,24 @@
 package com.yikego.market.model;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-import com.yikego.android.rom.sdk.bean.ProductInfo;
+import android.util.Log;
 
-public class GoodsData{
-	private String goodsName = "九九女儿红";
-	private String goodsDetail = "500ml，1998年陈酿";
-	private float goodsPrice = 68;
+import com.yikego.android.rom.sdk.bean.ProductInfo;
+public class GoodsData implements Serializable{
+	private static final long serialVersionUID = -2387824253271681301L;
+	private String goodsName;
+	private String goodsDetail;
+	private float goodsPrice;
 	private List<String> goodsIconUrl;
 	public GoodsData(ProductInfo productInfo){
+		goodsIconUrl = new ArrayList<String>();
 		this.goodsName = productInfo.name;
 		this.goodsDetail = productInfo.sku;
 		this.goodsPrice = productInfo.price;
+		
 		for(int i=0;i<productInfo.pictures.size();i++){
 			this.goodsIconUrl.add(productInfo.pictures.get(i).picPath);
 		}
