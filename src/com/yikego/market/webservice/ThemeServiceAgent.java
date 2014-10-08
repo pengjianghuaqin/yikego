@@ -3,7 +3,9 @@ package com.yikego.market.webservice;
 import java.io.IOException;
 import java.net.SocketException;
 
+import com.yikego.android.rom.sdk.bean.CommitOrder;
 import com.yikego.android.rom.sdk.bean.MarketGoodsInfoListData;
+import com.yikego.android.rom.sdk.bean.OrderResult;
 import com.yikego.android.rom.sdk.bean.PaginationStoreListInfo;
 import com.yikego.android.rom.sdk.bean.PostProductType;
 import com.yikego.android.rom.sdk.bean.PostUserLocationInfo;
@@ -140,6 +142,23 @@ public class ThemeServiceAgent {
         }else {
             try {
                 data =ServiceProvider.getProductList(postProductType);
+            }catch (IOException e){
+                e.printStackTrace();
+            }catch (HttpException e){
+                e.printStackTrace();
+            }
+        }
+        return data;
+    }
+    
+    public OrderResult PostOrder(CommitOrder commitOrder)
+            throws  SocketException{
+    	OrderResult data = null;
+        if (!GlobalUtil.checkNetworkState(mContext)){
+            throw new SocketException();
+        }else {
+            try {
+                data =(OrderResult) ServiceProvider.postOrder(commitOrder);
             }catch (IOException e){
                 e.printStackTrace();
             }catch (HttpException e){

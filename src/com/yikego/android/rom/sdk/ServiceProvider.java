@@ -7,8 +7,10 @@ import java.util.List;
 import android.util.Log;
 
 import com.yikego.android.rom.sdk.bean.AuthCodeInfo;
+import com.yikego.android.rom.sdk.bean.CommitOrder;
 import com.yikego.android.rom.sdk.bean.MarketGoodsInfoListData;
 import com.yikego.android.rom.sdk.bean.MessageRecord;
+import com.yikego.android.rom.sdk.bean.OrderResult;
 import com.yikego.android.rom.sdk.bean.PaginationStoreListInfo;
 import com.yikego.android.rom.sdk.bean.PostProductType;
 import com.yikego.android.rom.sdk.bean.PostUserLocationInfo;
@@ -69,16 +71,19 @@ public class ServiceProvider extends BaseResource {
 		post(ClientInfo.RESOURCE_ROOT_URL + "/user/userLogin", formParams);
 	}
 
-    public static Object postMessageRecord(String messageRecordType, String userPhone) throws IOException, HttpException{
-        AuthCodeInfo userInfo = new AuthCodeInfo();
-        userInfo.messageRecordType = messageRecordType;
-        userInfo.userPhone = userPhone;
-//	     post(ClientInfo.RESOURCE_ROOT_URL + "/messageRecord/authCode",userInfo);
-        MessageRecord messageRecord =  post(ClientInfo.RESOURCE_ROOT_URL + "/messageRecord/authCode", userInfo,
-                MessageRecord.class);
-        Log.d(TAG, "postMessageRecord messageRecorde : " + messageRecord.messageRecordId);
-        return messageRecord;
-    }
+	public static Object postMessageRecord(String messageRecordType,
+			String userPhone) throws IOException, HttpException {
+		AuthCodeInfo userInfo = new AuthCodeInfo();
+		userInfo.messageRecordType = messageRecordType;
+		userInfo.userPhone = userPhone;
+		// post(ClientInfo.RESOURCE_ROOT_URL +
+		// "/messageRecord/authCode",userInfo);
+		MessageRecord messageRecord = post(ClientInfo.RESOURCE_ROOT_URL
+				+ "/messageRecord/authCode", userInfo, MessageRecord.class);
+		Log.d(TAG, "postMessageRecord messageRecorde : "
+				+ messageRecord.messageRecordId);
+		return messageRecord;
+	}
 
 	/*
 	 * user register
@@ -91,6 +96,7 @@ public class ServiceProvider extends BaseResource {
 				userRegisterInfo, UserId.class);
 		return userId;
 	}
+
 	/*
 	 * 获取便利店商品类型list
 	 */
@@ -100,7 +106,7 @@ public class ServiceProvider extends BaseResource {
 				+ "/producttype/getProductTypeListExceptProductCountZero",
 				storeId, MarketGoodsInfoListData.class);
 	}
-	
+
 	/*
 	 * 根据商品类型获取商品list
 	 */
@@ -110,22 +116,34 @@ public class ServiceProvider extends BaseResource {
 				+ "/product/getProductListForPaginationByProductTypeId",
 				postProductType, ProductListInfo.class);
 	}
+
 	/*
 	 * 获取便利店list
 	 */
-	public static PaginationStoreListInfo getStoreList(PostUserLocationInfo postUserLocationInfo)
-			throws IOException, HttpException {
-		PaginationStoreListInfo paginationStoreListInfo = post(ClientInfo.RESOURCE_ROOT_URL
-				+ "/store/getStoreListForPaginationByLngAndLatAndDistance",
+	public static PaginationStoreListInfo getStoreList(
+			PostUserLocationInfo postUserLocationInfo) throws IOException,
+			HttpException {
+		PaginationStoreListInfo paginationStoreListInfo = post(
+				ClientInfo.RESOURCE_ROOT_URL
+						+ "/store/getStoreListForPaginationByLngAndLatAndDistance",
 				postUserLocationInfo, PaginationStoreListInfo.class);
 		return paginationStoreListInfo;
 	}
-    public static Object postUserLogin(UserLoginInfo userLoginInfo)
-        throws IOException, HttpException{
-        Log.d(TAG, "postUserLogin userLoginInfo loginType : " + userLoginInfo.loginType
-            + " login phone : " + userLoginInfo.userPhone);
-        UserInfo userInfo = post(ClientInfo.RESOURCE_ROOT_URL + "/user/userLogin", userLoginInfo, UserInfo.class);
-        return userInfo;
-    }
 
- }
+	public static Object postUserLogin(UserLoginInfo userLoginInfo)
+			throws IOException, HttpException {
+		Log.d(TAG, "postUserLogin userLoginInfo loginType : "
+				+ userLoginInfo.loginType + " login phone : "
+				+ userLoginInfo.userPhone);
+		UserInfo userInfo = post(ClientInfo.RESOURCE_ROOT_URL
+				+ "/user/userLogin", userLoginInfo, UserInfo.class);
+		return userInfo;
+	}
+
+	public static OrderResult postOrder(CommitOrder commitOrder)
+			throws IOException, HttpException {
+		OrderResult orderResult = post(ClientInfo.RESOURCE_ROOT_URL
+				+ "/order/commitOrder", commitOrder, OrderResult.class);
+		return orderResult;
+	}
+}

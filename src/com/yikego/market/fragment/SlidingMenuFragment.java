@@ -135,40 +135,27 @@ public class SlidingMenuFragment extends Fragment implements View.OnClickListene
     public void onClick(View view) {
         int id  = view.getId();
         Intent intent = new Intent();
-        switch (id){
-            case R.id.head_image_layout:
-                intent.setClass(getActivity(), LoginActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.left_menu_order_search:
-                intent.setClass(getActivity(), UserOrderActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.left_menu_shop_score:
-                intent.setClass(getActivity(), UserScoreActivity.class);
-                startActivity(intent);
-
-                break;
-            case R.id.left_menu_shop_quan:
-                intent.setClass(getActivity(), TicketVerifyActivity.class);
-                startActivity(intent);
-
-                break;
-            case R.id.left_menu_feedback:
-                intent.setClass(getActivity(), FeedbackActivtiy.class);
-                startActivity(intent);
-                break;
-            case R.id.left_menu_setting:
-                intent.setClass(getActivity(), Setting.class);
-                startActivity(intent);
-                break;
-            case R.id.rl_quit:
-                clearLogin();
-                break;
-            default:
-                break;
+        if(id == R.id.head_image_layout){
+        	intent.setClass(getActivity(), LoginActivity.class);
+            startActivity(intent);
+        }else if(id == R.id.left_menu_order_search){
+        	intent.setClass(getActivity(), UserOrderActivity.class);
+            startActivity(intent);
+        }else if(id == R.id.left_menu_shop_score){
+        	intent.setClass(getActivity(), UserScoreActivity.class);
+            startActivity(intent);
+        }else if(id == R.id.left_menu_shop_quan){
+        	intent.setClass(getActivity(), TicketVerifyActivity.class);
+            startActivity(intent);
+        }else if(id == R.id.left_menu_feedback){
+        	intent.setClass(getActivity(), FeedbackActivtiy.class);
+            startActivity(intent);
+        }else if(id == R.id.left_menu_setting){
+        	intent.setClass(getActivity(), Setting.class);
+            startActivity(intent);
+        }else if(id == R.id.rl_quit){
+        	clearLogin();
         }
-
     }
 
    /*

@@ -120,6 +120,12 @@
                   android:screenOrientation="portrait"
                   android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
+        <activity android:name=".activity.MarketSubmitOrderActivity"
+                  android:configChanges="keyboardHidden|orientation|screenLayout|uiMode"
+                  android:screenOrientation="portrait"
+                  android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        
         <activity android:name=".activity.Setting"
                   android:configChanges="keyboardHidden|orientation|screenLayout|uiMode"
                   android:screenOrientation="portrait"

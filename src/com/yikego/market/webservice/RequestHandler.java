@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.yikego.android.rom.sdk.bean.AuthCodeInfo;
+import com.yikego.android.rom.sdk.bean.CommitOrder;
 import com.yikego.android.rom.sdk.bean.PostProductType;
 import com.yikego.android.rom.sdk.bean.PostUserLocationInfo;
 import com.yikego.android.rom.sdk.bean.ProductListInfo;
@@ -159,6 +160,19 @@ public class RequestHandler extends Thread {
                     	Log.v("TYPE_GET_GOODS_LIST_INFO","postProductType productTypeId="+postProductType.productTypeId);
                         try {
                             data = mAgent.getMarketGoodsInfoList(postProductType);
+                            request.setStatus(Constant.STATUS_SUCCESS);
+                            request.notifyObservers(data);
+                        }catch (SocketException e){
+                            request.setStatus(Constant.STATUS_ERROR);
+                            request.notifyObservers(null);
+                        }
+                    }
+                    break;
+                case Constant.TYPE_POST_SUBMIT_ORDER:
+                    if (request.getData() != null){
+                    	CommitOrder commitOrder = (CommitOrder) request.getData();
+                    	try {
+                            data = mAgent.PostOrder(commitOrder);
                             request.setStatus(Constant.STATUS_SUCCESS);
                             request.notifyObservers(data);
                         }catch (SocketException e){

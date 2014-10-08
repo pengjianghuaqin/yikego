@@ -25,6 +25,7 @@
     <string name="main_left_feedback">意见反馈</string>
     <string name="main_left_setting">设置</string>
     <string name="text_shopping_car">购物车</string>
+    <string name="text_submit_order">填写订单</string>
     <string name="text_settlement_amount">结算</string>
     <string name="cod_orders_completed">订单已完成</string>
     <string name="cod_call_to_advisory">详情可电话咨询</string>

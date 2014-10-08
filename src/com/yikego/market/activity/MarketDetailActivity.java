@@ -22,6 +22,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.yikego.android.rom.sdk.bean.MarketGoodsInfo;
 import com.yikego.android.rom.sdk.bean.MarketGoodsInfoListData;
+import com.yikego.android.rom.sdk.bean.OrderProductInfo;
 import com.yikego.android.rom.sdk.bean.PaginationStoreListInfo;
 import com.yikego.android.rom.sdk.bean.PostUserLocationInfo;
 import com.yikego.android.rom.sdk.bean.StoreId;
@@ -44,7 +45,7 @@ import java.util.zip.Inflater;
  * Created by wll on 14-8-16.
  */
 public class MarketDetailActivity extends Activity implements
-AdapterView.OnItemClickListener{
+		AdapterView.OnItemClickListener {
 
 	private GridView mGridView;
 	private ImageView mBack;
@@ -57,9 +58,12 @@ AdapterView.OnItemClickListener{
 	private static final int ACTION_NETWORK_ERROR = 0;
 	private static final int ACTION_STORE_INFO = 1;
 	private Handler mHandler;
+	public static int storeID;
+	public static ArrayList<OrderProductInfo> orderDetailList;
 
 	public MarketDetailActivity() {
 		mContext = this;
+		orderDetailList = new ArrayList<OrderProductInfo>();
 	}
 
 	@Override
@@ -67,6 +71,7 @@ AdapterView.OnItemClickListener{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_market_detail);
 		storeInfo = (StoreInfo) getIntent().getSerializableExtra("storeInfo");
+		storeID = storeInfo.storeId;
 		mThemeService = ThemeService.getServiceInstance(mContext);
 		initHandler();
 		initViews();
@@ -75,10 +80,14 @@ AdapterView.OnItemClickListener{
 	@Override
 	protected void onResume() {
 		super.onResume();
-
 		// initActionBar();
 	}
-
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		orderDetailList = null;
+		// initActionBar();
+	}
 	private void initViews() {
 		mGridView = (GridView) findViewById(R.id.market_detail_grid);
 		mGridView.setOnItemClickListener(this);

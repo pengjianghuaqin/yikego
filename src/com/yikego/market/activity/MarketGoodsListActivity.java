@@ -6,6 +6,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import com.yikego.android.rom.sdk.bean.MarketGoodsInfoListData;
+import com.yikego.android.rom.sdk.bean.OrderProductInfo;
 import com.yikego.android.rom.sdk.bean.PostProductType;
 import com.yikego.android.rom.sdk.bean.ProductListInfo;
 import com.yikego.android.rom.sdk.bean.StoreId;
@@ -116,6 +117,16 @@ public class MarketGoodsListActivity extends ListActivity implements
 		mListView.setAdapter(mGoodsListAdapter);
 		mListView.setOnItemClickListener(this);
 		mShoppingcar = (ImageView) findViewById(R.id.img_shopping_car);
+		mShoppingcar.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(mContext, MarketShoppingCarActivity.class);
+				startActivity(intent);
+			}
+			
+		});
 		mShoppingcarIndex = (TextView) findViewById(R.id.goods_index);
 
 		initHandler();
@@ -261,12 +272,30 @@ public class MarketGoodsListActivity extends ListActivity implements
 				exInfo.listItem = convertView;
 				exInfo.icon = mContext.getResources().getDrawable(
 						R.drawable.ic_item_thumb);
+				exInfo.price = goodsInfo.getGoodsPrice();
+				exInfo.productName = goodsInfo.getGoodsName();
+				exInfo.productId = goodsInfo.goodsId;
 				viewHolder.mShoppingCar.setTag(exInfo);
 				viewHolder.mShoppingCar
 						.setOnClickListener(new OnClickListener() {
 							@Override
 							public void onClick(View v) {
 								// TODO Auto-generated method stub
+								GoodEXInfo exInfo = (GoodEXInfo)v.getTag();
+								OrderProductInfo orderProductInfo = new OrderProductInfo();
+								orderProductInfo.productId = exInfo.productId;
+								orderProductInfo.price = exInfo.price;
+								orderProductInfo.count = 1;
+								orderProductInfo.name = exInfo.productName;
+								if(MarketDetailActivity.orderDetailList!=null&&MarketDetailActivity.orderDetailList.size() >0){
+									for(int i = 0;i<MarketDetailActivity.orderDetailList.size();i++){
+										if(orderProductInfo.productId == MarketDetailActivity.orderDetailList.get(i).productId){
+											MarketDetailActivity.orderDetailList.get(i).count++;
+										}
+									}
+								}else{
+									MarketDetailActivity.orderDetailList.add(orderProductInfo);
+								}
 								IconAnimation(v);
 							}
 						});
@@ -278,6 +307,9 @@ public class MarketGoodsListActivity extends ListActivity implements
 		class GoodEXInfo {
 			Drawable icon;
 			View listItem;
+			int productId;
+			String productName;
+			float price;
 		}
 
 		private void IconAnimation(View v) {

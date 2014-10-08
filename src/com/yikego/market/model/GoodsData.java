@@ -12,13 +12,14 @@ public class GoodsData implements Serializable{
 	private String goodsName;
 	private String goodsDetail;
 	private float goodsPrice;
+	public int goodsId;
 	private List<String> goodsIconUrl;
 	public GoodsData(ProductInfo productInfo){
 		goodsIconUrl = new ArrayList<String>();
 		this.goodsName = productInfo.name;
 		this.goodsDetail = productInfo.sku;
 		this.goodsPrice = productInfo.price;
-		
+		this.goodsId = productInfo.productId;
 		for(int i=0;i<productInfo.pictures.size();i++){
 			this.goodsIconUrl.add(productInfo.pictures.get(i).picPath);
 		}
