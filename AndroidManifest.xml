@@ -37,7 +37,7 @@
         android:label="@string/app_name">
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="INGnFalcfLkx09kGj2N2k3GR" />
+            android:value="3QkR5LlrvpbS4YMM8WljhQaz" />
         <activity
             android:name="com.yikego.market.SplashActivity"
             android:screenOrientation="portrait"

@@ -54,6 +54,7 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 	private AbsListView.OnScrollListener mScrollListener;
 	private Latitude mLatitude;
 	public static List<Latitude> storeLatitude;
+    private PaginationStoreListInfo mPaginationStoreListInfo = null;
 
 	public MarketBrowser() {
 		Log.v(TAG, "MarketBrowser");
@@ -108,12 +109,15 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 		TextView map = (TextView)findViewById(R.id.title_map);
 		map.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View view) {
-						 Intent intent = new Intent(mContext,LocationActivity.class);
-						 startActivity(intent);
-			}
-		});
-		PostUserLocalInfo();
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext,LocationActivity.class);
+                if (mPaginationStoreListInfo!=null){
+                    intent.putExtra("StoreInfo", mPaginationStoreListInfo);
+                }
+                startActivity(intent);
+            }
+        });
+        PostUserLocalInfo();
 	}
 
 	private void initListener() {
@@ -208,6 +212,7 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 				switch (msg.what) {
 				case ACTION_USER_LOCAL_INFO:
 					PaginationStoreListInfo paginationStoreListInfo = (PaginationStoreListInfo) msg.obj;
+                    mPaginationStoreListInfo = paginationStoreListInfo;
 
 					if (paginationStoreListInfo != null) {
 						for (int i = 0; i < paginationStoreListInfo.storelist

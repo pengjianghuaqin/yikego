@@ -1,13 +1,16 @@
 package com.yikego.market.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
+import android.widget.Toast;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -25,14 +28,19 @@ import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration.LocationMode;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
+import com.yikego.android.rom.sdk.bean.PaginationStoreListInfo;
+import com.yikego.android.rom.sdk.bean.StoreInfo;
 import com.yikego.market.R;
 
+import java.util.ArrayList;
+
 /**
- * 此demo用来展示如何结合定位SDK实现定位，并使用MyLocationOverlay绘制定位位置 同时展示如何使用自定义图标绘制并点击时弹出泡泡
+ * show store location and click to start activity for store info
  * 
  */
 public class LocationActivity extends Activity {
 
+    private static final String TAG = "LocationActivity";
 	// 定位相关
 	LocationClient mLocClient;
 	public MyLocationListenner myListener = new MyLocationListenner();
@@ -48,12 +56,15 @@ public class LocationActivity extends Activity {
 
 	BitmapDescriptor bdA = BitmapDescriptorFactory.fromResource(R.drawable.icon_gcoding);
 	private Marker mMarkerA;
-	
+
+    private PaginationStoreListInfo mPaginationStoreListInfo = null;
+    private ArrayList<StoreInfo> storeList = null;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map);
+        initIntent();
 		mCurrentMode = LocationMode.NORMAL;
 
 		// 地图初始化
@@ -71,14 +82,55 @@ public class LocationActivity extends Activity {
 		mLocClient.setLocOption(option);
 		mLocClient.start();
 		initOverlay();
+        mBaiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                Toast.makeText(getApplicationContext(), marker.getTitle().toString(), Toast.LENGTH_SHORT).show();
+                Bundle bundle = marker.getExtraInfo();
+                if (bundle!=null){
+                    StoreInfo store = (StoreInfo) bundle.getSerializable("store");
+                    if (store != null){
+                        Intent intent = new Intent();
+                        intent.setClass(LocationActivity.this, MarketDetailActivity.class);
+                        intent.putExtra("storeInfo", store);
+                        startActivity(intent);
+                    }
+                }
+                return true;
+            }
+        });
 	}
 
-	private void initOverlay() {
+    private void initIntent() {
+        Intent intent = getIntent();
+        if (intent != null){
+            mPaginationStoreListInfo = (PaginationStoreListInfo) intent.getSerializableExtra("StoreInfo");
+            storeList = mPaginationStoreListInfo.storelist;
+            Log.d(TAG, "storeList lenth : " + storeList.size());
+        }
+    }
+
+    private void initOverlay() {
 		// add marker overlay
-		LatLng llA = new LatLng(31.159488, 121.579398);
+        if (storeList.size()<=0){
+            return;
+        }
+        int storeCount = storeList.size();
+        for (int i=0 ; i < storeCount ; i++){
+            StoreInfo store = storeList.get(i);
+            LatLng point = new LatLng(store.lat, store.lng);
+            OverlayOptions ooA = new MarkerOptions().position(point).icon(bdA)
+                    .zIndex(i).draggable(true).title(store.name);
+            mMarkerA = (Marker) (mBaiduMap.addOverlay(ooA));
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("store", store);
+            mMarkerA.setExtraInfo(bundle);
+//            mMarkerA.setTitle(store.name);
+        }
+/*		LatLng llA = new LatLng(31.159488, 121.579398);
 		OverlayOptions ooA = new MarkerOptions().position(llA).icon(bdA)
 				.zIndex(9).draggable(true);
-		mMarkerA = (Marker) (mBaiduMap.addOverlay(ooA));
+		mMarkerA = (Marker) (mBaiduMap.addOverlay(ooA));*/
 	}
 	
 	/**
