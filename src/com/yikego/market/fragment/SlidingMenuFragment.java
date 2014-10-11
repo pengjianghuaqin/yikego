@@ -14,6 +14,7 @@ import com.yikego.market.LogUtils;
 import com.yikego.market.R;
 import com.yikego.market.activity.*;
 import com.yikego.market.utils.Constant;
+import com.yikego.market.utils.GlobalUtil;
 
 /**
  * Created by wll on 14-9-11.
@@ -53,8 +54,8 @@ public class SlidingMenuFragment extends Fragment implements View.OnClickListene
     };
 
     private void updateBottonStatus() {
-        if (isLogin()){
-            mUserPhoneTextView.setText(userPhone);
+        if (GlobalUtil.isLogin(getActivity())){
+            mUserPhoneTextView.setText(GlobalUtil.getUserPhone(getActivity()));
             loginLayout.setEnabled(false);
             quitLayout.setVisibility(View.VISIBLE);
 

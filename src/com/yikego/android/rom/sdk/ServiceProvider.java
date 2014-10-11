@@ -6,25 +6,12 @@ import java.util.List;
 
 import android.util.Log;
 
-import com.yikego.android.rom.sdk.bean.AuthCodeInfo;
-import com.yikego.android.rom.sdk.bean.CommitOrder;
-import com.yikego.android.rom.sdk.bean.MarketGoodsInfoListData;
-import com.yikego.android.rom.sdk.bean.MessageRecord;
-import com.yikego.android.rom.sdk.bean.OrderResult;
-import com.yikego.android.rom.sdk.bean.PaginationStoreListInfo;
-import com.yikego.android.rom.sdk.bean.PostProductType;
-import com.yikego.android.rom.sdk.bean.PostUserLocationInfo;
-import com.yikego.android.rom.sdk.bean.ProductListInfo;
-import com.yikego.android.rom.sdk.bean.StoreId;
-import com.yikego.android.rom.sdk.bean.UserId;
-import com.yikego.android.rom.sdk.bean.UserInfo;
-import com.yikego.android.rom.sdk.bean.UserRegisterInfo;
+import com.yikego.android.rom.sdk.bean.*;
 
 import org.apache.http.HttpException;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
-import com.yikego.android.rom.sdk.bean.UserLoginInfo;
 import com.yikego.android.rom.sdk.rest.BaseResource;
 
 public class ServiceProvider extends BaseResource {
@@ -146,4 +133,12 @@ public class ServiceProvider extends BaseResource {
 				+ "/order/commitOrder", commitOrder, OrderResult.class);
 		return orderResult;
 	}
+
+    public static UserOrderListInfo getUserOrderList(PostUserOrderBody postUserOrderBody)
+            throws IOException, HttpException {
+        UserOrderListInfo userOrderListInfo = post(ClientInfo.RESOURCE_ROOT_URL
+                + "/order/getOrderListForPagination", postUserOrderBody, UserOrderListInfo.class);
+        return userOrderListInfo;
+    }
+
 }

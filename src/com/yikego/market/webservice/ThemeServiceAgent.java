@@ -3,16 +3,7 @@ package com.yikego.market.webservice;
 import java.io.IOException;
 import java.net.SocketException;
 
-import com.yikego.android.rom.sdk.bean.CommitOrder;
-import com.yikego.android.rom.sdk.bean.MarketGoodsInfoListData;
-import com.yikego.android.rom.sdk.bean.OrderResult;
-import com.yikego.android.rom.sdk.bean.PaginationStoreListInfo;
-import com.yikego.android.rom.sdk.bean.PostProductType;
-import com.yikego.android.rom.sdk.bean.PostUserLocationInfo;
-import com.yikego.android.rom.sdk.bean.ProductListInfo;
-import com.yikego.android.rom.sdk.bean.StoreId;
-import com.yikego.android.rom.sdk.bean.UserLoginInfo;
-import com.yikego.android.rom.sdk.bean.UserRegisterInfo;
+import com.yikego.android.rom.sdk.bean.*;
 
 import org.apache.http.HttpException;
 
@@ -166,5 +157,22 @@ public class ThemeServiceAgent {
             }
         }
         return data;
+    }
+
+    public UserOrderListInfo getUserOrder(PostUserOrderBody postUserOrderBody)
+            throws SocketException{
+        UserOrderListInfo userOrderListInfo = null;
+        if (!GlobalUtil.checkNetworkState(mContext)){
+            throw new SocketException();
+        }else {
+            try {
+                userOrderListInfo = ServiceProvider.getUserOrderList(postUserOrderBody);
+            }catch (IOException e){
+                e.printStackTrace();
+            }catch (HttpException e){
+                e.printStackTrace();
+            }
+        }
+        return userOrderListInfo;
     }
 }

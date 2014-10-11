@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.provider.Settings.Secure;
@@ -99,5 +100,32 @@ public class GlobalUtil {
     public static boolean isPasswLength(String str) {
         String regex = "^\\d{6,24}$";
         return str.matches(regex);
+    }
+
+    private static SharedPreferences mSharePreferences;
+    private static String userId;
+    private static String userPhone;
+    public static boolean isLogin(Context context) {
+        mSharePreferences = context.getSharedPreferences("userInfo" ,Context.MODE_PRIVATE);
+        userId = mSharePreferences.getString("userId", "");
+        userPhone = mSharePreferences.getString("userPhone", "");
+        if ((null!=userPhone&&!userPhone.equals("")) &&
+                (null!=userId && !userId.equals(""))){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    public static int getUserId(Context context){
+        mSharePreferences = context.getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        userId = mSharePreferences.getString("userId", "");
+        return Integer.valueOf(userId);
+    }
+
+    public static String getUserPhone(Context context){
+        mSharePreferences = context.getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        userPhone = mSharePreferences.getString("userPhone", "");
+        return userPhone;
     }
  }

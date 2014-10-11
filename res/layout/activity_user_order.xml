@@ -9,46 +9,14 @@
             android:id="@+id/common_title"
             android:layout_width="match_parent" android:layout_height="50dip"
             layout="@layout/actionbar" />
-    <RelativeLayout
+    <ListView
+            android:id="@+id/user_order_list"
             android:layout_width="match_parent"
-            android:layout_height="50dip"
-            android:layout_below="@+id/common_title"
-            android:layout_marginTop="10dp"
-            android:background="@color/bg_color_blue" >
-
-        <ImageView
-                android:id="@+id/select_goods"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="30dip"
-                android:background="@drawable/ic_select_gray" />
-
-        <TextView
-                android:id="@+id/selected_settlement_amount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@id/select_goods"
-                android:layout_marginLeft="5dip"
-                android:text="总计￥358.00"
-                android:textColor="@color/white"
-                android:textSize="12dip" />
-
-        <TextView
-                android:id="@+id/settlement_amount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="15dip"
-                android:text="积分：170分"
-                android:textColor="@color/white"
-                android:textSize="14dip" />
-    </RelativeLayout>
-    <ListView android:layout_width="match_parent" android:layout_height="wrap_content">
-
-
+            android:layout_height="wrap_content"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:background="@color/white"
+            >
     </ListView>
 
 </RelativeLayout>

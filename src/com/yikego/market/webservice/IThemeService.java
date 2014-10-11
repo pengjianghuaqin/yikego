@@ -24,4 +24,6 @@ public abstract interface IThemeService {
 
     public abstract void postUserLogin(Request request);
 
+    public abstract void getUserOrder(Request request);
+
 }

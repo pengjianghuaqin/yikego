@@ -84,8 +84,8 @@ public class Register extends Activity{
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                userRegisterInfo.matchContent = authCodeEdit.getText().toString();
-                userRegisterInfo.matchContent = "11111";
+                userRegisterInfo.matchContent = authCodeEdit.getText().toString();
+//                userRegisterInfo.matchContent = "11111";
 
                 user.userPhone = telephoneEdit.getText().toString().trim();
                 user.userAddress = addressEdit.getText().toString().trim();

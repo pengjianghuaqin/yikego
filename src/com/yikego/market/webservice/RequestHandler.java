@@ -4,14 +4,7 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.yikego.android.rom.sdk.bean.AuthCodeInfo;
-import com.yikego.android.rom.sdk.bean.CommitOrder;
-import com.yikego.android.rom.sdk.bean.PostProductType;
-import com.yikego.android.rom.sdk.bean.PostUserLocationInfo;
-import com.yikego.android.rom.sdk.bean.ProductListInfo;
-import com.yikego.android.rom.sdk.bean.StoreId;
-import com.yikego.android.rom.sdk.bean.UserLoginInfo;
-import com.yikego.android.rom.sdk.bean.UserRegisterInfo;
+import com.yikego.android.rom.sdk.bean.*;
 
 import org.w3c.dom.Comment;
 
@@ -181,7 +174,20 @@ public class RequestHandler extends Thread {
                         }
                     }
                     break;
-                    
+                case Constant.TYPE_GET_USER_ORDER:
+                    if (request.getData() != null){
+                        PostUserOrderBody postUserOrderBody = (PostUserOrderBody) request.getData();
+                        Log.d(THREAD_NAME, "TYPE_GET_USER_ORDRE userId : " + postUserOrderBody.getUserId());
+                        try {
+                            data = mAgent.getUserOrder(postUserOrderBody);
+                            request.setStatus(Constant.STATUS_SUCCESS);
+                            request.notifyObservers(data);
+                        } catch (SocketException e) {
+                            request.setStatus(Constant.STATUS_ERROR);
+                            request.notifyObservers(null);
+                        }
+                    }
+
 			default:
 				break;
 			}
