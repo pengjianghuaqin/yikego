@@ -10,21 +10,22 @@
             android:layout_width="match_parent" android:layout_height="50dip"
             layout="@layout/actionbar" />
     <ListView
-            android:id="@+id/list_score"
+            android:layout_below="@+id/common_title"
+            android:layout_above="@+id/score_text"
+            android:id="@+id/list_point"
+            android:divider="@null"
+            android:dividerHeight="0dp"
             android:layout_width="match_parent"
-            android:layout_height="400dp">
-
-
+            android:layout_height="wrap_content">
     </ListView>
 
     <TextView
             android:id="@+id/score_text"
-            android:layout_below="@+id/list_score"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@color/bg_color_blue"
-            android:text="总积分：170分"
             android:textColor="@color/white"
+            android:layout_alignParentBottom="true"
             android:singleLine="true"
             android:gravity="center"
             android:textSize="17sp"

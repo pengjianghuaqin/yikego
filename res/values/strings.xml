@@ -77,4 +77,12 @@
     <string name="order_time">订单时间：</string>
     <string name="order_name">订单名称：</string>
     <string name="product_name">商品名称：</string>
+
+    <string name="point_type">积分类型：</string>
+    <string name="point_desc">积分描述：</string>
+    <string name="point_count">积分：</string>
+
+    <plurals name="numberOfPoint">
+        <item quantity="other">总积分：%d分</item>
+    </plurals>
 </resources>

@@ -7,14 +7,16 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import com.yikego.android.rom.sdk.bean.OrderList;
+import com.yikego.android.rom.sdk.bean.PointList;
 import com.yikego.android.rom.sdk.bean.PostUserOrderBody;
 import com.yikego.android.rom.sdk.bean.UserOrderListInfo;
+import com.yikego.android.rom.sdk.bean.UserPointListInfo;
 import com.yikego.market.R;
-import com.yikego.market.adapter.UserOrderAdapter;
+import com.yikego.market.adapter.UserPointAdapter;
 import com.yikego.market.utils.Constant;
 import com.yikego.market.utils.GlobalUtil;
 import com.yikego.market.webservice.Request;
@@ -27,48 +29,53 @@ import java.util.Observer;
 /**
  * Created by wll on 14-9-15.
  */
-public class UserOrderActivity extends Activity{
+public class UserPointActivity extends Activity{
 
-    private static final String TAG = "UserOrderActivity";
+    private static final String TAG = "UserPointActivity";
     private ImageView mSearchView;
     private TextView mSearchText;
     private TextView actionBarText;
     private ImageView actionBack;
-    private ImageView mDeleteView;
-    private ListView mListView;
+    private TextView mScoreExchange;
+    private ListView mPointListView;
+    private TextView mTotalPoint;
 
     private Request mCurrentRequest;
     private ThemeService mThemeService;
     private Handler mHandler ;
     private static final int ACTION_NETWORK_ERROR = 0;
-    private static final int ACTION_USER_ORDER_INFO = 1;
-    private PostUserOrderBody mPostUserOrderBody = new PostUserOrderBody();
-    private UserOrderListInfo mUserOrderListInfo;
-    private int userId;
+    private static final int ACTION_USER_POINT_INFO = 1;
+    private static final int ACTION_UPDATE_POINT_NUMBER = 2;
 
-    private UserOrderAdapter mUserOrderAdapter;
+    private UserPointAdapter mUserPointAdapter = null;
+    private PostUserOrderBody mPostUserOrderBody = new PostUserOrderBody();
+    private UserPointListInfo mUserPointListInfo = null;
+    private List<PointList> mPointLists;
+    private int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_order);
+        setContentView(R.layout.activity_score);
+
         if (!GlobalUtil.isLogin(this)){
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             finish();
         }
-
         mThemeService = ThemeService.getServiceInstance(this);
-        mUserOrderAdapter = new UserOrderAdapter(this);
+        mUserPointAdapter = new UserPointAdapter(this);
+
         initHandler();
         initActionBar();
         initView();
     }
 
     private void initView() {
-        mListView = (ListView) findViewById(R.id.user_order_list);
-        mListView.setAdapter(mUserOrderAdapter);
+        mPointListView = (ListView) findViewById(R.id.list_point);
+        mPointListView.setAdapter(mUserPointAdapter);
 
+        mTotalPoint = (TextView) findViewById(R.id.score_text);
     }
 
     private void initActionBar() {
@@ -76,10 +83,10 @@ public class UserOrderActivity extends Activity{
         mSearchText = (TextView) findViewById(R.id.market_search);
         mSearchText.setVisibility(View.GONE);
         mSearchView.setVisibility(View.GONE);
-        mDeleteView = (ImageView) findViewById(R.id.market_detail_delete);
-        mDeleteView.setVisibility(View.GONE);
+        mScoreExchange = (TextView) findViewById(R.id.score_exchange);
+        mScoreExchange.setVisibility(View.VISIBLE);
         actionBarText = (TextView) findViewById(R.id.actionbar_title);
-        actionBarText.setText(R.string.user_order);
+        actionBarText.setText(R.string.main_left_shop_score);
         actionBack = (ImageView) findViewById(R.id.market_detail_back);
         actionBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,14 +99,13 @@ public class UserOrderActivity extends Activity{
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume");
         setPostData();
 
-        postUserOrderInfo();
+        getUserPointInfo();
     }
 
-    private void postUserOrderInfo() {
-        Request request = new Request(0, Constant.TYPE_GET_USER_ORDER);
+    private void getUserPointInfo() {
+        Request request = new Request(0, Constant.TYPE_GET_USER_POINT);
         // Object[] params = new Object[2];
         request.setData(mPostUserOrderBody);
         request.addObserver(new Observer() {
@@ -109,7 +115,7 @@ public class UserOrderActivity extends Activity{
                 // TODO Auto-generated method stub
                 if (data != null) {
                     Message msg = Message.obtain(mHandler,
-                            ACTION_USER_ORDER_INFO, data);
+                            ACTION_USER_POINT_INFO, data);
                     mHandler.sendMessage(msg);
                 } else {
                     Request request = (Request) observable;
@@ -124,11 +130,12 @@ public class UserOrderActivity extends Activity{
     }
 
     private void setPostData() {
-        userId = GlobalUtil.getUserId(UserOrderActivity.this);
+        userId = GlobalUtil.getUserId(this);
         if (userId < 0)
             return;
         mPostUserOrderBody.setNowPage(1);
-        mPostUserOrderBody.setUserId(userId);
+//        mPostUserOrderBody.setUserId(userId);
+        mPostUserOrderBody.setUserId(1);
         mPostUserOrderBody.setPageCount(25);
     }
 
@@ -137,20 +144,27 @@ public class UserOrderActivity extends Activity{
             @Override
             public void handleMessage(Message msg) {
                 switch (msg.what){
-                    case ACTION_USER_ORDER_INFO:
-                        UserOrderListInfo userOrderListInfo = (UserOrderListInfo) msg.obj;
-                        Log.d(TAG, "getUerOrder resultCode : " + userOrderListInfo.getResultCode());
-                        if (userOrderListInfo.getResultCode() == 0){
-                            mUserOrderListInfo = userOrderListInfo;
-                            if (userOrderListInfo != null){
-                                List<OrderList> orderLists = mUserOrderListInfo.getOrderlist();
-                                if (orderLists!=null && orderLists.size() > 0){
-                                    Log.d(TAG, "getUserOrder Lists size : " + orderLists.size());
-                                    mUserOrderAdapter.setOrderLists(orderLists);
-                                    mUserOrderAdapter.notifyDataSetChanged();
+                    case ACTION_USER_POINT_INFO:
+                        UserPointListInfo userPointListInfo = (UserPointListInfo) msg.obj;
+                        if (userPointListInfo!=null){
+                            mUserPointListInfo = userPointListInfo;
+                            if (mUserPointListInfo.getResultCode()==0){
+                                List<PointList> pointLists = mUserPointListInfo.getPointlist();
+                                mPointLists = pointLists;
+                                if (pointLists!= null && pointLists.size()>0){
+                                    Log.d(TAG, "getUserPoint pointList size : " + pointLists.size());
+                                    mUserPointAdapter.setPointLists(pointLists);
+                                    mUserPointAdapter.notifyDataSetChanged();
+
+                                    mHandler.sendEmptyMessage(ACTION_UPDATE_POINT_NUMBER);
                                 }
                             }
                         }
+                        break;
+                    case ACTION_UPDATE_POINT_NUMBER:
+                        int total = getTotalNumber();
+                        mTotalPoint.setText(getResources().
+                                getQuantityString(R.plurals.numberOfPoint, total, total));
                         break;
 
                     default:
@@ -160,4 +174,14 @@ public class UserOrderActivity extends Activity{
         };
     }
 
+    private int getTotalNumber() {
+        int total = 0;
+        if (mPointLists!=null&&mPointLists.size()>0){
+            for (int i=0; i<mPointLists.size();i++){
+                PointList pointList = mPointLists.get(i);
+                total = total + pointList.getNumber();
+            }
+        }
+        return total;
+    }
 }

@@ -141,4 +141,11 @@ public class ServiceProvider extends BaseResource {
         return userOrderListInfo;
     }
 
+    public static UserPointListInfo getUserPointList(PostUserOrderBody postUserPointBody)
+            throws IOException, HttpException {
+        UserPointListInfo userPointListInfo = post(ClientInfo.RESOURCE_ROOT_URL
+                +"/point/getPointListForPaginationByUserId", postUserPointBody, UserPointListInfo.class);
+        return userPointListInfo;
+    }
+
 }

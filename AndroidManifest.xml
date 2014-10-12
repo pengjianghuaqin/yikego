@@ -144,7 +144,7 @@
                   android:launchMode="singleTask"
                 >
         </activity>
-        <activity android:name=".activity.UserScoreActivity"
+        <activity android:name=".activity.UserPointActivity"
                   android:configChanges="keyboardHidden|orientation|screenLayout|uiMode"
                   android:screenOrientation="portrait"
                   android:launchMode="singleTask"

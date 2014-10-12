@@ -187,7 +187,21 @@ public class RequestHandler extends Thread {
                             request.notifyObservers(null);
                         }
                     }
-
+                    break;
+                    case Constant.TYPE_GET_USER_POINT:
+                        if (request.getData() != null){
+                            PostUserOrderBody postUserOrderBody = (PostUserOrderBody) request.getData();
+                            Log.d(THREAD_NAME, "TYPE_GET_USER_POINT userId : " + postUserOrderBody.getUserId());
+                            try {
+                                data = mAgent.getUserPoint(postUserOrderBody);
+                                request.setStatus(Constant.STATUS_SUCCESS);
+                                request.notifyObservers(data);
+                            } catch (SocketException e) {
+                                request.setStatus(Constant.STATUS_ERROR);
+                                request.notifyObservers(null);
+                            }
+                        }
+                        break;
 			default:
 				break;
 			}

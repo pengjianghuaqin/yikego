@@ -175,4 +175,23 @@ public class ThemeServiceAgent {
         }
         return userOrderListInfo;
     }
+
+    public UserPointListInfo getUserPoint(PostUserOrderBody postUserPointBody)
+            throws SocketException{
+        UserPointListInfo userPointListInfo = null;
+        if (!GlobalUtil.checkNetworkState(mContext)){
+            throw new SocketException();
+        }else {
+            try {
+                userPointListInfo = ServiceProvider.getUserPointList(postUserPointBody);
+            }catch (IOException e){
+                e.printStackTrace();
+            }catch (HttpException e){
+                e.printStackTrace();
+            }
+        }
+        return userPointListInfo;
+
+
+    }
 }
