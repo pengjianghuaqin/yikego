@@ -5,5 +5,5 @@ public class OrderResult {
 
     public float totalFee;
     public int resultCode;
-    public int orderId;
+    public int orderNo;
 }

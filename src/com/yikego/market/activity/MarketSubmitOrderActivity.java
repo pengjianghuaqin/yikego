@@ -14,6 +14,7 @@ import com.yikego.android.rom.sdk.bean.PostUserLocationInfo;
 import com.yikego.market.R;
 import com.yikego.market.model.Latitude;
 import com.yikego.market.utils.Constant;
+import com.yikego.market.utils.GlobalUtil;
 import com.yikego.market.webservice.Request;
 import com.yikego.market.webservice.ThemeService;
 
@@ -85,10 +86,13 @@ public class MarketSubmitOrderActivity extends ListActivity implements
 		// Object[] params = new Object[2];
 		CommitOrder commitOrder = new CommitOrder();
 		commitOrder.storeId = MarketDetailActivity.storeID;
-		commitOrder.userId = 1;
+        if (GlobalUtil.isLogin(this))
+            commitOrder.userId = GlobalUtil.getUserId(this);
+        else
+            commitOrder.userId = 1;
 		commitOrder.orderStatus = 0;
-		commitOrder.subject = " ≥∆∑  ¡∏”Õ";
-		commitOrder.body = "…Ã∆∑œÍœ∏√Ë ˆ";
+		commitOrder.subject = "product subject";
+		commitOrder.body = "subject body";
 		commitOrder.orderDetailList = new ArrayList<OrderDetail>();
 		for(int i=0;i<MarketDetailActivity.orderDetailList.size();i++){
 			OrderDetail orderDetail = new OrderDetail();
@@ -127,7 +131,7 @@ public class MarketSubmitOrderActivity extends ListActivity implements
 				switch (msg.what) {
 				case ACTION_SUBMIT_ORDER:
 					OrderResult orderResult = (OrderResult) msg.obj;
-					Toast toast = Toast.makeText(mContext,"orderId="+orderResult.orderId+"/ resultCode="+orderResult.resultCode+"/ totalFee="+orderResult.totalFee, Toast.LENGTH_SHORT); 
+					Toast toast = Toast.makeText(mContext,"orderId="+orderResult.orderNo+"/ resultCode="+orderResult.resultCode+"/ totalFee="+orderResult.totalFee, Toast.LENGTH_SHORT);
 					toast.show(); 
 					break;
 
@@ -191,7 +195,7 @@ public class MarketSubmitOrderActivity extends ListActivity implements
 			if (orderInfo != null) {
 				viewHolder.mName.setText(orderInfo.name);
 				viewHolder.mDetail.setText(orderInfo.name);
-				viewHolder.mPrice.setText("£§   " + orderInfo.price);
+				viewHolder.mPrice.setText("ÔøΩÔøΩ   " + orderInfo.price);
 				viewHolder.mOrderCout.setText("" + orderInfo.count);
 				Drawable orderFlag;
 				if (orderInfo.count == 0) {

@@ -71,9 +71,10 @@
     <string name="login_error">登录异常</string>
     <string name="quit_login">退出登录</string>
     
-    <string name="status">状态：</string>
+    <string name="status">订单状态：</string>
     <string name="order_money">订单金额：</string>
-    <string name="order_id">订单编号：</string>
+    <string name="order_no">订单编号：</string>
     <string name="order_time">订单时间：</string>
     <string name="order_name">订单名称：</string>
+    <string name="product_name">商品名称：</string>
 </resources>

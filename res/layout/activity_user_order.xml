@@ -13,6 +13,7 @@
             android:id="@+id/user_order_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/common_title"
             android:divider="@null"
             android:dividerHeight="0dp"
             android:background="@color/white"

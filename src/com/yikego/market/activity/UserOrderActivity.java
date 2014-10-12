@@ -67,6 +67,7 @@ public class UserOrderActivity extends Activity{
 
     private void initView() {
         mListView = (ListView) findViewById(R.id.user_order_list);
+        mListView.setAdapter(mUserOrderAdapter);
 
     }
 
@@ -76,7 +77,7 @@ public class UserOrderActivity extends Activity{
         mSearchText.setVisibility(View.GONE);
         mSearchView.setVisibility(View.GONE);
         mDeleteView = (ImageView) findViewById(R.id.market_detail_delete);
-        mDeleteView.setVisibility(View.VISIBLE);
+        mDeleteView.setVisibility(View.GONE);
         actionBarText = (TextView) findViewById(R.id.actionbar_title);
         actionBarText.setText(R.string.user_order);
         actionBack = (ImageView) findViewById(R.id.market_detail_back);

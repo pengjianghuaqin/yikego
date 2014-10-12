@@ -29,7 +29,10 @@ public class UserOrderAdapter extends BaseAdapter{
 
     @Override
     public int getCount() {
-        return orderLists.size();
+        if (orderLists!=null)
+            return orderLists.size();
+        else
+            return 0;
     }
 
     @Override
@@ -46,7 +49,7 @@ public class UserOrderAdapter extends BaseAdapter{
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null){
             viewHolder  = new ViewHolder();
-            convertView = mLayoutInflater.inflate(R.layout.user_order_list_item, null);
+            convertView = mLayoutInflater.inflate(R.layout.user_order_list_item, parent ,false);
             viewHolder.mOrderStatus = (TextView) convertView.findViewById(R.id.user_order_item_status);
             viewHolder.mOrderMoney = (TextView) convertView.findViewById(R.id.user_order_item_money);
             viewHolder.mOrderId = (TextView) convertView.findViewById(R.id.user_order_item_id);
