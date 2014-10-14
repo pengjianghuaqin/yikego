@@ -76,6 +76,7 @@ public class UserPointActivity extends Activity{
         mPointListView.setAdapter(mUserPointAdapter);
 
         mTotalPoint = (TextView) findViewById(R.id.score_text);
+        setNumberText(0);
     }
 
     private void initActionBar() {
@@ -163,8 +164,7 @@ public class UserPointActivity extends Activity{
                         break;
                     case ACTION_UPDATE_POINT_NUMBER:
                         int total = getTotalNumber();
-                        mTotalPoint.setText(getResources().
-                                getQuantityString(R.plurals.numberOfPoint, total, total));
+                        setNumberText(total);
                         break;
 
                     default:
@@ -172,6 +172,11 @@ public class UserPointActivity extends Activity{
                 }
             }
         };
+    }
+
+    private void setNumberText(int number) {
+        mTotalPoint.setText(getResources().
+                                getQuantityString(R.plurals.numberOfPoint, number, number));
     }
 
     private int getTotalNumber() {

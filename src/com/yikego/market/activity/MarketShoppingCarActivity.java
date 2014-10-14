@@ -35,11 +35,12 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 
-public class MarketShoppingCarActivity extends ListActivity implements
-		OnItemClickListener {
+public class MarketShoppingCarActivity extends ListActivity {
 	private Context mContext;
 	private ListView mListView;
+	private TextView mCoutPrice;
 	private OrderListAdapter mAdapter;
+
 	public MarketShoppingCarActivity() {
 		mContext = this;
 	}
@@ -53,31 +54,41 @@ public class MarketShoppingCarActivity extends ListActivity implements
 
 	private void initView() {
 		Button settlement = (Button) findViewById(R.id.btn_settlement);
-		settlement.setOnClickListener(new OnClickListener(){
+		settlement.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(mContext, MarketSubmitOrderActivity.class);
+				Intent intent = new Intent(mContext,
+						MarketSubmitOrderActivity.class);
 				startActivity(intent);
 			}
-			
+
 		});
+		mCoutPrice = (TextView) findViewById(R.id.selected_settlement_amount);
+		mCoutPrice.setText(getResources().getString(R.string.goods_cout_price)
+				+ getCoutPrice());
 		mListView = getListView();
-		mAdapter = new OrderListAdapter(mContext,MarketDetailActivity.orderDetailList);
+		mAdapter = new OrderListAdapter(mContext,
+				MarketDetailActivity.orderDetailList);
 		mListView.setAdapter(mAdapter);
 	}
 
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position,
-			long id) {
-		// TODO Auto-generated method stub
-
+	private float getCoutPrice() {
+		float coutPrice = 0;
+		for (int i = 0; i < MarketDetailActivity.orderDetailList.size(); i++) {
+			if (MarketDetailActivity.orderDetailList.get(i).selectFlag) {
+				coutPrice += (MarketDetailActivity.orderDetailList.get(i).price)
+						* (MarketDetailActivity.orderDetailList.get(i).count);
+			}
+		}
+		return coutPrice;
 	}
-	
+
 	private class OrderListAdapter extends ArrayAdapter<OrderProductInfo> {
 		private ViewHolder viewHolder = null;
 		private LayoutInflater mLayoutInflater;
+		private View.OnClickListener mOnClickListener;
 
 		public OrderListAdapter(Context context, List<OrderProductInfo> objects) {
 			// TODO Auto-generated constructor stub
@@ -85,6 +96,58 @@ public class MarketShoppingCarActivity extends ListActivity implements
 			mContext = context;
 			mLayoutInflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			mOnClickListener = new View.OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					Log.v("onClick", "View =" + v);
+					switch (v.getId()) {
+					case R.id.order_goods_plus:
+						onPlusClick(v);
+						break;
+					case R.id.order_goods_subtract:
+						onSubtractClick(v);
+						break;
+					case R.id.order_flag:
+						onOrderFlagClick(v);
+						break;
+					default:
+						break;
+					}
+				}
+			};
+		}
+
+		private void onPlusClick(View v) {
+			int position = (Integer) v.getTag();
+			MarketDetailActivity.orderDetailList.get(position).count += 1;
+			mCoutPrice.setText(getResources().getString(
+					R.string.goods_cout_price)
+					+ getCoutPrice());
+			mAdapter.notifyDataSetChanged();
+		}
+
+		private void onSubtractClick(View v) {
+			int position = (Integer) v.getTag();
+			if (MarketDetailActivity.orderDetailList.get(position).count > 0) {
+				MarketDetailActivity.orderDetailList.get(position).count -= 1;
+				mAdapter.notifyDataSetChanged();
+				mCoutPrice.setText(getResources().getString(
+						R.string.goods_cout_price)
+						+ getCoutPrice());
+			}
+		}
+
+		private void onOrderFlagClick(View v) {
+			int position = (Integer) v.getTag();
+			ImageView orderFlag = (ImageView)v;
+			MarketDetailActivity.orderDetailList.get(position).selectFlag = !MarketDetailActivity.orderDetailList
+					.get(position).selectFlag;
+			mAdapter.notifyDataSetChanged();
+			mCoutPrice.setText(getResources().getString(
+					R.string.goods_cout_price)
+					+ getCoutPrice());
 		}
 
 		@Override
@@ -111,31 +174,41 @@ public class MarketShoppingCarActivity extends ListActivity implements
 				viewHolder.mOrderFlag = (ImageView) convertView
 						.findViewById(R.id.order_flag);
 				viewHolder.mOrderCout = (TextView) convertView
-						.findViewById(R.id.order_goods_index); 
+						.findViewById(R.id.order_goods_index);
+				viewHolder.mPlus = (ImageView) convertView
+						.findViewById(R.id.order_goods_plus);
+				viewHolder.mSubtract = (ImageView) convertView
+						.findViewById(R.id.order_goods_subtract);
 				convertView.setTag(viewHolder);
 			} else {
 				viewHolder = (ViewHolder) convertView.getTag();
 			}
-			// convertView.setOnClickListener(new OnClickListener() {
-			//
-			// @Override
-			// public void onClick(View v) {
-			// // TODO Auto-generated method stub
-			// Intent intent = new Intent(mContext,
-			// MarketGoodsDetailActivity.class);
-			// mContext.startActivity(intent);
-			// }
-			// });
+			viewHolder.mOrderFlag.setOnClickListener(mOnClickListener);
+			viewHolder.mOrderFlag.setTag(position);
+			viewHolder.mPlus.setOnClickListener(mOnClickListener);
+			viewHolder.mPlus.setTag(position);
+			viewHolder.mSubtract.setOnClickListener(mOnClickListener);
+			viewHolder.mSubtract.setTag(position);
 			if (orderInfo != null) {
 				viewHolder.mName.setText(orderInfo.name);
 				viewHolder.mDetail.setText(orderInfo.name);
-				viewHolder.mPrice.setText("£¤   " + orderInfo.price);
-				viewHolder.mOrderCout.setText(""+orderInfo.count);
+				Float price = orderInfo.price* orderInfo.count;
+				viewHolder.mPrice.setText("￥  " + price.toString());
+				viewHolder.mOrderCout.setText("" + orderInfo.count);
 				Drawable orderFlag;
-				if(orderInfo.count==0){
-					orderFlag = mContext.getResources().getDrawable(R.drawable.img_flag_unchecked);
+				if (orderInfo.count == 0) {
+					orderFlag = mContext.getResources().getDrawable(
+							R.drawable.img_flag_unchecked);
+				} else {
+					orderFlag = mContext.getResources().getDrawable(
+							R.drawable.img_flag_selected);
+				}
+				if(orderInfo.selectFlag){
+					orderFlag = mContext.getResources().getDrawable(
+							R.drawable.img_flag_selected);
 				}else{
-					orderFlag = mContext.getResources().getDrawable(R.drawable.img_flag_selected);
+					orderFlag = mContext.getResources().getDrawable(
+							R.drawable.img_flag_unchecked);
 				}
 				viewHolder.mOrderFlag.setImageDrawable(orderFlag);
 			}
@@ -150,6 +223,8 @@ public class MarketShoppingCarActivity extends ListActivity implements
 			TextView mDetail;
 			TextView mPrice;
 			ImageView mOrderFlag;
+			ImageView mPlus;
+			ImageView mSubtract;
 			TextView mOrderCout;
 		}
 	}

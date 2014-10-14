@@ -7,4 +7,5 @@ public class OrderProductInfo {
     public int count;
     public float price;
     public String name;
+    public boolean selectFlag = true;
 }

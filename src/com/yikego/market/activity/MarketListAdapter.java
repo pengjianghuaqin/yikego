@@ -26,48 +26,68 @@ public class MarketListAdapter extends ArrayAdapter<StoreInfo> {
 	private Context mContext;
 	private ViewHolder viewHolder = null;
 	private LayoutInflater mLayoutInflater;
+
 	public MarketListAdapter(Context context, List<StoreInfo> objects) {
 		super(context, 0, objects);
 		// TODO Auto-generated constructor stub
 		mContext = context;
-		mLayoutInflater = 
-				(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		mLayoutInflater = (LayoutInflater) context
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		StoreInfo marketInfo = null;
-		Log.v("asd", "position ="+position);
-		if(position>=0){
+		Log.v("asd", "position =" + position);
+		String openTime;
+		String closeTime;
+		if (position >= 0) {
 			marketInfo = getItem(position);
 		}
-		if (convertView == null){
-//			convertView = mLayoutInflater.inflate(R.layout.app_list_item, null);
-			convertView = mLayoutInflater.inflate(R.layout.market_list_item, parent, false);
+		if (convertView == null) {
+			// convertView = mLayoutInflater.inflate(R.layout.app_list_item,
+			// null);
+			convertView = mLayoutInflater.inflate(R.layout.market_list_item,
+					parent, false);
 			viewHolder = new ViewHolder();
 			viewHolder._id = marketInfo.storeId;
-			viewHolder.mName =  (TextView) convertView.findViewById(R.id.market_listitem_name);
-			viewHolder.mPath =  (TextView) convertView.findViewById(R.id.market_listitem_path);
-			viewHolder.mBusinessTime =  (TextView) convertView.findViewById(R.id.market_business_time);
-			viewHolder.mThumbnail =  (ImageView) convertView.findViewById(R.id.market_listitem_thumb);
+			viewHolder.mName = (TextView) convertView
+					.findViewById(R.id.market_listitem_name);
+			viewHolder.mPath = (TextView) convertView
+					.findViewById(R.id.market_listitem_path);
+			viewHolder.mBusinessTime = (TextView) convertView
+					.findViewById(R.id.market_business_time);
+			viewHolder.mThumbnail = (ImageView) convertView
+					.findViewById(R.id.market_listitem_thumb);
 			convertView.setTag(viewHolder);
-		}else{
-				viewHolder = (ViewHolder) convertView.getTag();
-			}
-		if(marketInfo !=null){
-			viewHolder.mName.setText(marketInfo.name);
-			viewHolder.mPath.setText(marketInfo.aboutDistance+"米");
-			viewHolder.mBusinessTime.setText("营业时间"+marketInfo.createTime);
+		} else {
+			viewHolder = (ViewHolder) convertView.getTag();
 		}
-		
+		if (marketInfo != null) {
+			viewHolder.mName.setText(marketInfo.name);
+			viewHolder.mPath.setText(marketInfo.aboutDistance + "米");
+			if (marketInfo.openMinute < 10) {
+				openTime = "0" + marketInfo.openMinute;
+			} else {
+				openTime = "" + marketInfo.openMinute;
+			}
+			if (marketInfo.closeMinute < 10) {
+				closeTime = "0" + marketInfo.closeMinute;
+			} else {
+				closeTime = "" + marketInfo.closeMinute;
+			}
+			viewHolder.mBusinessTime.setText("营业时间" + marketInfo.openHour + ":"
+					+ openTime + "-" + marketInfo.closeHour + ":" + closeTime);
+		}
+
 		return convertView;
 	}
-	
-	
+
 	public class ViewHolder {
 		public int _id;
 		View mParent;
 		ImageView mThumbnail;
-//		TextView mAuthor;
+		// TextView mAuthor;
 		TextView mName;
 		TextView mPath;
 		TextView mBusinessTime;

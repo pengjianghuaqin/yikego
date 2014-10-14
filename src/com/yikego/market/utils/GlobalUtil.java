@@ -22,7 +22,8 @@ public class GlobalUtil {
 
     //phone is valid
     private static final String PHONE_PATTERN = "[1]{1}[3,4,5,8]{1}[0-9]{9}";
-
+    public static final int PLAYMENT_ONLINE = 0;
+    public static final int PLAYMENT_COD = 1;
 	/*
 	 * Check system setting for whether allow to install 3rd party applications
 	 */
@@ -105,6 +106,8 @@ public class GlobalUtil {
     private static SharedPreferences mSharePreferences;
     private static String userId;
     private static String userPhone;
+    private static String address;
+    private static int playmentWay;
     public static boolean isLogin(Context context) {
         mSharePreferences = context.getSharedPreferences("userInfo" ,Context.MODE_PRIVATE);
         userId = mSharePreferences.getString("userId", "");
@@ -127,5 +130,31 @@ public class GlobalUtil {
         mSharePreferences = context.getSharedPreferences("userInfo", Context.MODE_PRIVATE);
         userPhone = mSharePreferences.getString("userPhone", "");
         return userPhone;
+    }
+    
+    public static String getUserAddress(Context context){
+        mSharePreferences = context.getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        address = mSharePreferences.getString("address", "");
+        return address;
+    }
+    
+    public static void setUserAddress(Context context, String address){
+        mSharePreferences = context.getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = mSharePreferences.edit();
+        editor.putString("address", address);
+        editor.commit();
+    }
+    
+    public static int getPlaymentWay(Context context){
+        mSharePreferences = context.getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        playmentWay = mSharePreferences.getInt("playmentWay", PLAYMENT_ONLINE);
+        return playmentWay;
+    }
+    
+    public static void setPlaymentWay(Context context, int playmentWay){
+        mSharePreferences = context.getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = mSharePreferences.edit();
+        editor.putInt("playmentWay", playmentWay);
+        editor.commit();
     }
  }

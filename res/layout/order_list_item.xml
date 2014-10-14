@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
-    android:background="@color/bg_color_gray" 
+    android:layout_height="120dp"
+    android:background="@color/bg_color_gray"
     android:orientation="vertical" >
 
     <ImageView
@@ -10,16 +10,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="25dp"
+        android:layout_marginLeft="10dp"
         android:background="@drawable/img_flag_bg"
         android:src="@drawable/img_flag_selected" />
 
     <ImageView
         android:id="@+id/order_listitem_icon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="15dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
         android:layout_toRightOf="@id/order_flag"
         android:background="@drawable/ic_item_thumb" />
 
@@ -43,41 +43,62 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/order_listitem_name"
-            android:layout_marginTop="8dip"
+            android:layout_marginTop="13dip"
             android:textColor="@color/black"
             android:textSize="15dip" />
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/order_listitem_price"
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="25dp"
-        android:textColor="@color/red"
-        android:textSize="20dip" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toLeftOf="@id/order_listitem_price"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="12dp"
+        android:layout_marginLeft="10dip"
+        android:layout_toRightOf="@+id/order_listitem_icon"
         android:orientation="horizontal" >
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" 
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:text="数量"
-            android:textSize="20dp"
-            android:textColor="@color/black"/>
-        <TextView 
+            android:textColor="@color/black" />
+
+        <ImageView
+            android:id="@+id/order_goods_subtract"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" 
-            android:layout_marginLeft="20dip"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="35dip"
+            android:background="@drawable/order_goods_subtract" />
+
+        <TextView
             android:id="@+id/order_goods_index"
-            android:textColor="@color/black"
-            />
-    </LinearLayout>
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/order_goods_subtract"
+            android:background="@color/white"
+            android:gravity="center"
+            android:textColor="@color/black" />
+
+        <ImageView
+            android:id="@+id/order_goods_plus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/order_goods_index"
+            android:background="@drawable/order_goods_plus" />
+
+        <TextView
+            android:id="@+id/order_listitem_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:textColor="@color/red"
+            android:textSize="20dip" />
+    </RelativeLayout>
 
 </RelativeLayout>

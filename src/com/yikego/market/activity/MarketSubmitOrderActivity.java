@@ -42,12 +42,16 @@ import android.widget.Toast;
 
 public class MarketSubmitOrderActivity extends ListActivity implements
 		OnItemClickListener {
+	private static final int ACTIVITY_RESULT_COD = 1000;
+	private static final int ACTIVITY_RESULT_DETAIL = 1001;
 	private Context mContext;
 	private ListView mListView;
 	private OrderListAdapter mAdapter;
 	private Request mCurrentRequest;
 	private ThemeService mThemeService;
 	private Handler mHandler;
+	private TextView mPlayment_way;
+	private TextView mAddress;
 	private static final int ACTION_NETWORK_ERROR = 0;
 	private static final int ACTION_SUBMIT_ORDER = 1;
 	public MarketSubmitOrderActivity() {
@@ -63,6 +67,20 @@ public class MarketSubmitOrderActivity extends ListActivity implements
 		initHandler();
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		mAddress = (TextView)findViewById(R.id.addressee);
+		mAddress.setText(GlobalUtil.getUserAddress(this));
+		mPlayment_way = (TextView)findViewById(R.id.playment_way);
+		int playment_way = GlobalUtil.getPlaymentWay(this);
+		if(playment_way == GlobalUtil.PLAYMENT_COD) {
+			mPlayment_way.setText(R.string.text_playment_cod);	
+		} else {
+			mPlayment_way.setText(R.string.text_playment_online);	
+		}
+
+	}
 	private void initView() {
 		Button settlement = (Button) findViewById(R.id.btn_submit_order);
 		settlement.setOnClickListener(new OnClickListener() {
@@ -227,5 +245,33 @@ public class MarketSubmitOrderActivity extends ListActivity implements
 			long id) {
 		// TODO Auto-generated method stub
 
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch (resultCode) {
+		case ACTIVITY_RESULT_COD:
+			
+			break;
+
+		case ACTIVITY_RESULT_DETAIL:
+			
+			break;
+			
+		default:
+			break;
+		}
+	}
+	
+	public void layout_cod_onclick(View v) {
+		Intent intent = new Intent();
+		intent.setClass(this, PlaymentWayActivity.class);
+		startActivityForResult(intent, ACTIVITY_RESULT_COD);
+	}
+	
+	public void layout_detail_onclick(View v) {
+		Intent intent = new Intent();
+		intent.setClass(this, ConsigneeEditActivity.class);
+		startActivityForResult(intent, ACTIVITY_RESULT_DETAIL);
 	}
 }

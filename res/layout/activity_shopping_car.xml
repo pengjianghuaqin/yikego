@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -29,20 +29,11 @@
             android:textSize="20dip" />
     </RelativeLayout>
 
-    <ListView
-        android:id="@android:id/list"
-        android:layout_width="fill_parent"
-        android:layout_height="300dip"
-        android:cacheColorHint="@android:color/transparent"
-        android:divider="@color/white"
-        android:dividerHeight="1px"
-        android:drawSelectorOnTop="false"
-        android:fadingEdge="none"
-        android:footerDividersEnabled="true" />
-
     <RelativeLayout
+        android:id="@+id/select_actionbar"
         android:layout_width="match_parent"
         android:layout_height="50dip"
+        android:layout_alignParentBottom="true"
         android:background="@color/bg_color_blue" >
 
         <ImageView
@@ -58,37 +49,35 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/select_goods"
             android:layout_marginLeft="5dip"
-            android:text="商品金额￥358.00"
+            android:layout_toRightOf="@id/select_goods"
             android:textColor="@color/white"
             android:textSize="12dip" />
 
-        <TextView
-            android:id="@+id/settlement_amount"
+        <Button
+            android:id="@+id/btn_settlement"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="15dip"
-            android:text="总计 ￥ 358.00"
-            android:textColor="@color/white"
-            android:textSize="14dip" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <Button
-            android:id="@+id/btn_settlement"
-            android:layout_width="150dip"
-            android:layout_height="50dip" 
+            android:background="@drawable/ic_btn_settlement"
             android:text="@string/text_settlement"
-            android:textColor="@color/white"
-            android:textSize="15dip"
-            android:layout_centerInParent="true"
-            android:background="@drawable/ic_btn_confirm"/>
+            android:textColor="@color/bg_color_blue"
+            android:textSize="15dip" />
     </RelativeLayout>
 
-</LinearLayout>
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/select_actionbar"
+        android:layout_below="@id/market_detail_actionbar"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="@color/white"
+        android:dividerHeight="1px"
+        android:drawSelectorOnTop="false"
+        android:fadingEdge="none"
+        android:footerDividersEnabled="true" />
+
+</RelativeLayout>

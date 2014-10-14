@@ -23,6 +23,7 @@ import com.yikego.market.utils.Constant;
 import com.yikego.market.webservice.Request;
 import com.yikego.market.webservice.ThemeService;
 
+import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -37,9 +38,8 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-public class MarketBrowser extends SlidingFragmentActivity implements
+public class MarketSearchStoreActivity extends Activity implements
 		AdapterView.OnItemClickListener {
 	private ListView mListView;
 	private MarketListAdapter mMarketListAdapter;
@@ -55,9 +55,10 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 	private AbsListView.OnScrollListener mScrollListener;
 	private Latitude mLatitude;
 	public static List<Latitude> storeLatitude;
-    private PaginationStoreListInfo mPaginationStoreListInfo = null;
+	private String mName;
+	private EditText mSearchName;
 
-	public MarketBrowser() {
+	public MarketSearchStoreActivity() {
 		Log.v(TAG, "MarketBrowser");
 		isEnd = false;
 		mContext = this;
@@ -71,63 +72,27 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.v(TAG, "onCreate");
-		setContentView(R.layout.activity_market_browser);
+		setContentView(R.layout.activity_market_search_store);
 		mThemeService = ThemeService.getServiceInstance(mContext);
 		initHandler();
 		initListener();
 		initView();
-		initSlidingMenu();
-
-		// userLogin();
-	}
-
-	private void initSlidingMenu() {
-		// 设置滑动菜单打开后的视图界面
-		setBehindContentView(R.layout.menu_frame);
-		getSupportFragmentManager().beginTransaction()
-				.replace(R.id.menu_frame, new SlidingMenuFragment()).commit();
-
-		// 设置滑动菜单的属性值
-		SlidingMenu sm = getSlidingMenu();
-		sm.setShadowWidthRes(R.dimen.shadow_width);
-		sm.setShadowDrawable(R.drawable.shadow);
-		sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
-		sm.setFadeDegree(0.25f);
-		sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
 	}
 
 	private void initView() {
 		mListView = (ListView) findViewById(android.R.id.list);
 		mListView.setOnScrollListener(mScrollListener);
 		mListView.setOnItemClickListener(this);
-		mMenuButton = (ImageView) findViewById(R.id.btn_menu);
-		mMenuButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				toggle();
-			}
-		});
-		TextView map = (TextView)findViewById(R.id.title_map);
+		TextView map = (TextView) findViewById(R.id.text_define);
 		map.setOnClickListener(new View.OnClickListener() {
 			@Override
-            public void onClick(View view) {
-                Intent intent = new Intent(mContext,LocationActivity.class);
-                if (mPaginationStoreListInfo!=null){
-                    intent.putExtra("StoreInfo", mPaginationStoreListInfo);
-                }
-                startActivity(intent);
-            }
-        });
-		EditText seacch = (EditText)findViewById(R.id.search_edittext);
-		seacch.setOnClickListener(new View.OnClickListener() {
-			@Override
-            public void onClick(View view) {
-                Intent intent = new Intent(mContext,MarketSearchStoreActivity.class);
-                startActivity(intent);
-            }
-        });
+			public void onClick(View view) {
+				mName = mSearchName.getText().toString();
+				PostUserLocalInfo();
+			}
+		});
+		mSearchName = (EditText) findViewById(R.id.search_edittext);
 		
-        PostUserLocalInfo();
 	}
 
 	private void initListener() {
@@ -188,9 +153,9 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 		postUserLocationInfo.distance = 25.0f;
 		postUserLocationInfo.lat = mLatitude.lat;
 		postUserLocationInfo.lng = mLatitude.lng;
-        postUserLocationInfo.name = "";
 		postUserLocationInfo.nowPage = 1;
 		postUserLocationInfo.pageCount = 25;
+		postUserLocationInfo.name = mName;
 		request.setData(postUserLocationInfo);
 		request.addObserver(new Observer() {
 
@@ -223,7 +188,6 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 				switch (msg.what) {
 				case ACTION_USER_LOCAL_INFO:
 					PaginationStoreListInfo paginationStoreListInfo = (PaginationStoreListInfo) msg.obj;
-                    mPaginationStoreListInfo = paginationStoreListInfo;
 
 					if (paginationStoreListInfo != null) {
 						for (int i = 0; i < paginationStoreListInfo.storelist

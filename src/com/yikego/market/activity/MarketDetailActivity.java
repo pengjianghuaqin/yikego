@@ -114,8 +114,19 @@ public class MarketDetailActivity extends Activity implements
 		TextView marketDistance = (TextView) findViewById(R.id.market_detail_distance);
 		marketDistance.setText("距离 :"+storeInfo.aboutDistance+"米");
 		TextView marketWorkTime = (TextView) findViewById(R.id.market_detail_work_time);
-		marketWorkTime.setText("营业时间"+storeInfo.openHour+":"+storeInfo.openMinute+"-"+storeInfo.closeHour+":"+storeInfo.closeMinute);
-		TextView marketAddress = (TextView) findViewById(R.id.market_detail_address);
+		String openTime,closeTime;
+		if (storeInfo.openMinute < 10) {
+			openTime = "0" + storeInfo.openMinute;
+		} else {
+			openTime = "" + storeInfo.openMinute;
+		}
+		if (storeInfo.closeMinute < 10) {
+			closeTime = "0" + storeInfo.closeMinute;
+		} else {
+			closeTime = "" + storeInfo.closeMinute;
+		}
+		marketWorkTime.setText("营业时间" + storeInfo.openHour + ":"
+				+ openTime + "-" + storeInfo.closeHour + ":" + closeTime);TextView marketAddress = (TextView) findViewById(R.id.market_detail_address);
 		marketAddress.setText(storeInfo.address);
 		TextView marketTel = (TextView) findViewById(R.id.market_detail_tel);
 		marketTel.setText(storeInfo.storeTel);

@@ -33,6 +33,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,6 +70,9 @@ public class MarketGoodsListActivity extends ListActivity implements
 	private ImageView mShoppingcar;
 	private TextView mShoppingcarIndex;
 	private ImageView img;
+	private Display mDisplay;
+	private int screenWidth = 0;
+	private int screenHeight = 0;
 
 	public MarketGoodsListActivity() {
 		nowPage = 1;
@@ -83,9 +87,15 @@ public class MarketGoodsListActivity extends ListActivity implements
 		setContentView(R.layout.activity_goods_list);
 		mThemeService = ThemeService.getServiceInstance(mContext);
 		productTypeId = getIntent().getIntExtra("productTypeId", 0);
-		img = (ImageView)findViewById(R.id.img);
+		img = (ImageView) findViewById(R.id.img);
 		img.setVisibility(View.INVISIBLE);
 		initView();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		mShoppingcarIndex.setText(getGoodsCout());
 	}
 
 	@Override
@@ -105,7 +115,7 @@ public class MarketGoodsListActivity extends ListActivity implements
 
 	private void initView() {
 		TextView actionbarTitle = (TextView) findViewById(R.id.actionbar_title);
-		actionbarTitle.setText(R.string.text_title_goods_detail);
+		actionbarTitle.setText(R.string.goods_list);
 		mListView = getListView();
 		// mListView.setScrollbarFadingEnabled(false); //disable
 		// mListView.setVisibility(View.GONE);
@@ -113,24 +123,40 @@ public class MarketGoodsListActivity extends ListActivity implements
 		ArrayList<GoodsData> goodstList = new ArrayList<GoodsData>();
 
 		mGoodsListAdapter = new GoodsListAdapter(mContext, goodstList);
-
+		mDisplay = getWindowManager().getDefaultDisplay();
+		screenWidth = mDisplay.getWidth();
+		screenHeight = mDisplay.getHeight();
 		mListView.setAdapter(mGoodsListAdapter);
 		mListView.setOnItemClickListener(this);
 		mShoppingcar = (ImageView) findViewById(R.id.img_shopping_car);
-		mShoppingcar.setOnClickListener(new OnClickListener(){
+		mShoppingcar.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(mContext, MarketShoppingCarActivity.class);
+				Intent intent = new Intent(mContext,
+						MarketShoppingCarActivity.class);
 				startActivity(intent);
 			}
-			
+
 		});
 		mShoppingcarIndex = (TextView) findViewById(R.id.goods_index);
-
 		initHandler();
 		GetGoodsList();
+	}
+
+	private String getGoodsCout() {
+		int cout = 0;
+		if (MarketDetailActivity.orderDetailList != null
+				&& MarketDetailActivity.orderDetailList.size() > 0) {
+			for (int i = 0; i < MarketDetailActivity.orderDetailList.size(); i++) {
+				cout += MarketDetailActivity.orderDetailList.get(i).count;
+			}
+			return cout + "";
+		} else {
+			return null;
+		}
+
 	}
 
 	private void GetGoodsList() {
@@ -281,22 +307,29 @@ public class MarketGoodsListActivity extends ListActivity implements
 							@Override
 							public void onClick(View v) {
 								// TODO Auto-generated method stub
-								GoodEXInfo exInfo = (GoodEXInfo)v.getTag();
+								GoodEXInfo exInfo = (GoodEXInfo) v.getTag();
 								OrderProductInfo orderProductInfo = new OrderProductInfo();
 								orderProductInfo.productId = exInfo.productId;
 								orderProductInfo.price = exInfo.price;
 								orderProductInfo.count = 1;
 								orderProductInfo.name = exInfo.productName;
-								if(MarketDetailActivity.orderDetailList!=null&&MarketDetailActivity.orderDetailList.size() >0){
-									for(int i = 0;i<MarketDetailActivity.orderDetailList.size();i++){
-										if(orderProductInfo.productId == MarketDetailActivity.orderDetailList.get(i).productId){
-											MarketDetailActivity.orderDetailList.get(i).count++;
+								if (MarketDetailActivity.orderDetailList != null
+										&& MarketDetailActivity.orderDetailList
+												.size() > 0) {
+									for (int i = 0; i < MarketDetailActivity.orderDetailList
+											.size(); i++) {
+										if (orderProductInfo.productId == MarketDetailActivity.orderDetailList
+												.get(i).productId) {
+											MarketDetailActivity.orderDetailList
+													.get(i).count++;
 										}
 									}
-								}else{
-									MarketDetailActivity.orderDetailList.add(orderProductInfo);
+								} else {
+									MarketDetailActivity.orderDetailList
+											.add(orderProductInfo);
 								}
 								IconAnimation(v);
+								mShoppingcarIndex.setText(getGoodsCout());
 							}
 						});
 			}
@@ -331,28 +364,18 @@ public class MarketGoodsListActivity extends ListActivity implements
 			int left = ((GoodEXInfo) v.getTag()).listItem.getLeft();
 			int bottom = ((GoodEXInfo) v.getTag()).listItem.getBottom();
 			int right = ((GoodEXInfo) v.getTag()).listItem.getRight();
-			
-			int toleft = mShoppingcar.getLeft();
 			int tobottom = mShoppingcar.getBottom();
 			int toright = mShoppingcar.getRight();
-			int totop = mShoppingcar.getTop();
-			Log.v(TAG, "left ="+left);
-			Log.v(TAG, "bottom ="+bottom);
-			Log.v(TAG, "toleft ="+toleft);
-			Log.v(TAG, "left ="+left);
-			Log.v(TAG, "toright ="+toright);
-			Log.v(TAG, "tobottom ="+tobottom);
-			Log.v(TAG, "totop ="+totop);
 			AnimationSet set = new AnimationSet(false);
 			ScaleAnimation scaleAnim = new ScaleAnimation(1.0f, 0.2f, 1.0f,
 					0.2f, 0.5f, 0.5f);
 			set.addAnimation(scaleAnim);
 			TranslateAnimation translateAnimationX = new TranslateAnimation(
-					left, toright, 0, 0);
+					left, screenWidth - toright, 0, 0);
 			translateAnimationX.setInterpolator(new LinearInterpolator());
 			translateAnimationX.setRepeatCount(0);
 			TranslateAnimation translateAnimationY = new TranslateAnimation(0,
-					0, bottom, totop);
+					0, bottom, screenHeight - tobottom-70);
 			translateAnimationY.setInterpolator(new AccelerateInterpolator());
 			translateAnimationY.setRepeatCount(0);
 			set.addAnimation(translateAnimationX);

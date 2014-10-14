@@ -67,6 +67,18 @@
                   android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
         <activity android:name=".activity.CodActivity"
+            android:configChanges="keyboardHidden|orientation|screenLayout|uiMode"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name=".activity.ConsigneeEditActivity"
+            android:configChanges="keyboardHidden|orientation|screenLayout|uiMode"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name=".activity.PlaymentWayActivity"
                   android:configChanges="keyboardHidden|orientation|screenLayout|uiMode"
                   android:screenOrientation="portrait"
                   android:theme="@android:style/Theme.NoTitleBar" >
@@ -151,6 +163,12 @@
                 >
         </activity>
         <activity android:name=".activity.TicketVerifyActivity"
+                  android:configChanges="keyboardHidden|orientation|screenLayout|uiMode"
+                  android:screenOrientation="portrait"
+                  android:launchMode="singleTask"
+                >
+        </activity>
+        <activity android:name=".activity.MarketSearchStoreActivity"
                   android:configChanges="keyboardHidden|orientation|screenLayout|uiMode"
                   android:screenOrientation="portrait"
                   android:launchMode="singleTask"

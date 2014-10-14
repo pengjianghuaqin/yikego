@@ -6,5 +6,6 @@ public class PostUserLocationInfo {
     public float lat;
     public float distance;
     public int nowPage;
+    public String name = null;
     public int pageCount;
 }

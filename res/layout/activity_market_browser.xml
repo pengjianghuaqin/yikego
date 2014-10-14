@@ -6,9 +6,9 @@
     android:orientation="vertical" >
 
     <RelativeLayout
+        android:id="@+id/browser_title"
         android:layout_width="match_parent"
         android:layout_height="50dip"
-        android:id="@+id/browser_title"
         android:background="@color/bg_color_blue" >
 
         <ImageView
@@ -36,9 +36,9 @@
             android:background="@drawable/ic_arrow_down" />
 
         <TextView
+            android:id="@+id/title_map"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/title_map"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dip"
@@ -48,12 +48,14 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/browser_search"
         android:layout_width="match_parent"
         android:layout_height="50dip"
         android:layout_below="@id/browser_title"
-        android:id="@+id/browser_search"
         android:background="@color/bg_color_blue" >
+
         <EditText
+            android:id="@+id/search_edittext"
             android:layout_width="match_parent"
             android:layout_height="36dip"
             android:layout_centerInParent="true"
@@ -63,11 +65,12 @@
             android:hint="@string/title_import"
             android:paddingLeft="30dip"
             android:textColorHint="@color/bg_color_gray" />
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="45dip"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="45dip"
             android:background="@drawable/ic_btn_search" />
     </RelativeLayout>
 
