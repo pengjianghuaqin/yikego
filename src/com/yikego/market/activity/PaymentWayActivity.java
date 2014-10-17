@@ -10,7 +10,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class PlaymentWayActivity extends Activity implements OnClickListener {
+public class PaymentWayActivity extends Activity implements OnClickListener {
 	private TextView actionBar_title;
 	private Button mButton_cod;
 	private Button mButton_online;
@@ -21,7 +21,7 @@ public class PlaymentWayActivity extends Activity implements OnClickListener {
 
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_playmentway);
+		setContentView(R.layout.activity_paymentway);
 
 		actionBar_title = (TextView) findViewById(R.id.actionbar_title);
 		actionBar_title.setText(R.string.text_playment_way);

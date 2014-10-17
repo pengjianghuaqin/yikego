@@ -151,6 +151,7 @@ public class MarketSubmitOrderActivity extends ListActivity implements
 					OrderResult orderResult = (OrderResult) msg.obj;
 					Toast toast = Toast.makeText(mContext,"orderId="+orderResult.orderNo+"/ resultCode="+orderResult.resultCode+"/ totalFee="+orderResult.totalFee, Toast.LENGTH_SHORT);
 					toast.show(); 
+					showOrderSuccess();
 					break;
 
 				default:
@@ -158,6 +159,12 @@ public class MarketSubmitOrderActivity extends ListActivity implements
 				}
 			}
 		};
+	}
+	
+	private void showOrderSuccess() {
+		Intent intent = new Intent();
+		intent.setClass(this, PaySuccessActivity.class);
+		startActivity(intent);
 	}
 	private class OrderListAdapter extends ArrayAdapter<OrderProductInfo> {
 		private ViewHolder viewHolder = null;
@@ -265,7 +272,7 @@ public class MarketSubmitOrderActivity extends ListActivity implements
 	
 	public void layout_cod_onclick(View v) {
 		Intent intent = new Intent();
-		intent.setClass(this, PlaymentWayActivity.class);
+		intent.setClass(this, PaymentWayActivity.class);
 		startActivityForResult(intent, ACTIVITY_RESULT_COD);
 	}
 	

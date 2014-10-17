@@ -84,6 +84,11 @@
     <string name="text_playment_way">支付方式</string>
     <string name="text_playment_cod">货到付款</string>
     <string name="text_playment_online">在线支付</string>
+    <string name="text_play_success">支付成功</string>
+    <string name="text_play_success_hint">您的订单已经提交:</string>
+    <string name="text_order_num">订单号: </string>
+    <string name="text_order_amount">应付金额: </string>
+    <string name="text_order_playway">支付方式: </string>
 
     <string name="point_type">积分类型：</string>
     <string name="point_desc">积分描述：</string>

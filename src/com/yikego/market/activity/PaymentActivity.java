@@ -11,6 +11,6 @@ public class PaymentActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.v("PaymentActivity", "onCreate");
-        setContentView(R.layout.activity_playment);
+        setContentView(R.layout.activity_payment);
     }
 }

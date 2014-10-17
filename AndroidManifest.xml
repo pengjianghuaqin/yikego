@@ -78,10 +78,16 @@
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
         <activity
-            android:name=".activity.PlaymentWayActivity"
+            android:name=".activity.PaymentWayActivity"
                   android:configChanges="keyboardHidden|orientation|screenLayout|uiMode"
                   android:screenOrientation="portrait"
                   android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name=".activity.PaySuccessActivity"
+            android:configChanges="keyboardHidden|orientation|screenLayout|uiMode"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
         <activity
                 android:name=".activity.LocationActivity"
