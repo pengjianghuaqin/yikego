@@ -11,6 +11,10 @@ import com.yikego.android.rom.sdk.ServiceProvider;
 import com.yikego.market.utils.GlobalUtil;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 public class ThemeServiceAgent {
@@ -158,7 +162,47 @@ public class ThemeServiceAgent {
         }
         return data;
     }
-
+    public Drawable getAppIcon(String imgUrl) throws SocketException {
+		if(!GlobalUtil.checkNetworkState(mContext)) {
+			throw new SocketException();
+		} else {
+			byte[] rawData =null;
+			Bitmap bmp = null;		
+			try {
+				rawData = ServiceProvider.getImage(imgUrl);
+				if (rawData != null) {
+//					bmp = 
+//						BitmapFactory.decodeByteArray(rawData, 0, rawData.length);
+//					return new BitmapDrawable(null, bmp);					
+					try
+					{
+						BitmapFactory.Options opts = new BitmapFactory.Options();
+						opts.inJustDecodeBounds = true;
+						BitmapFactory.decodeByteArray(rawData, 0, rawData.length,opts);
+//						opts.inSampleSize = 2;
+			            opts.inJustDecodeBounds = false;
+			            opts.inInputShareable = true;
+			            opts.inPurgeable = true;	
+						bmp = BitmapFactory.decodeByteArray(rawData, 0, rawData.length,opts);	
+						
+						return new BitmapDrawable(null, bmp);
+					}
+					catch(OutOfMemoryError e)
+					{
+						e.printStackTrace();	
+						return null;
+					}	
+				}
+				return null;
+			}catch(OutOfMemoryError e){
+				e.printStackTrace();
+				return null;
+			} 
+			catch (Exception e) {
+				throw new SocketException();
+			}
+		}
+	}
     public UserOrderListInfo getUserOrder(PostUserOrderBody postUserOrderBody)
             throws SocketException{
         UserOrderListInfo userOrderListInfo = null;

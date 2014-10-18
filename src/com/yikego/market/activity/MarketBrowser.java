@@ -1,6 +1,7 @@
 package com.yikego.market.activity;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -20,8 +21,10 @@ import com.yikego.android.rom.sdk.bean.UserLoginInfo;
 import com.yikego.market.R;
 import com.yikego.market.activity.MarketListAdapter.ViewHolder;
 import com.yikego.market.fragment.SlidingMenuFragment;
+import com.yikego.market.model.Image2;
 import com.yikego.market.model.Latitude;
 import com.yikego.market.model.MarketData;
+import com.yikego.market.utils.CachedThumbnails;
 import com.yikego.market.utils.Constant;
 import com.yikego.market.webservice.Request;
 import com.yikego.market.webservice.ThemeService;
@@ -56,18 +59,26 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 	private String TAG = "MarketBrowser";
 	private static final int ACTION_NETWORK_ERROR = 0;
 	private static final int ACTION_USER_LOCAL_INFO = 1;
+	private static final int ACTION_MARKET_ICON = 2;
 	private Handler mHandler;
 	private boolean isEnd;
 	private AbsListView.OnScrollListener mScrollListener;
 	private Latitude mLatitude;
 	public static List<Latitude> storeLatitude;
-    private PaginationStoreListInfo mPaginationStoreListInfo = null;
+	private PaginationStoreListInfo mPaginationStoreListInfo = null;
+	private Hashtable<Integer, Boolean> mIconStatusMap;
+	private boolean bBusy;
 
 	public MarketBrowser() {
 		Log.v(TAG, "MarketBrowser");
 		isEnd = false;
 		mContext = this;
+		mLatitude = new Latitude();
+		mLatitude.lat = 31.159488f;
+		mLatitude.lng = 121.579398f;
 		storeLatitude = new ArrayList<Latitude>();
+		bBusy = false;
+		mIconStatusMap = new Hashtable<Integer, Boolean>();
 	}
 
 	@Override
@@ -151,6 +162,77 @@ public class MarketBrowser extends SlidingFragmentActivity implements
         PostUserLocalInfo();
 	}
 
+	public Drawable getThumbnail(int position, int id) {
+		// TODO Auto-generated method stub
+		Log.v(TAG, "getThumbnail");
+		boolean bThumbExists = mIconStatusMap.containsKey(Integer
+				.valueOf(position));
+		if (bBusy && !bThumbExists) {
+			return CachedThumbnails.getDefaultIcon(this);
+		}
+
+		Drawable drawable = CachedThumbnails.getThumbnail(this, id);
+		if (drawable == null) {
+			boolean bThumbCached = false;
+			if (bThumbExists) {
+				bThumbCached = mIconStatusMap.get(Integer.valueOf(position))
+						.booleanValue();
+			}
+			if (bThumbExists && !bThumbCached) {
+				// cause thumb record existed
+				// do not sent thumb request again, just return default icon
+				return CachedThumbnails.getDefaultIcon(this);
+			} else {
+				// cause thumb record not existed
+				// or thumb not cached yet,
+				// set cached flag as false, and send thumb request
+				mIconStatusMap.put(Integer.valueOf(position),
+						Boolean.valueOf(false));
+				addThumbnailRequest(position, id);
+				return CachedThumbnails.getDefaultIcon(this);
+			}
+		} else {
+			// cause thumb has been cached
+			// set cached flag as true
+			mIconStatusMap
+					.put(Integer.valueOf(position), Boolean.valueOf(true));
+			return drawable;
+		}
+	}
+
+	private void addThumbnailRequest(int position, int id) {
+		String imgUrl = null;if(mMarketListAdapter.getItem(position).pictures!=null&&mMarketListAdapter.getItem(position).pictures.size()>0){
+			int index = mMarketListAdapter.getItem(position).pictures.get(0).picPath.lastIndexOf(".");
+			imgUrl = mMarketListAdapter.getItem(position).pictures.get(0).picPath.substring(0, index);
+			imgUrl += "_large"+mMarketListAdapter.getItem(position).pictures.get(0).picPath.substring(index);
+		}
+		
+		Log.v(TAG, "imgUrl2 ="+imgUrl);
+		if (imgUrl != null) {
+			Request request = new Request(0L, Constant.TYPE_APP_ICON);
+			Object[] params = new Object[2];
+
+			params[0] = Integer.valueOf(id);
+			params[1] = imgUrl;
+			request.setData(params);
+			request.addObserver(new Observer() {
+
+				@Override
+				public void update(Observable observable, Object data) {
+					// TODO Auto-generated method stub
+					if (data != null) {
+						Message msg = Message.obtain(mHandler,
+								ACTION_MARKET_ICON, data);
+						mHandler.sendMessage(msg);
+					}
+				}
+			});
+			mCurrentRequest = request;
+			mThemeService.getAppIcon(request);
+		}
+
+	}
+
 	private void initListener() {
 		// TODO Auto-generated method stub
 		mScrollListener = new AbsListView.OnScrollListener() {
@@ -167,20 +249,27 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 				// TODO Auto-generated method stub
 				switch (scrollState) {
 				case SCROLL_STATE_IDLE:
+					bBusy = false;
+					int start = view.getFirstVisiblePosition();
+					int counts = view.getChildCount();
 					int position = 0;
-					// for (int i = 0; i < counts; i++) {
-					// View localView = view.getChildAt(i);
-					//
-					// ViewHolder viewHolder = (ViewHolder) localView.getTag();
-					// if (viewHolder != null) {
-					// //
-					// mAppListAdapter.initBtnStatus(viewHolder,(Application2)viewHolder.mButton.getTag());
-					// int id = (int) mAppListAdapter.getItemId(position);
-					// Drawable drawable = getThumbnail(position, id);
-					// // drawable.setCallback(null);
-					// viewHolder.mThumbnail.setImageDrawable(drawable);
-					// }
-					// }
+
+					for (int i = 0; i < counts; i++) {
+						position = start + i;
+
+						// if
+						// (!mIconStatusMap.containsKey(Integer.valueOf(position)))
+						// {
+						ViewHolder viewHolder = (ViewHolder) view.getChildAt(i)
+								.getTag();
+						if (viewHolder != null) {
+							// mAppListAdapter.initBtnStatus(viewHolder,(Application2)viewHolder.mButton.getTag());
+							int id = (int) mMarketListAdapter
+									.getItemId(position);
+							Drawable drawable = getThumbnail(position, id);
+							viewHolder.mThumbnail.setImageDrawable(drawable);
+						}
+					}
 
 					// as list scrolled to end, send request to get above data
 					if (isEnd) {
@@ -276,7 +365,23 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 					}
 					mListView.setVisibility(View.VISIBLE);
 					break;
+				case ACTION_MARKET_ICON:
+					Image2 icInfo = (Image2) msg.obj;
+					Log.v(TAG, "icInfo =" + icInfo.mAppIcon);
+					if (icInfo.mAppIcon != null) {
+						CachedThumbnails.cacheThumbnail(mContext, icInfo._id,
+								icInfo.mAppIcon);
 
+						ImageView imageView = (ImageView) mListView
+								.findViewWithTag(String.valueOf(icInfo._id));
+						if (imageView != null) {
+							imageView.setImageDrawable(icInfo.mAppIcon);
+						}
+						if (mMarketListAdapter != null) {
+							mMarketListAdapter.notifyDataSetChanged();
+						}
+					}
+					break;
 				default:
 					break;
 				}

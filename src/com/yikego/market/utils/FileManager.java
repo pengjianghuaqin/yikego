@@ -15,7 +15,7 @@ public class FileManager {
 
 	public static final int BUFFER_SIZE = 8192;
 	public static final String APP_ICON = "appicon";
-	public static final String WALLPAPER_ICON = "wallpapericon";
+	public static final String GOODS_ICON = "goods";
 	public static final String CATE_ICON = "cateicon";
 	public static final String APP_DIR_NAME = "/fineos/theme";
 	public static final String THEME_DIR_PATH = APP_DIR_NAME + "/themes";
@@ -33,8 +33,8 @@ public class FileManager {
 	/*
 	 * Save wallpaper icon resource with id
 	 */
-	public static void writeWallPaperIconToFile(Context context, int id, Drawable drawable) {
-		writeIconToFile(context, WALLPAPER_ICON + id, drawable);
+	public static void writeGoodsIconToFile(Context context, int id, Drawable drawable) {
+		writeIconToFile(context, GOODS_ICON + id, drawable);
 	}
 
 	/*
@@ -85,11 +85,8 @@ public class FileManager {
 		return readIconFromFile(context, APP_ICON + id);
 	}
 
-	/*
-	 * Read WallPaper icon resource with id
-	 */
-	public static Drawable readWallPaperIconFromFile(Context context, int id) {
-		return readIconFromFile(context, WALLPAPER_ICON + id);
+	public static Drawable readGoodsIconFromFile(Context context, int id) {
+		return readIconFromFile(context, GOODS_ICON + id);
 	}
 
 	/*

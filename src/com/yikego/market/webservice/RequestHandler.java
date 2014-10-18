@@ -8,12 +8,7 @@ import com.yikego.android.rom.sdk.bean.*;
 
 import org.w3c.dom.Comment;
 
-
-
-
-
-
-
+import com.yikego.market.model.Image2;
 import com.yikego.market.utils.Constant;
 
 import android.app.Application;
@@ -174,6 +169,24 @@ public class RequestHandler extends Thread {
                         }
                     }
                     break;
+                case Constant.TYPE_APP_ICON:
+    				if (request.getData() != null) {
+    					params = (Object[]) request.getData();
+    					String imgUrl = (String) params[1];
+    					Image2 img = new Image2();
+    					
+    					try {
+    						img._id = ((Integer) params[0]).intValue();
+    						img.mAppIcon = mAgent.getAppIcon(imgUrl);
+    						request.setStatus(Constant.STATUS_SUCCESS);
+    						request.notifyObservers(img);
+    					} catch (SocketException e) {
+    						// TODO Auto-generated catch block
+    						request.setStatus(Constant.STATUS_ERROR);
+    						request.notifyObservers(null);
+    					}
+    				}
+    				break;
                 case Constant.TYPE_GET_USER_ORDER:
                     if (request.getData() != null){
                         PostUserOrderBody postUserOrderBody = (PostUserOrderBody) request.getData();

@@ -9,8 +9,7 @@
         android:layout_width="100dip"
         android:layout_height="100dip"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="10dip"
-        android:background="@drawable/ic_item_thumb" />
+        android:layout_marginLeft="10dip"/>
 
     <RelativeLayout
         android:layout_width="wrap_content"

@@ -14,7 +14,6 @@ public abstract interface IThemeService {
 	public abstract void getIconImg(Request request);
 	public abstract void getRingtoneList(Request request);
 	
-	public abstract void getThemePreviews(Request request);
 	public abstract void postMessageRecord(Request request);
     public abstract void postUserRegister(Request request);
 
@@ -25,5 +24,7 @@ public abstract interface IThemeService {
     public abstract void postUserLogin(Request request);
 
     public abstract void getUserOrder(Request request);
+
+    public abstract void getAppIcon(Request request);
 
 }

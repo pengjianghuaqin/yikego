@@ -27,6 +27,8 @@ public class Constant {
 	public static final int WALLPAPER_LIST_COUNT_PER_TIME = 10;
 
     //request type for connect server
+	
+	public static final int TYPE_APP_ICON = 268500000;
 	public static final int TYPE_GET_AUTH_CODE = 268501006;
     public static final int TYPE_POST_USER_REGISTER = 268501007;
     public static final int TYPE_POST_USER_LOGIN = 268501008;

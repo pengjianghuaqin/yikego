@@ -135,7 +135,7 @@ public class ThemeService implements IThemeService {
 	}
 	
 	@Override
-	public void getThemePreviews(Request request) {
+	public void getAppIcon(Request request) {
 		// TODO Auto-generated method stub
 		mRequestQueues[THREAD_THUMB].pushRequest(request);
 	}

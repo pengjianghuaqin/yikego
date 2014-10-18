@@ -1,6 +1,7 @@
 package com.yikego.android.rom.sdk.bean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class StoreInfo implements Serializable{
@@ -20,7 +21,7 @@ public class StoreInfo implements Serializable{
     public int closeHour;
     public int closeMinute;
     public int storeStatus;
-    public List<ProductImgInfo> pictures;
+    public ArrayList<StoreInfoImg> pictures;
     public String createTime;
     public int aboutDistance;
 } 

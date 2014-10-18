@@ -5,10 +5,12 @@ import java.util.List;
 import com.yikego.android.rom.sdk.bean.StoreInfo;
 import com.yikego.market.R;
 import com.yikego.market.model.MarketData;
+import com.yikego.market.utils.CachedThumbnails;
 
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +28,7 @@ public class MarketListAdapter extends ArrayAdapter<StoreInfo> {
 	private Context mContext;
 	private ViewHolder viewHolder = null;
 	private LayoutInflater mLayoutInflater;
-
+	private Drawable mThumb = null;
 	public MarketListAdapter(Context context, List<StoreInfo> objects) {
 		super(context, 0, objects);
 		// TODO Auto-generated constructor stub
@@ -78,8 +80,15 @@ public class MarketListAdapter extends ArrayAdapter<StoreInfo> {
 			}
 			viewHolder.mBusinessTime.setText("营业时间" + marketInfo.openHour + ":"
 					+ openTime + "-" + marketInfo.closeHour + ":" + closeTime);
+			if (mContext instanceof MarketBrowser) {
+				mThumb = ((MarketBrowser) mContext).getThumbnail(position, marketInfo.storeId);
+			}else {
+				mThumb = CachedThumbnails.getDefaultIcon(mContext);
+			}
+//			MarketPage.setTouchIntercept(true);
+			viewHolder.mThumbnail.setImageDrawable(mThumb);
 		}
-
+		
 		return convertView;
 	}
 

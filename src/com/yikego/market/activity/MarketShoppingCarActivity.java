@@ -1,5 +1,6 @@
 package com.yikego.market.activity;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.yikego.android.rom.sdk.bean.OrderProductInfo;
@@ -82,6 +83,9 @@ public class MarketShoppingCarActivity extends ListActivity {
 						* (MarketDetailActivity.orderDetailList.get(i).count);
 			}
 		}
+		BigDecimal b = new BigDecimal(coutPrice); 
+		coutPrice = b.setScale(1, BigDecimal.ROUND_HALF_UP).floatValue(); 
+		Log.v("getCoutPrice", "coutPrice ="+coutPrice);
 		return coutPrice;
 	}
 
@@ -192,8 +196,10 @@ public class MarketShoppingCarActivity extends ListActivity {
 			if (orderInfo != null) {
 				viewHolder.mName.setText(orderInfo.name);
 				viewHolder.mDetail.setText(orderInfo.name);
-				Float price = orderInfo.price* orderInfo.count;
-				viewHolder.mPrice.setText("￥  " + price.toString());
+				float price = orderInfo.price* orderInfo.count;
+				BigDecimal b = new BigDecimal(price); 
+				price = b.setScale(1, BigDecimal.ROUND_HALF_UP).floatValue(); 
+				viewHolder.mPrice.setText("￥  " + price);
 				viewHolder.mOrderCout.setText("" + orderInfo.count);
 				Drawable orderFlag;
 				if (orderInfo.count == 0) {

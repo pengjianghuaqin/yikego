@@ -20,8 +20,7 @@
         android:layout_height="100dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:layout_toRightOf="@id/order_flag"
-        android:background="@drawable/ic_item_thumb" />
+        android:layout_toRightOf="@id/order_flag"/>
 
     <RelativeLayout
         android:layout_width="wrap_content"

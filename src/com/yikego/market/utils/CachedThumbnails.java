@@ -5,6 +5,9 @@ import java.util.Hashtable;
 
 
 
+
+import com.yikego.market.R;
+
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 
@@ -24,13 +27,13 @@ public class CachedThumbnails {
 	 * get default icon displayed for applications
 	 * when application icon not cached or under loading procedure
 	 */
-//	public static Drawable getDefaultIcon(Context context) {
-//		// TODO Auto-generated method stub
-//		if (defaultIcon == null) {
-//			defaultIcon = context.getResources().getDrawable(R.drawable.icon);
-//		}
-//		return defaultIcon;
-//	}
+	public static Drawable getDefaultIcon(Context context) {
+		// TODO Auto-generated method stub
+		if (defaultIcon == null) {
+			defaultIcon = context.getResources().getDrawable(R.drawable.default_icon);
+		}
+		return defaultIcon;
+	}
 
 	/*
 	 * push to local map collection, then save to file system
@@ -41,6 +44,15 @@ public class CachedThumbnails {
 		
 //		if (bAllowBufferIcon) {
 			FileManager.writeAppIconToFile(context, id, drawable);
+//		}
+	}
+	
+	public static void cacheGoodsIconThumbnail(Context context, int id, Drawable drawable) {
+		// TODO Auto-generated method stub
+		pushToCache(id, drawable);
+		
+//		if (bAllowBufferIcon) {
+			FileManager.writeGoodsIconToFile(context, id, drawable);
 //		}
 	}
 	/*
@@ -70,7 +82,7 @@ public class CachedThumbnails {
 		}
 	}
 	@SuppressWarnings("unused")
-	public static Drawable getWallPaperThumbnail(Context context, int id) {
+	public static Drawable getGoodsThumbnail(Context context, int id) {
 		// TODO Auto-generated method stub
 		if (cachedDrawables.containsKey(id)) {
 			return cachedDrawables.get(id);
@@ -83,7 +95,7 @@ public class CachedThumbnails {
 //					{
 //						drawable.setCallback(null);
 //					}
-					drawable = FileManager.readWallPaperIconFromFile(context, id);
+					drawable = FileManager.readGoodsIconFromFile(context, id);
 				}
 				if (drawable != null) {
 					pushToCache(id, drawable);

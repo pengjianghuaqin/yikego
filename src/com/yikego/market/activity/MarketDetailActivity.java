@@ -3,6 +3,7 @@ package com.yikego.market.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -29,6 +30,7 @@ import com.yikego.android.rom.sdk.bean.StoreId;
 import com.yikego.android.rom.sdk.bean.StoreInfo;
 import com.yikego.market.R;
 import com.yikego.market.activity.MarketListAdapter.ViewHolder;
+import com.yikego.market.utils.CachedThumbnails;
 import com.yikego.market.utils.Constant;
 import com.yikego.market.webservice.Request;
 import com.yikego.market.webservice.ThemeService;
@@ -85,8 +87,19 @@ public class MarketDetailActivity extends Activity implements
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		orderDetailList = null;
+		orderDetailList.clear();
 		// initActionBar();
+	}
+	
+	public Drawable getThumbnail(int id) {
+		// TODO Auto-generated method stub
+		
+		Drawable drawable = CachedThumbnails.getThumbnail(this, id);
+		if (drawable == null) {
+			return CachedThumbnails.getDefaultIcon(this);
+		} else {
+			return drawable;
+		}
 	}
 	private void initViews() {
 		mGridView = (GridView) findViewById(R.id.market_detail_grid);
@@ -109,6 +122,8 @@ public class MarketDetailActivity extends Activity implements
 				startActivity(intent);
 			}
 		});
+		ImageView marketIcon = (ImageView) findViewById(R.id.market_detail_image);
+		marketIcon.setImageDrawable(getThumbnail(storeInfo.storeId));
 		TextView marketName = (TextView) findViewById(R.id.market_detail_name);
 		marketName.setText(storeInfo.name);
 		TextView marketDistance = (TextView) findViewById(R.id.market_detail_distance);

@@ -1,6 +1,7 @@
 package com.yikego.market.activity;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -14,7 +15,9 @@ import com.yikego.android.rom.sdk.bean.StoreInfo;
 import com.yikego.market.R;
 import com.yikego.market.activity.MarketListAdapter.ViewHolder;
 import com.yikego.market.model.GoodsData;
+import com.yikego.market.model.Image2;
 import com.yikego.market.model.MarketData;
+import com.yikego.market.utils.CachedThumbnails;
 import com.yikego.market.utils.Constant;
 import com.yikego.market.webservice.Request;
 import com.yikego.market.webservice.ThemeService;
@@ -63,6 +66,7 @@ public class MarketGoodsListActivity extends ListActivity implements
 	private int pageCount;
 	private static final int ACTION_NETWORK_ERROR = 0;
 	private static final int ACTION_GOODS_LIST = 1;
+	private static final int ACTION_GOODS_ICON = 2;
 	private Request mCurrentRequest;
 	private ThemeService mThemeService;
 	private Handler mHandler;
@@ -73,12 +77,16 @@ public class MarketGoodsListActivity extends ListActivity implements
 	private Display mDisplay;
 	private int screenWidth = 0;
 	private int screenHeight = 0;
+	private Hashtable<Integer, Boolean> mIconStatusMap;
+	private boolean bBusy;
 
 	public MarketGoodsListActivity() {
 		nowPage = 1;
 		pageCount = 25;
 		isEnd = false;
 		mContext = this;
+		bBusy = false;
+		mIconStatusMap = new Hashtable<Integer, Boolean>();
 	}
 
 	@Override
@@ -90,6 +98,81 @@ public class MarketGoodsListActivity extends ListActivity implements
 		img = (ImageView) findViewById(R.id.img);
 		img.setVisibility(View.INVISIBLE);
 		initView();
+	}
+
+	public Drawable getThumbnail(int position, int id) {
+		// TODO Auto-generated method stub
+		boolean bThumbExists = mIconStatusMap.containsKey(Integer
+				.valueOf(position));
+		if (bBusy && !bThumbExists) {
+			return CachedThumbnails.getDefaultIcon(this);
+		}
+
+		Drawable drawable = CachedThumbnails.getGoodsThumbnail(this, id);
+		if (drawable == null) {
+			boolean bThumbCached = false;
+			if (bThumbExists) {
+				bThumbCached = mIconStatusMap.get(Integer.valueOf(position))
+						.booleanValue();
+			}
+			if (bThumbExists && !bThumbCached) {
+				// cause thumb record existed
+				// do not sent thumb request again, just return default icon
+				return CachedThumbnails.getDefaultIcon(this);
+			} else {
+				// cause thumb record not existed
+				// or thumb not cached yet,
+				// set cached flag as false, and send thumb request
+				mIconStatusMap.put(Integer.valueOf(position),
+						Boolean.valueOf(false));
+				addThumbnailRequest(position, id);
+				return CachedThumbnails.getDefaultIcon(this);
+			}
+		} else {
+			// cause thumb has been cached
+			// set cached flag as true
+			mIconStatusMap
+					.put(Integer.valueOf(position), Boolean.valueOf(true));
+			return drawable;
+		}
+	}
+
+	private void addThumbnailRequest(int position, int id) {
+		String imgUrl = null;
+		if (mGoodsListAdapter.getItem(position).getGoodsIconUrl() != null
+				&& mGoodsListAdapter.getItem(position).getGoodsIconUrl().size() > 0) {
+			int index = mGoodsListAdapter.getItem(position).getGoodsIconUrl()
+					.get(0).lastIndexOf(".");
+			imgUrl = mGoodsListAdapter.getItem(position).getGoodsIconUrl()
+					.get(0).substring(0, index);
+			imgUrl += "_large"
+					+ mGoodsListAdapter.getItem(position).getGoodsIconUrl()
+							.get(0).substring(index);
+		}
+		Log.v(TAG, "imgUrl =" + imgUrl);
+		if (imgUrl != null) {
+			Request request = new Request(0L, Constant.TYPE_APP_ICON);
+			Object[] params = new Object[2];
+
+			params[0] = Integer.valueOf(id);
+			params[1] = imgUrl;
+			request.setData(params);
+			request.addObserver(new Observer() {
+
+				@Override
+				public void update(Observable observable, Object data) {
+					// TODO Auto-generated method stub
+					if (data != null) {
+						Message msg = Message.obtain(mHandler,
+								ACTION_GOODS_ICON, data);
+						mHandler.sendMessage(msg);
+					}
+				}
+			});
+			mCurrentRequest = request;
+			mThemeService.getAppIcon(request);
+		}
+
 	}
 
 	@Override
@@ -228,7 +311,23 @@ public class MarketGoodsListActivity extends ListActivity implements
 					mListView.setVisibility(View.VISIBLE);
 
 					break;
+				case ACTION_GOODS_ICON:
+					Image2 icInfo = (Image2) msg.obj;
+					Log.v(TAG, "icInfo =" + icInfo.mAppIcon);
+					if (icInfo.mAppIcon != null) {
+						CachedThumbnails.cacheGoodsIconThumbnail(mContext,
+								icInfo._id, icInfo.mAppIcon);
 
+						ImageView imageView = (ImageView) mListView
+								.findViewWithTag(String.valueOf(icInfo._id));
+						if (imageView != null) {
+							imageView.setImageDrawable(icInfo.mAppIcon);
+						}
+						if (mGoodsListAdapter != null) {
+							mGoodsListAdapter.notifyDataSetChanged();
+						}
+					}
+					break;
 				default:
 					break;
 				}
@@ -243,6 +342,7 @@ public class MarketGoodsListActivity extends ListActivity implements
 		private ViewHolder mAnimationViewHolder = null;
 		private Bitmap mSelectedItemBitmap;
 		private Bitmap mBitmap;
+		private Drawable mThumb = null;
 
 		public GoodsListAdapter(Context context, List<GoodsData> objects) {
 			// TODO Auto-generated constructor stub
@@ -307,23 +407,32 @@ public class MarketGoodsListActivity extends ListActivity implements
 							@Override
 							public void onClick(View v) {
 								// TODO Auto-generated method stub
+
 								GoodEXInfo exInfo = (GoodEXInfo) v.getTag();
+								Log.v(TAG, "exInfo =" + exInfo.productName);
 								OrderProductInfo orderProductInfo = new OrderProductInfo();
 								orderProductInfo.productId = exInfo.productId;
 								orderProductInfo.price = exInfo.price;
 								orderProductInfo.count = 1;
 								orderProductInfo.name = exInfo.productName;
+								int i = 0;
 								if (MarketDetailActivity.orderDetailList != null
 										&& MarketDetailActivity.orderDetailList
 												.size() > 0) {
-									for (int i = 0; i < MarketDetailActivity.orderDetailList
+									for (i = 0; i < MarketDetailActivity.orderDetailList
 											.size(); i++) {
 										if (orderProductInfo.productId == MarketDetailActivity.orderDetailList
 												.get(i).productId) {
 											MarketDetailActivity.orderDetailList
 													.get(i).count++;
-										}
+										} 
 									}
+									if(i == MarketDetailActivity.orderDetailList
+											.size()){
+										MarketDetailActivity.orderDetailList
+										.add(orderProductInfo);
+									}
+									
 								} else {
 									MarketDetailActivity.orderDetailList
 											.add(orderProductInfo);
@@ -332,6 +441,11 @@ public class MarketGoodsListActivity extends ListActivity implements
 								mShoppingcarIndex.setText(getGoodsCout());
 							}
 						});
+
+				mThumb = ((MarketGoodsListActivity) mContext).getThumbnail(
+						position, goodsInfo.goodsId);
+
+				viewHolder.mThumbnail.setImageDrawable(mThumb);
 			}
 
 			return convertView;
@@ -375,7 +489,7 @@ public class MarketGoodsListActivity extends ListActivity implements
 			translateAnimationX.setInterpolator(new LinearInterpolator());
 			translateAnimationX.setRepeatCount(0);
 			TranslateAnimation translateAnimationY = new TranslateAnimation(0,
-					0, bottom, screenHeight - tobottom-70);
+					0, bottom, screenHeight - tobottom - 70);
 			translateAnimationY.setInterpolator(new AccelerateInterpolator());
 			translateAnimationY.setRepeatCount(0);
 			set.addAnimation(translateAnimationX);
