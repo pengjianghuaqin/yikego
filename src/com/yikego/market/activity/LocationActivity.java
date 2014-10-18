@@ -1,8 +1,10 @@
 package com.yikego.market.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -10,29 +12,28 @@ import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
+import android.widget.TextView;
 import android.widget.Toast;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
-import com.baidu.mapapi.map.BaiduMap;
-import com.baidu.mapapi.map.BitmapDescriptor;
-import com.baidu.mapapi.map.BitmapDescriptorFactory;
-import com.baidu.mapapi.map.MapStatusUpdate;
-import com.baidu.mapapi.map.MapStatusUpdateFactory;
-import com.baidu.mapapi.map.MapView;
-import com.baidu.mapapi.map.Marker;
-import com.baidu.mapapi.map.MarkerOptions;
-import com.baidu.mapapi.map.MyLocationConfiguration;
-import com.baidu.mapapi.map.OverlayOptions;
+import com.baidu.mapapi.map.*;
 import com.baidu.mapapi.map.MyLocationConfiguration.LocationMode;
-import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
 import com.yikego.android.rom.sdk.bean.PaginationStoreListInfo;
+import com.yikego.android.rom.sdk.bean.PostUserLocationInfo;
 import com.yikego.android.rom.sdk.bean.StoreInfo;
 import com.yikego.market.R;
+import com.yikego.market.model.Latitude;
+import com.yikego.market.utils.Constant;
+import com.yikego.market.webservice.Request;
+import com.yikego.market.webservice.ThemeService;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * show store location and click to start activity for store info
@@ -41,11 +42,17 @@ import java.util.ArrayList;
 public class LocationActivity extends Activity {
 
     private static final String TAG = "LocationActivity";
+    private TextView mActionbarTitle;
 	// 定位相关
 	LocationClient mLocClient;
 	public MyLocationListenner myListener = new MyLocationListenner();
 	private LocationMode mCurrentMode;
 	BitmapDescriptor mCurrentMarker;
+
+    private Latitude mLatitude;
+    public static List<Latitude> storeLatitude;
+    private PaginationStoreListInfo mPaginationStoreListInfo = null;
+    private ArrayList<StoreInfo> storeList = null;
 
 	MapView mMapView;
 	BaiduMap mBaiduMap;
@@ -54,17 +61,26 @@ public class LocationActivity extends Activity {
 	OnCheckedChangeListener radioButtonListener;
 	boolean isFirstLoc = true;// 是否首次定位
 
-	BitmapDescriptor bdA = BitmapDescriptorFactory.fromResource(R.drawable.icon_gcoding);
+	BitmapDescriptor bdA = BitmapDescriptorFactory.fromResource(R.drawable.icon_location);
 	private Marker mMarkerA;
 
-    private PaginationStoreListInfo mPaginationStoreListInfo = null;
-    private ArrayList<StoreInfo> storeList = null;
-	
-	@Override
+    private InfoWindow mInfoWindow;
+
+    private Context mContext;
+    private ThemeService mThemeService;
+
+    public LocationActivity() {
+        mContext = this;
+        storeLatitude = new ArrayList<Latitude>();
+    }
+
+    @Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map);
-        initIntent();
+        mThemeService = ThemeService.getServiceInstance(mContext);
+        mLatitude = new Latitude();
+//        initIntent();
 		mCurrentMode = LocationMode.NORMAL;
 
 		// 地图初始化
@@ -81,25 +97,74 @@ public class LocationActivity extends Activity {
 		option.setScanSpan(1000);
 		mLocClient.setLocOption(option);
 		mLocClient.start();
-		initOverlay();
+//		initOverlay();
         mBaiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
                 Toast.makeText(getApplicationContext(), marker.getTitle().toString(), Toast.LENGTH_SHORT).show();
                 Bundle bundle = marker.getExtraInfo();
+                Button button = new Button(getApplicationContext());
+                InfoWindow.OnInfoWindowClickListener listener = null;
+                button.setBackgroundResource(R.drawable.popup);
                 if (bundle!=null){
-                    StoreInfo store = (StoreInfo) bundle.getSerializable("store");
+                    final StoreInfo store = (StoreInfo) bundle.getSerializable("store");
                     if (store != null){
-                        Intent intent = new Intent();
-                        intent.setClass(LocationActivity.this, MarketDetailActivity.class);
-                        intent.putExtra("storeInfo", store);
-                        startActivity(intent);
+                        button.setTextColor(getResources().getColor(android.R.color.black));
+                        button.setText(store.name);
+                        listener = new InfoWindow.OnInfoWindowClickListener() {
+                            public void onInfoWindowClick() {
+                                Intent intent = new Intent();
+                                intent.setClass(LocationActivity.this, MarketDetailActivity.class);
+                                intent.putExtra("storeInfo", store);
+                                startActivity(intent);
+                            }
+                        };
+                        LatLng ll = marker.getPosition();
+                        mInfoWindow = new InfoWindow(button, ll , listener);
+                        mBaiduMap.showInfoWindow(mInfoWindow);
                     }
                 }
                 return true;
             }
         });
+
+        initView();
 	}
+
+    private void postUserLocalInfo(LatLng latLng) {
+        // TODO Auto-generated method stub
+
+        Request request = new Request(0, Constant.TYPE_POST_USER_LOCAL_INFO);
+        // Object[] params = new Object[2];
+        PostUserLocationInfo postUserLocationInfo = new PostUserLocationInfo();
+        postUserLocationInfo.distance = 25.0f;
+        postUserLocationInfo.lat = (float) latLng.latitude;
+        postUserLocationInfo.lng = (float) latLng.longitude;
+        postUserLocationInfo.name = "";
+        postUserLocationInfo.nowPage = 1;
+        postUserLocationInfo.pageCount = 100;
+        request.setData(postUserLocationInfo);
+        request.addObserver(new Observer() {
+
+            @Override
+            public void update(Observable observable, Object data) {
+                // TODO Auto-generated method stub
+                if (data != null) {
+                    PaginationStoreListInfo paginationStoreListInfo = (PaginationStoreListInfo) data;
+                    mPaginationStoreListInfo = paginationStoreListInfo;
+                    storeList = mPaginationStoreListInfo.storelist;
+                    initOverlay();
+                } else {
+                }
+            }
+        });
+        mThemeService.getStoreList(request);
+    }
+
+    private void initView() {
+        mActionbarTitle = (TextView) findViewById(R.id.actionbar_title);
+        mActionbarTitle.setText(getString(R.string.title_map));
+    }
 
     private void initIntent() {
         Intent intent = getIntent();
@@ -155,6 +220,7 @@ public class LocationActivity extends Activity {
 				LatLng ll = new LatLng(location.getLatitude(),
 						location.getLongitude());
 				MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
+                postUserLocalInfo(ll);
 				mBaiduMap.animateMapStatus(u);
 			}
 		}

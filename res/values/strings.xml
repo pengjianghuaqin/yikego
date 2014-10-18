@@ -9,6 +9,7 @@
     <string name="item_text_arrive">1000米内30分钟到达</string>
     <string name="item_text_takeaway">30元起送</string>
     <string name="title_map">地图</string>
+    <string name="location_now">正在定位</string>
 	<string name="title_import">请输入超市名称</string>
 	<string name="title_import_goods">请输入商品名称</string>
 	<string name="text_define"> 确定</string>
@@ -97,4 +98,6 @@
     <plurals name="numberOfPoint">
         <item quantity="other">总积分：%d分</item>
     </plurals>
+
+    <string name="request_error">获取数据失败</string>
 </resources>

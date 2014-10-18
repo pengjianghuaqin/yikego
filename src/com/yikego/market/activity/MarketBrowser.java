@@ -7,6 +7,9 @@ import java.util.Observer;
 
 import android.widget.ImageView;
 
+import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.geocode.*;
 import com.slidingmenu.lib.SlidingMenu;
 import com.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.yikego.android.rom.sdk.bean.MessageRecord;
@@ -40,12 +43,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MarketBrowser extends SlidingFragmentActivity implements
-		AdapterView.OnItemClickListener {
+		AdapterView.OnItemClickListener,OnGetGeoCoderResultListener {
+
+    GeoCoder mSearch = null; // 搜索模块，也可去掉地图模块独立使用
 	private ListView mListView;
 	private MarketListAdapter mMarketListAdapter;
 	private ImageView mMenuButton;
 	private Context mContext;
 	private Request mCurrentRequest;
+    private TextView mTitleSpineer;
 	private ThemeService mThemeService;
 	private String TAG = "MarketBrowser";
 	private static final int ACTION_NETWORK_ERROR = 0;
@@ -61,9 +67,6 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 		Log.v(TAG, "MarketBrowser");
 		isEnd = false;
 		mContext = this;
-		mLatitude = new Latitude();
-		mLatitude.lat = 31.159488f;
-		mLatitude.lng = 121.579398f;
 		storeLatitude = new ArrayList<Latitude>();
 	}
 
@@ -73,6 +76,23 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 		Log.v(TAG, "onCreate");
 		setContentView(R.layout.activity_market_browser);
 		mThemeService = ThemeService.getServiceInstance(mContext);
+        mLatitude = new Latitude();
+        if (getIntent()!=null){
+            mLatitude.lat = (float) getIntent().getDoubleExtra("lat", 0);
+            mLatitude.lng = (float) getIntent().getDoubleExtra("lng", 0);
+        }else {
+            mLatitude.lat = 31.159488f;
+            mLatitude.lng = 121.579398f;
+        }
+        Log.d(TAG, "lat : "+mLatitude.lat);
+        Log.d(TAG, "lng : " + mLatitude.lng);
+        // 初始化搜索模块，注册事件监听
+        mSearch = GeoCoder.newInstance();
+        LatLng ptCenter = new LatLng((mLatitude.lat),(mLatitude.lng));
+        mSearch.setOnGetGeoCodeResultListener(this);
+        // 反Geo搜索
+        mSearch.reverseGeoCode(new ReverseGeoCodeOption()
+                .location(ptCenter));
 		initHandler();
 		initListener();
 		initView();
@@ -100,7 +120,8 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 		mListView = (ListView) findViewById(android.R.id.list);
 		mListView.setOnScrollListener(mScrollListener);
 		mListView.setOnItemClickListener(this);
-		mMenuButton = (ImageView) findViewById(R.id.btn_menu);
+        mTitleSpineer = (TextView) findViewById(R.id.title_spineer);
+        mMenuButton = (ImageView) findViewById(R.id.btn_menu);
 		mMenuButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -225,7 +246,7 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 					PaginationStoreListInfo paginationStoreListInfo = (PaginationStoreListInfo) msg.obj;
                     mPaginationStoreListInfo = paginationStoreListInfo;
 
-					if (paginationStoreListInfo != null) {
+					if (paginationStoreListInfo != null&&paginationStoreListInfo.storelist!=null) {
 						for (int i = 0; i < paginationStoreListInfo.storelist
 								.size(); i++) {
 							Latitude tmpLatitude = new Latitude();
@@ -272,4 +293,23 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 		intent.putExtra("storeInfo", storeInfo);
 		mContext.startActivity(intent);
 	}
+
+    @Override
+    public void onGetGeoCodeResult(GeoCodeResult geoCodeResult) {
+
+    }
+
+    @Override
+    public void onGetReverseGeoCodeResult(ReverseGeoCodeResult reverseGeoCodeResult) {
+        if (reverseGeoCodeResult == null || reverseGeoCodeResult.error != SearchResult.ERRORNO.NO_ERROR) {
+            Toast.makeText(MarketBrowser.this, "定位失败", Toast.LENGTH_LONG)
+                    .show();
+            return;
+        }
+        Toast.makeText(MarketBrowser.this, reverseGeoCodeResult.getAddress(),
+                Toast.LENGTH_LONG).show();
+        Log.d(TAG, "onGetReverseGeoCodeResult : " + reverseGeoCodeResult.getAddress());
+        Log.d(TAG, "onGetReverseGeoCodeResult : " + reverseGeoCodeResult.getBusinessCircle());
+        mTitleSpineer.setText(reverseGeoCodeResult.getAddress());
+    }
 }

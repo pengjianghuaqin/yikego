@@ -1,5 +1,11 @@
 package com.yikego.market;
 
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
+import com.baidu.mapapi.map.*;
+import com.baidu.mapapi.model.LatLng;
 import com.yikego.market.activity.MarketBrowser;
 import com.yikego.market.activity.SearchGoodActivity;
 
@@ -16,11 +22,21 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class SplashActivity extends Activity {
+    private static final String TAG = "SplashActivity";
 	private Context mContext;
 	private Handler mHandler;
 	private static final int ACTION_NETWORK_ERROR = 0;
 	private static final int ACTION_NEW_ACTIVITY = 1;
-	public SplashActivity() {
+
+    // 定位相关
+    LocationClient mLocClient;
+    public MyLocationListenner myListener = new MyLocationListenner();
+    private MyLocationConfiguration.LocationMode mCurrentMode;
+    BitmapDescriptor mCurrentMarker;
+    boolean isFirstLoc = true;// 是否首次定位
+    private LatLng mLatLng;
+
+    public SplashActivity() {
 		mContext = this;
 		
 	}
@@ -30,7 +46,15 @@ public class SplashActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
 		initHandler();
-		mHandler.sendEmptyMessageDelayed(ACTION_NEW_ACTIVITY, 1000);
+        // 定位初始化
+        mLocClient = new LocationClient(this);
+        mLocClient.registerLocationListener(myListener);
+        LocationClientOption option = new LocationClientOption();
+        option.setOpenGps(true);// 打开gps
+        option.setCoorType("bd09ll"); // 设置坐标类型
+        option.setScanSpan(1000);
+        mLocClient.setLocOption(option);
+        mLocClient.start();
 //		if (checkNetworkState()) {
 //			 mHandler.sendEmptyMessageDelayed(ACTION_NEW_ACTIVITY, 1000);
 //		} else {
@@ -46,8 +70,15 @@ public class SplashActivity extends Activity {
 				// TODO Auto-generated method stub
 				switch (msg.what) {
 				case ACTION_NEW_ACTIVITY:
-					
 					Intent intent = new Intent(mContext, MarketBrowser.class);
+                    if (msg.obj!=null){
+                        LatLng latLng = (LatLng) msg.obj;
+                        intent.putExtra("lat", latLng.latitude);
+                        intent.putExtra("lng", latLng.longitude);
+                    }else {
+                        intent.putExtra("lat", 0f);
+                        intent.putExtra("lng", 0f);
+                    }
 					startActivity(intent);
 					finish();
 					break;
@@ -81,4 +112,53 @@ public class SplashActivity extends Activity {
 		}
 		return true;
 	}
+
+    @Override
+    protected void onDestroy() {
+        // 退出时销毁定位
+        mLocClient.stop();
+        super.onDestroy();
+    }
+
+    /**
+     * 定位SDK监听函数
+     */
+    public class MyLocationListenner implements BDLocationListener {
+
+        @Override
+        public void onReceiveLocation(BDLocation location) {
+            // map view 销毁后不在处理新接收的位置
+            if (location == null){
+                Message msg = new Message();
+                msg.what = ACTION_NEW_ACTIVITY;
+                msg.obj = null;
+                mHandler.sendMessageDelayed(msg, 1000);
+                return;
+            }
+            MyLocationData locData = new MyLocationData.Builder()
+                    .accuracy(location.getRadius())
+                            // 此处设置开发者获取到的方向信息，顺时针0-360
+                    .direction(100).latitude(location.getLatitude())
+                    .longitude(location.getLongitude()).build();
+//            mBaiduMap.setMyLocationData(locData);
+
+            if (isFirstLoc) {
+                isFirstLoc = false;
+                LatLng ll = new LatLng(location.getLatitude(),
+                        location.getLongitude());
+                mLatLng = ll;
+                Log.d(TAG, "Location : lat " + ll.latitude);
+                Log.d(TAG, "Location :  lng : " + ll.longitude);
+                MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
+//                mBaiduMap.animateMapStatus(u);
+                Message msg = new Message();
+                msg.what = ACTION_NEW_ACTIVITY;
+                msg.obj = ll;
+                mHandler.sendMessageDelayed(msg, 1000);
+            }
+        }
+
+        public void onReceivePoi(BDLocation poiLocation) {
+        }
+    }
 }
