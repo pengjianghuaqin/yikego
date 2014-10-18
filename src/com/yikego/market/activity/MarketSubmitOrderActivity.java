@@ -1,5 +1,6 @@
 package com.yikego.market.activity;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -9,16 +10,13 @@ import com.yikego.android.rom.sdk.bean.CommitOrder;
 import com.yikego.android.rom.sdk.bean.OrderDetail;
 import com.yikego.android.rom.sdk.bean.OrderProductInfo;
 import com.yikego.android.rom.sdk.bean.OrderResult;
-import com.yikego.android.rom.sdk.bean.PaginationStoreListInfo;
-import com.yikego.android.rom.sdk.bean.PostUserLocationInfo;
 import com.yikego.market.R;
-import com.yikego.market.model.Latitude;
+import com.yikego.market.utils.CachedThumbnails;
 import com.yikego.market.utils.Constant;
 import com.yikego.market.utils.GlobalUtil;
 import com.yikego.market.webservice.Request;
 import com.yikego.market.webservice.ThemeService;
 
-import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -46,12 +44,16 @@ public class MarketSubmitOrderActivity extends ListActivity implements
 	private static final int ACTIVITY_RESULT_DETAIL = 1001;
 	private Context mContext;
 	private ListView mListView;
+    private TextView productCount;
+    private TextView priceCount;
 	private OrderListAdapter mAdapter;
 	private Request mCurrentRequest;
 	private ThemeService mThemeService;
 	private Handler mHandler;
 	private TextView mPlayment_way;
 	private TextView mAddress;
+    private TextView mPayMoney;
+    private int mOrderType = -1;
 	private static final int ACTION_NETWORK_ERROR = 0;
 	private static final int ACTION_SUBMIT_ORDER = 1;
 	public MarketSubmitOrderActivity() {
@@ -96,14 +98,47 @@ public class MarketSubmitOrderActivity extends ListActivity implements
 		mAdapter = new OrderListAdapter(mContext,
 				MarketDetailActivity.orderDetailList);
 		mListView.setAdapter(mAdapter);
-	}
-	private void PostSubmitOrder() {
+
+        productCount = (TextView) findViewById(R.id.product_count);
+        priceCount = (TextView) findViewById(R.id.price_mount);
+        mPayMoney = (TextView) findViewById(R.id.order_pay_money);
+
+        float coutPrice = 0;
+        int count = 0;
+        for (int i = 0; i < MarketDetailActivity.orderDetailList.size(); i++) {
+            if (MarketDetailActivity.orderDetailList.get(i).selectFlag) {
+                count += MarketDetailActivity.orderDetailList.get(i).count;
+                coutPrice += (MarketDetailActivity.orderDetailList.get(i).price)
+                        * MarketDetailActivity.orderDetailList.get(i).count;
+
+             }
+        }
+        BigDecimal b = new BigDecimal(coutPrice);
+        coutPrice = b.setScale(1, BigDecimal.ROUND_HALF_UP).floatValue();
+
+        setPriceCount(coutPrice);
+        setProductCount(count);
+    }
+
+    private void setProductCount(int count) {
+        productCount.setText(count + getResources().getString(R.string.orderProductCount));
+    }
+
+    private void setPriceCount(float coutPrice) {
+        priceCount.setText(getResources().getString(R.string.yuan)+String.valueOf(coutPrice));
+        mPayMoney.setText(getResources().getString(R.string.pay_for) +
+            String.valueOf(coutPrice));
+    }
+
+    private void PostSubmitOrder() {
 		// TODO Auto-generated method stub
 
 		Request request = new Request(0, Constant.TYPE_POST_SUBMIT_ORDER);
 		// Object[] params = new Object[2];
 		CommitOrder commitOrder = new CommitOrder();
 		commitOrder.storeId = MarketDetailActivity.storeID;
+        commitOrder.orderType = 1;
+        mOrderType = commitOrder.orderType;
         if (GlobalUtil.isLogin(this))
             commitOrder.userId = GlobalUtil.getUserId(this);
         else
@@ -139,6 +174,7 @@ public class MarketSubmitOrderActivity extends ListActivity implements
 		mCurrentRequest = request;
 		mThemeService.getStoreList(request);
 	}
+
 	private void initHandler() {
 		// TODO Auto-generated method stub
 		mHandler = new Handler() {
@@ -149,9 +185,13 @@ public class MarketSubmitOrderActivity extends ListActivity implements
 				switch (msg.what) {
 				case ACTION_SUBMIT_ORDER:
 					OrderResult orderResult = (OrderResult) msg.obj;
-					Toast toast = Toast.makeText(mContext,"orderId="+orderResult.orderNo+"/ resultCode="+orderResult.resultCode+"/ totalFee="+orderResult.totalFee, Toast.LENGTH_SHORT);
-					toast.show(); 
-					showOrderSuccess();
+                    if (orderResult!=null && orderResult.resultCode == 0){
+//                        Toast toast = Toast.makeText(mContext,"orderId="+
+//                                orderResult.orderNo+"/ resultCode="+orderResult.resultCode+
+//                                "/ totalFee="+orderResult.totalFee, Toast.LENGTH_SHORT);
+//                        toast.show();
+                        showOrderSuccess(orderResult);
+                    }
 					break;
 
 				default:
@@ -161,14 +201,17 @@ public class MarketSubmitOrderActivity extends ListActivity implements
 		};
 	}
 	
-	private void showOrderSuccess() {
+	private void showOrderSuccess(OrderResult orderResult) {
 		Intent intent = new Intent();
 		intent.setClass(this, PaySuccessActivity.class);
+        intent.putExtra("orderResult", orderResult);
+        intent.putExtra("orderType", mOrderType);
 		startActivity(intent);
 	}
 	private class OrderListAdapter extends ArrayAdapter<OrderProductInfo> {
 		private ViewHolder viewHolder = null;
 		private LayoutInflater mLayoutInflater;
+        private Drawable mThumb = null;
 
 		public OrderListAdapter(Context context, List<OrderProductInfo> objects) {
 			// TODO Auto-generated constructor stub
@@ -188,21 +231,17 @@ public class MarketSubmitOrderActivity extends ListActivity implements
 			if (convertView == null) {
 				// convertView = mLayoutInflater.inflate(R.layout.app_list_item,
 				// null);
-				convertView = mLayoutInflater.inflate(R.layout.order_list_item,
+				convertView = mLayoutInflater.inflate(R.layout.order_goods_list_item,
 						parent, false);
 				viewHolder = new ViewHolder();
 				viewHolder.mName = (TextView) convertView
-						.findViewById(R.id.order_listitem_name);
+						.findViewById(R.id.order_goods_listitem_name);
 				viewHolder.mDetail = (TextView) convertView
-						.findViewById(R.id.order_listitem_detail);
-				viewHolder.mPrice = (TextView) convertView
-						.findViewById(R.id.order_listitem_price);
-				viewHolder.mThumbnail = (ImageView) convertView
-						.findViewById(R.id.order_listitem_icon);
-				viewHolder.mOrderFlag = (ImageView) convertView
-						.findViewById(R.id.order_flag);
+						.findViewById(R.id.order_goods_listitem_detail);
 				viewHolder.mOrderCout = (TextView) convertView
-						.findViewById(R.id.order_goods_index);
+						.findViewById(R.id.order_goods_item_count);
+				viewHolder.mThumbnail = (ImageView) convertView
+						.findViewById(R.id.order_goods_listitem_thumb);
 				convertView.setTag(viewHolder);
 			} else {
 				viewHolder = (ViewHolder) convertView.getTag();
@@ -217,22 +256,16 @@ public class MarketSubmitOrderActivity extends ListActivity implements
 			// mContext.startActivity(intent);
 			// }
 			// });
+            if (orderInfo == null || !orderInfo.selectFlag){
+                convertView.setVisibility(View.INVISIBLE);
+            }
 			if (orderInfo != null) {
 				viewHolder.mName.setText(orderInfo.name);
 				viewHolder.mDetail.setText(orderInfo.name);
-				viewHolder.mPrice.setText("��   " + orderInfo.price);
-				viewHolder.mOrderCout.setText("" + orderInfo.count);
-				Drawable orderFlag;
-				if (orderInfo.count == 0) {
-					orderFlag = mContext.getResources().getDrawable(
-							R.drawable.img_flag_unchecked);
-				} else {
-					orderFlag = mContext.getResources().getDrawable(
-							R.drawable.img_flag_selected);
-				}
-				viewHolder.mOrderFlag.setImageDrawable(orderFlag);
+				viewHolder.mOrderCout.setText("X " + orderInfo.count);
+                viewHolder.mThumbnail.setBackground(CachedThumbnails.getGoodsThumbnail(
+                        mContext, orderInfo.productId));
 			}
-
 			return convertView;
 		}
 
@@ -241,8 +274,6 @@ public class MarketSubmitOrderActivity extends ListActivity implements
 			// TextView mAuthor;
 			TextView mName;
 			TextView mDetail;
-			TextView mPrice;
-			ImageView mOrderFlag;
 			TextView mOrderCout;
 		}
 	}

@@ -187,6 +187,25 @@ public class RequestHandler extends Thread {
     					}
     				}
     				break;
+                case Constant.TYPE_GOODS_IMG_LIST:
+    				if (request.getData() != null) {
+    					ArrayList<Drawable> imgList= new ArrayList<Drawable>();
+    					params = (Object[]) request.getData();
+    					ArrayList<String> imgUrl = (ArrayList<String>) params[0];
+    					for(int i=0;i<imgUrl.size();i++){
+    						try {
+    							imgList = mAgent.getGoodsImgList(imgUrl);
+        						request.setStatus(Constant.STATUS_SUCCESS);
+        						request.notifyObservers(imgList);
+        					} catch (SocketException e) {
+        						// TODO Auto-generated catch block
+        						request.setStatus(Constant.STATUS_ERROR);
+        						request.notifyObservers(null);
+        					}
+    					}
+    				}
+    				break;		
+    				
                 case Constant.TYPE_GET_USER_ORDER:
                     if (request.getData() != null){
                         PostUserOrderBody postUserOrderBody = (PostUserOrderBody) request.getData();

@@ -29,16 +29,20 @@
             android:textColor="@color/white"
             android:textSize="20dip" />
 
-        <Button
-            android:id="@+id/confirm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="8dp"
-            android:text="确定"
-            android:textColor="@color/bg_color_blue"
-            android:onClick="onConfirmClick" />
+        <TextView
+                android:id="@+id/confirm"
+                android:text="确定"
+                android:textSize="12sp"
+                android:textColor="@color/bg_color_blue"
+                android:background="@drawable/ic_score_exhange"
+                android:gravity="center"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:layout_centerVertical="true"
+                android:onClick="onConfirmClick" />
     </RelativeLayout>
 
     <RelativeLayout

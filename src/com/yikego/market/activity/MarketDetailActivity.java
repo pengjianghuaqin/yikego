@@ -87,7 +87,9 @@ public class MarketDetailActivity extends Activity implements
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		orderDetailList.clear();
+		if(orderDetailList!=null){
+			orderDetailList.clear();
+		}
 		// initActionBar();
 	}
 	

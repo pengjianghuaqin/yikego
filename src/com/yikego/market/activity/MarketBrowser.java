@@ -204,7 +204,7 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 		String imgUrl = null;if(mMarketListAdapter.getItem(position).pictures!=null&&mMarketListAdapter.getItem(position).pictures.size()>0){
 			int index = mMarketListAdapter.getItem(position).pictures.get(0).picPath.lastIndexOf(".");
 			imgUrl = mMarketListAdapter.getItem(position).pictures.get(0).picPath.substring(0, index);
-			imgUrl += "_large"+mMarketListAdapter.getItem(position).pictures.get(0).picPath.substring(index);
+			imgUrl += "_small"+mMarketListAdapter.getItem(position).pictures.get(0).picPath.substring(index);
 		}
 		
 		Log.v(TAG, "imgUrl2 ="+imgUrl);

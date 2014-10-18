@@ -84,6 +84,7 @@
     <string name="product_name">商品名称：</string>
     <string name="text_playment_way">支付方式</string>
     <string name="text_playment_cod">货到付款</string>
+    <string name="text_commit_order_success">提交成功</string>
     <string name="text_playment_online">在线支付</string>
     <string name="text_play_success">支付成功</string>
     <string name="text_play_success_hint">您的订单已经提交:</string>
@@ -94,10 +95,14 @@
     <string name="point_type">积分类型：</string>
     <string name="point_desc">积分描述：</string>
     <string name="point_count">积分：</string>
+    <string name="yuan">￥: </string>
+    <string name="pay_for">应支付 : ￥</string>
+    <string name="orderProductCount"> 件</string>
 
     <plurals name="numberOfPoint">
         <item quantity="other">总积分：%d分</item>
     </plurals>
 
     <string name="request_error">获取数据失败</string>
+    <string name="back_home">首页</string>
 </resources>

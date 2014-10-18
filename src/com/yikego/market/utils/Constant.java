@@ -29,6 +29,7 @@ public class Constant {
     //request type for connect server
 	
 	public static final int TYPE_APP_ICON = 268500000;
+	public static final int TYPE_GOODS_IMG_LIST = 268500001;
 	public static final int TYPE_GET_AUTH_CODE = 268501006;
     public static final int TYPE_POST_USER_REGISTER = 268501007;
     public static final int TYPE_POST_USER_LOGIN = 268501008;

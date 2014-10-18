@@ -145,7 +145,7 @@ public class MarketGoodsListActivity extends ListActivity implements
 					.get(0).lastIndexOf(".");
 			imgUrl = mGoodsListAdapter.getItem(position).getGoodsIconUrl()
 					.get(0).substring(0, index);
-			imgUrl += "_large"
+			imgUrl += "_small"
 					+ mGoodsListAdapter.getItem(position).getGoodsIconUrl()
 							.get(0).substring(index);
 		}

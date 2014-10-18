@@ -154,45 +154,61 @@
             android:fadingEdge="none"
             android:footerDividersEnabled="true" />
 
+        <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:textColor="@color/black"
+                android:text="付款信息" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="50dip"
-            android:background="@color/bg_color_blue" >
+            android:background="@color/text_gray_color_e3" >
 
             <TextView
-                android:id="@+id/selected_settlement_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dip"
+                    android:text="商品总计"
+                    android:textColor="@color/black"
+                    android:textSize="12dip" />
+            <TextView
+                android:id="@+id/product_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="15dip"
-                android:text="数量3件"
-                android:textColor="@color/white"
+                android:layout_toLeftOf="@+id/price_mount"
+                android:layout_marginRight="20dp"
+                android:textColor="@color/black"
                 android:textSize="12dip" />
 
             <TextView
-                android:id="@+id/settlement_amount"
+                android:id="@+id/price_mount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="15dip"
-                android:text="小计 ￥ 358.00"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="14dip" />
         </RelativeLayout>
     </LinearLayout>
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="50dip"
         android:layout_alignParentBottom="true"
         android:background="@color/edit_text_color" >
 
         <TextView
+            android:id="@+id/order_pay_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="应支付： ￥320.00"
+            android:text="应支付：￥0.00"
+            android:layout_marginLeft="10dp"
             android:textColor="@color/white" />
 
         <Button

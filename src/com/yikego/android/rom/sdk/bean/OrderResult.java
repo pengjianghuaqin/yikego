@@ -1,9 +1,13 @@
 package com.yikego.android.rom.sdk.bean;
 
 
-public class OrderResult {
+import java.io.Serializable;
+
+public class OrderResult implements Serializable{
 
     public float totalFee;
     public int resultCode;
     public int orderNo;
+    public String storeTel;
+    public String storePhone;
 }

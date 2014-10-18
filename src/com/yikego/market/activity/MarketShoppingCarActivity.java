@@ -35,6 +35,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import com.yikego.market.utils.CachedThumbnails;
 
 public class MarketShoppingCarActivity extends ListActivity {
 	private Context mContext;
@@ -193,10 +194,11 @@ public class MarketShoppingCarActivity extends ListActivity {
 			viewHolder.mPlus.setTag(position);
 			viewHolder.mSubtract.setOnClickListener(mOnClickListener);
 			viewHolder.mSubtract.setTag(position);
+			viewHolder.mThumbnail.setImageDrawable(CachedThumbnails.getGoodsThumbnail(mContext, orderInfo.productId));
 			if (orderInfo != null) {
 				viewHolder.mName.setText(orderInfo.name);
 				viewHolder.mDetail.setText(orderInfo.name);
-				float price = orderInfo.price* orderInfo.count;
+				float price = orderInfo.price;
 				BigDecimal b = new BigDecimal(price); 
 				price = b.setScale(1, BigDecimal.ROUND_HALF_UP).floatValue(); 
 				viewHolder.mPrice.setText("￥  " + price);

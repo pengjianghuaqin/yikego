@@ -2,12 +2,14 @@ package com.yikego.market.webservice;
 
 import java.io.IOException;
 import java.net.SocketException;
+import java.util.ArrayList;
 
 import com.yikego.android.rom.sdk.bean.*;
 
 import org.apache.http.HttpException;
 
 import com.yikego.android.rom.sdk.ServiceProvider;
+import com.yikego.market.model.Image2;
 import com.yikego.market.utils.GlobalUtil;
 
 import android.content.Context;
@@ -20,7 +22,7 @@ import android.util.Log;
 public class ThemeServiceAgent {
 
 	// 测试服务器
-	public static String RESOURCE_ROOT_URL="http://121.40.182.230:8080/ykcore/";
+	public static String RESOURCE_ROOT_URL = "http://121.40.182.230:8080/ykcore/";
 
 	private static ThemeServiceAgent mInstance;
 	private int nPageSize;
@@ -44,14 +46,16 @@ public class ThemeServiceAgent {
 		}
 		return mInstance;
 	}
-	public Object postMessageRecord(String messageRecordType,String userPhone)
+
+	public Object postMessageRecord(String messageRecordType, String userPhone)
 			throws SocketException {
-        Object data = null;
+		Object data = null;
 		if (!GlobalUtil.checkNetworkState(mContext)) {
 			throw new SocketException();
 		} else {
 			try {
-				data =  ServiceProvider.postMessageRecord(messageRecordType,userPhone);
+				data = ServiceProvider.postMessageRecord(messageRecordType,
+						userPhone);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -63,179 +67,223 @@ public class ThemeServiceAgent {
 		}
 	}
 
-    public Object postUserRegister(UserRegisterInfo userRegisterInfo)
-            throws  SocketException{
-        Object data = null;
-        if (!GlobalUtil.checkNetworkState(mContext)){
-            throw new SocketException();
-        }else {
-            try {
-                data =ServiceProvider.postUserRegister(userRegisterInfo);
-            }catch (IOException e){
-                e.printStackTrace();
-            }catch (HttpException e){
-                e.printStackTrace();
-            }
-        }
-        return data;
-    }
-    public Object postUserLogin(UserLoginInfo userLoginInfo)
-            throws SocketException{
-        Object data = null;
-        if (!GlobalUtil.checkNetworkState(mContext)){
-            throw new SocketException();
-        }else {
-            try {
-                data = ServiceProvider.postUserLogin(userLoginInfo);
-            }catch (IOException e){
-                e.printStackTrace();
-            }catch (HttpException e){
-                e.printStackTrace();
-            }
-        }
-        return data;
-    }
-    public PaginationStoreListInfo postUserLocationInfo(PostUserLocationInfo postUserLocationInfo)
-            throws  SocketException{
-    	PaginationStoreListInfo data = null;
-        if (!GlobalUtil.checkNetworkState(mContext)){
-            throw new SocketException();
-        }else {
-            try {
-                data =ServiceProvider.getStoreList(postUserLocationInfo);
-            }catch (IOException e){
-                e.printStackTrace();
-            }catch (HttpException e){
-                e.printStackTrace();
-            }
-        }
-        return data;
-    }
-    
-    public MarketGoodsInfoListData getMarketGoodsInfoListData(StoreId storeId)
-            throws  SocketException{
-    	MarketGoodsInfoListData data = null;
-        if (!GlobalUtil.checkNetworkState(mContext)){
-            throw new SocketException();
-        }else {
-            try {
-                data =ServiceProvider.getProductTypeList(storeId);
-            }catch (IOException e){
-                e.printStackTrace();
-            }catch (HttpException e){
-                e.printStackTrace();
-            }
-        }
-        return data;
-    }
-    
-    public ProductListInfo getMarketGoodsInfoList(PostProductType postProductType)
-            throws  SocketException{
-    	ProductListInfo data = null;
-        if (!GlobalUtil.checkNetworkState(mContext)){
-            throw new SocketException();
-        }else {
-            try {
-                data =ServiceProvider.getProductList(postProductType);
-            }catch (IOException e){
-                e.printStackTrace();
-            }catch (HttpException e){
-                e.printStackTrace();
-            }
-        }
-        return data;
-    }
-    
-    public OrderResult PostOrder(CommitOrder commitOrder)
-            throws  SocketException{
-    	OrderResult data = null;
-        if (!GlobalUtil.checkNetworkState(mContext)){
-            throw new SocketException();
-        }else {
-            try {
-                data =(OrderResult) ServiceProvider.postOrder(commitOrder);
-            }catch (IOException e){
-                e.printStackTrace();
-            }catch (HttpException e){
-                e.printStackTrace();
-            }
-        }
-        return data;
-    }
-    public Drawable getAppIcon(String imgUrl) throws SocketException {
-		if(!GlobalUtil.checkNetworkState(mContext)) {
+	public Object postUserRegister(UserRegisterInfo userRegisterInfo)
+			throws SocketException {
+		Object data = null;
+		if (!GlobalUtil.checkNetworkState(mContext)) {
 			throw new SocketException();
 		} else {
-			byte[] rawData =null;
-			Bitmap bmp = null;		
+			try {
+				data = ServiceProvider.postUserRegister(userRegisterInfo);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (HttpException e) {
+				e.printStackTrace();
+			}
+		}
+		return data;
+	}
+
+	public Object postUserLogin(UserLoginInfo userLoginInfo)
+			throws SocketException {
+		Object data = null;
+		if (!GlobalUtil.checkNetworkState(mContext)) {
+			throw new SocketException();
+		} else {
+			try {
+				data = ServiceProvider.postUserLogin(userLoginInfo);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (HttpException e) {
+				e.printStackTrace();
+			}
+		}
+		return data;
+	}
+
+	public PaginationStoreListInfo postUserLocationInfo(
+			PostUserLocationInfo postUserLocationInfo) throws SocketException {
+		PaginationStoreListInfo data = null;
+		if (!GlobalUtil.checkNetworkState(mContext)) {
+			throw new SocketException();
+		} else {
+			try {
+				data = ServiceProvider.getStoreList(postUserLocationInfo);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (HttpException e) {
+				e.printStackTrace();
+			}
+		}
+		return data;
+	}
+
+	public MarketGoodsInfoListData getMarketGoodsInfoListData(StoreId storeId)
+			throws SocketException {
+		MarketGoodsInfoListData data = null;
+		if (!GlobalUtil.checkNetworkState(mContext)) {
+			throw new SocketException();
+		} else {
+			try {
+				data = ServiceProvider.getProductTypeList(storeId);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (HttpException e) {
+				e.printStackTrace();
+			}
+		}
+		return data;
+	}
+
+	public ProductListInfo getMarketGoodsInfoList(
+			PostProductType postProductType) throws SocketException {
+		ProductListInfo data = null;
+		if (!GlobalUtil.checkNetworkState(mContext)) {
+			throw new SocketException();
+		} else {
+			try {
+				data = ServiceProvider.getProductList(postProductType);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (HttpException e) {
+				e.printStackTrace();
+			}
+		}
+		return data;
+	}
+
+	public OrderResult PostOrder(CommitOrder commitOrder)
+			throws SocketException {
+		OrderResult data = null;
+		if (!GlobalUtil.checkNetworkState(mContext)) {
+			throw new SocketException();
+		} else {
+			try {
+				data = (OrderResult) ServiceProvider.postOrder(commitOrder);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (HttpException e) {
+				e.printStackTrace();
+			}
+		}
+		return data;
+	}
+
+	public Drawable getAppIcon(String imgUrl) throws SocketException {
+		if (!GlobalUtil.checkNetworkState(mContext)) {
+			throw new SocketException();
+		} else {
+			byte[] rawData = null;
+			Bitmap bmp = null;
 			try {
 				rawData = ServiceProvider.getImage(imgUrl);
 				if (rawData != null) {
-//					bmp = 
-//						BitmapFactory.decodeByteArray(rawData, 0, rawData.length);
-//					return new BitmapDrawable(null, bmp);					
-					try
-					{
+					// bmp =
+					// BitmapFactory.decodeByteArray(rawData, 0,
+					// rawData.length);
+					// return new BitmapDrawable(null, bmp);
+					try {
 						BitmapFactory.Options opts = new BitmapFactory.Options();
 						opts.inJustDecodeBounds = true;
-						BitmapFactory.decodeByteArray(rawData, 0, rawData.length,opts);
-//						opts.inSampleSize = 2;
-			            opts.inJustDecodeBounds = false;
-			            opts.inInputShareable = true;
-			            opts.inPurgeable = true;	
-						bmp = BitmapFactory.decodeByteArray(rawData, 0, rawData.length,opts);	
-						
+						BitmapFactory.decodeByteArray(rawData, 0,
+								rawData.length, opts);
+						// opts.inSampleSize = 2;
+						opts.inJustDecodeBounds = false;
+						opts.inInputShareable = true;
+						opts.inPurgeable = true;
+						bmp = BitmapFactory.decodeByteArray(rawData, 0,
+								rawData.length, opts);
+
 						return new BitmapDrawable(null, bmp);
-					}
-					catch(OutOfMemoryError e)
-					{
-						e.printStackTrace();	
+					} catch (OutOfMemoryError e) {
+						e.printStackTrace();
 						return null;
-					}	
+					}
 				}
 				return null;
-			}catch(OutOfMemoryError e){
+			} catch (OutOfMemoryError e) {
 				e.printStackTrace();
 				return null;
-			} 
-			catch (Exception e) {
+			} catch (Exception e) {
 				throw new SocketException();
 			}
 		}
 	}
-    public UserOrderListInfo getUserOrder(PostUserOrderBody postUserOrderBody)
-            throws SocketException{
-        UserOrderListInfo userOrderListInfo = null;
-        if (!GlobalUtil.checkNetworkState(mContext)){
-            throw new SocketException();
-        }else {
-            try {
-                userOrderListInfo = ServiceProvider.getUserOrderList(postUserOrderBody);
-            }catch (IOException e){
-                e.printStackTrace();
-            }catch (HttpException e){
-                e.printStackTrace();
-            }
-        }
-        return userOrderListInfo;
-    }
 
-    public UserPointListInfo getUserPoint(PostUserOrderBody postUserPointBody)
-            throws SocketException{
-        UserPointListInfo userPointListInfo = null;
-        if (!GlobalUtil.checkNetworkState(mContext)){
-            throw new SocketException();
-        }else {
-            try {
-                userPointListInfo = ServiceProvider.getUserPointList(postUserPointBody);
-            }catch (IOException e){
-                e.printStackTrace();
-            }catch (HttpException e){
-                e.printStackTrace();
-            }
-        }
-        return userPointListInfo;
+	public ArrayList<Drawable> getGoodsImgList(ArrayList<String> imgUrlList)
+			throws SocketException {
+		if (!GlobalUtil.checkNetworkState(mContext)) {
+			throw new SocketException();
+		} else {
+			byte[] rawData = null;
+			Bitmap bmp = null;
+			ArrayList<Drawable> imgList = new ArrayList<Drawable>();
+			try {
+				for (int i = 0; i < imgUrlList.size(); i++) {
+					rawData = ServiceProvider.getImage(imgUrlList.get(i));
+					if (rawData != null) {
+						try {
+							BitmapFactory.Options opts = new BitmapFactory.Options();
+							opts.inJustDecodeBounds = true;
+							BitmapFactory.decodeByteArray(rawData, 0,
+									rawData.length, opts);
+							// opts.inSampleSize = 2;
+							opts.inJustDecodeBounds = false;
+							opts.inInputShareable = true;
+							opts.inPurgeable = true;
+							bmp = BitmapFactory.decodeByteArray(rawData, 0,
+									rawData.length, opts);
+							imgList.add(new BitmapDrawable(null, bmp));
+						} catch (OutOfMemoryError e) {
+							e.printStackTrace();
+							return null;
+						}
+					}
+				}
+			} catch (OutOfMemoryError e) {
+				e.printStackTrace();
+				return null;
+			} catch (Exception e) {
+				throw new SocketException();
+			}
+			return imgList;
+		}
+	}
 
+	public UserOrderListInfo getUserOrder(PostUserOrderBody postUserOrderBody)
+			throws SocketException {
+		UserOrderListInfo userOrderListInfo = null;
+		if (!GlobalUtil.checkNetworkState(mContext)) {
+			throw new SocketException();
+		} else {
+			try {
+				userOrderListInfo = ServiceProvider
+						.getUserOrderList(postUserOrderBody);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (HttpException e) {
+				e.printStackTrace();
+			}
+		}
+		return userOrderListInfo;
+	}
 
-    }
+	public UserPointListInfo getUserPoint(PostUserOrderBody postUserPointBody)
+			throws SocketException {
+		UserPointListInfo userPointListInfo = null;
+		if (!GlobalUtil.checkNetworkState(mContext)) {
+			throw new SocketException();
+		} else {
+			try {
+				userPointListInfo = ServiceProvider
+						.getUserPointList(postUserPointBody);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (HttpException e) {
+				e.printStackTrace();
+			}
+		}
+		return userPointListInfo;
+
+	}
 }

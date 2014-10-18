@@ -199,7 +199,12 @@ public class MarketSearchStoreActivity extends Activity implements
 									.get(i).lng;
 							storeLatitude.add(tmpLatitude);
 						}
-						if (mMarketListAdapter == null) {
+                        if(mMarketListAdapter!=null){
+                            mMarketListAdapter.clear();
+                        }
+                        mMarketListAdapter = new MarketListAdapter(
+                                mContext, paginationStoreListInfo.storelist);
+/*						if (mMarketListAdapter == null) {
 							mMarketListAdapter = new MarketListAdapter(
 									mContext, paginationStoreListInfo.storelist);
 							mListView.setAdapter(mMarketListAdapter);
@@ -214,7 +219,7 @@ public class MarketSearchStoreActivity extends Activity implements
 							if (paginationStoreListInfo.nowPage >= paginationStoreListInfo.pageCount) {
 								isEnd = true;
 							}
-						}
+						}*/
 						mListView.setAdapter(mMarketListAdapter);
 					}
 					mListView.setVisibility(View.VISIBLE);

@@ -1,5 +1,6 @@
 package com.yikego.market.activity;
 
+import android.widget.TextView;
 import com.yikego.market.R;
 import com.yikego.market.utils.GlobalUtil;
 
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 public class ConsigneeEditActivity extends Activity {
 	private EditText mEditText;
+    private TextView mSure;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -20,10 +22,18 @@ public class ConsigneeEditActivity extends Activity {
 
 		setContentView(R.layout.activity_consignee_edit);
 		mEditText = (EditText) findViewById(R.id.edit);
-	}
+        mSure = (TextView) findViewById(R.id.confirm);
+        mSure.setVisibility(View.VISIBLE);
+        mSure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveAddressInfo();
+            }
+        });
+    }
 	
 	public void onConfirmClick(View v) {
-		saveAddressInfo();
+        saveAddressInfo();
 	}
 	
 	private void saveAddressInfo(){

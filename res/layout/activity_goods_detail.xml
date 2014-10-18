@@ -39,13 +39,12 @@
             android:textColor="@color/white"
             android:textSize="15dip" />
     </RelativeLayout>
-
-    <ImageView
-        android:id="@+id/goods_detail_img"
+<Gallery 
+    android:id="@+id/goods_detail_img"
         android:layout_width="match_parent"
-        android:layout_height="130dip"
+        android:layout_height="165dip"
         android:layout_below="@id/goods_detail_actionbar"
-        android:background="@drawable/img_bg_goods_detail" />
+    />
 
     <RelativeLayout
         android:id="@+id/goods_detail_area"
