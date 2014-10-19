@@ -52,7 +52,6 @@
         <activity
             android:name=".activity.MarketBrowser"
             android:launchMode="singleInstance"
-            android:noHistory="true"
             android:configChanges="keyboardHidden|orientation|screenLayout|uiMode"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" >

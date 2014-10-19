@@ -425,6 +425,7 @@ public class MarketGoodsListActivity extends ListActivity implements
 												.get(i).productId) {
 											MarketDetailActivity.orderDetailList
 													.get(i).count++;
+                                            break;
 										} 
 									}
 									if(i == MarketDetailActivity.orderDetailList

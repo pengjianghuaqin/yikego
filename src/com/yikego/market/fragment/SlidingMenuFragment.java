@@ -92,6 +92,7 @@ public class SlidingMenuFragment extends Fragment implements View.OnClickListene
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         LogUtils.v(TAG, "onActivityCreated");
+        mSharePreferences = getActivity().getSharedPreferences("userInfo" ,Context.MODE_PRIVATE);
         initView();
         updateBottonStatus();
         IntentFilter mLoginFilter = new IntentFilter();
