@@ -10,6 +10,7 @@ import com.yikego.market.model.GoodsData;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -35,6 +36,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.Toast;
+
 import com.yikego.market.utils.CachedThumbnails;
 
 public class MarketShoppingCarActivity extends ListActivity {
@@ -42,9 +45,11 @@ public class MarketShoppingCarActivity extends ListActivity {
 	private ListView mListView;
 	private TextView mCoutPrice;
 	private OrderListAdapter mAdapter;
+	private boolean loginFlag;
 
 	public MarketShoppingCarActivity() {
 		mContext = this;
+		loginFlag = false;
 	}
 
 	@Override
@@ -52,6 +57,13 @@ public class MarketShoppingCarActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_shopping_car);
 		initView();
+		SharedPreferences mSharePreferences = this.getSharedPreferences(
+				"userInfo", MODE_PRIVATE);
+
+		String userId = mSharePreferences.getString("userId", null);
+		if (userId != null) {
+			loginFlag = true;
+		}
 	}
 
 	private void initView() {
@@ -61,9 +73,16 @@ public class MarketShoppingCarActivity extends ListActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(mContext,
-						MarketSubmitOrderActivity.class);
-				startActivity(intent);
+				if (loginFlag) {
+					Intent intent = new Intent(mContext,
+							MarketSubmitOrderActivity.class);
+					startActivity(intent);
+				} else {
+					Toast.makeText(mContext,
+							mContext.getString(R.string.non_login),
+							Toast.LENGTH_LONG).show();
+				}
+
 			}
 
 		});
@@ -84,9 +103,9 @@ public class MarketShoppingCarActivity extends ListActivity {
 						* (MarketDetailActivity.orderDetailList.get(i).count);
 			}
 		}
-		BigDecimal b = new BigDecimal(coutPrice); 
-		coutPrice = b.setScale(1, BigDecimal.ROUND_HALF_UP).floatValue(); 
-		Log.v("getCoutPrice", "coutPrice ="+coutPrice);
+		BigDecimal b = new BigDecimal(coutPrice);
+		coutPrice = b.setScale(1, BigDecimal.ROUND_HALF_UP).floatValue();
+		Log.v("getCoutPrice", "coutPrice =" + coutPrice);
 		return coutPrice;
 	}
 
@@ -146,7 +165,7 @@ public class MarketShoppingCarActivity extends ListActivity {
 
 		private void onOrderFlagClick(View v) {
 			int position = (Integer) v.getTag();
-			ImageView orderFlag = (ImageView)v;
+			ImageView orderFlag = (ImageView) v;
 			MarketDetailActivity.orderDetailList.get(position).selectFlag = !MarketDetailActivity.orderDetailList
 					.get(position).selectFlag;
 			mAdapter.notifyDataSetChanged();
@@ -194,13 +213,14 @@ public class MarketShoppingCarActivity extends ListActivity {
 			viewHolder.mPlus.setTag(position);
 			viewHolder.mSubtract.setOnClickListener(mOnClickListener);
 			viewHolder.mSubtract.setTag(position);
-			viewHolder.mThumbnail.setImageDrawable(CachedThumbnails.getGoodsThumbnail(mContext, orderInfo.productId));
+			viewHolder.mThumbnail.setBackgroundDrawable(CachedThumbnails
+					.getGoodsThumbnail(mContext, orderInfo.productId));
 			if (orderInfo != null) {
 				viewHolder.mName.setText(orderInfo.name);
 				viewHolder.mDetail.setText(orderInfo.name);
 				float price = orderInfo.price;
-				BigDecimal b = new BigDecimal(price); 
-				price = b.setScale(1, BigDecimal.ROUND_HALF_UP).floatValue(); 
+				BigDecimal b = new BigDecimal(price);
+				price = b.setScale(1, BigDecimal.ROUND_HALF_UP).floatValue();
 				viewHolder.mPrice.setText("￥  " + price);
 				viewHolder.mOrderCout.setText("" + orderInfo.count);
 				Drawable orderFlag;
@@ -211,10 +231,10 @@ public class MarketShoppingCarActivity extends ListActivity {
 					orderFlag = mContext.getResources().getDrawable(
 							R.drawable.img_flag_selected);
 				}
-				if(orderInfo.selectFlag){
+				if (orderInfo.selectFlag) {
 					orderFlag = mContext.getResources().getDrawable(
 							R.drawable.img_flag_selected);
-				}else{
+				} else {
 					orderFlag = mContext.getResources().getDrawable(
 							R.drawable.img_flag_unchecked);
 				}

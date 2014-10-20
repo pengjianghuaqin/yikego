@@ -53,7 +53,7 @@ public class MarketDetailActivity extends Activity implements
 	private ImageView mBack;
 	private TextView mSearch;
 	private GridAdapter mGridAdapter;
-	private StoreInfo storeInfo;
+	public static StoreInfo storeInfo;
 	private Context mContext;
 	private Request mCurrentRequest;
 	private ThemeService mThemeService;
@@ -125,7 +125,7 @@ public class MarketDetailActivity extends Activity implements
 			}
 		});
 		ImageView marketIcon = (ImageView) findViewById(R.id.market_detail_image);
-		marketIcon.setImageDrawable(getThumbnail(storeInfo.storeId));
+		marketIcon.setBackgroundDrawable(getThumbnail(storeInfo.storeId));
 		TextView marketName = (TextView) findViewById(R.id.market_detail_name);
 		marketName.setText(storeInfo.name);
 		TextView marketDistance = (TextView) findViewById(R.id.market_detail_distance);

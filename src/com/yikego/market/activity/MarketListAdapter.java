@@ -86,7 +86,7 @@ public class MarketListAdapter extends ArrayAdapter<StoreInfo> {
 				mThumb = CachedThumbnails.getDefaultIcon(mContext);
 			}
 //			MarketPage.setTouchIntercept(true);
-			viewHolder.mThumbnail.setImageDrawable(mThumb);
+			viewHolder.mThumbnail.setBackgroundDrawable(mThumb);
 		}
 		
 		return convertView;

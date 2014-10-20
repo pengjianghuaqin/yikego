@@ -267,7 +267,7 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 							int id = (int) mMarketListAdapter
 									.getItemId(position);
 							Drawable drawable = getThumbnail(position, id);
-							viewHolder.mThumbnail.setImageDrawable(drawable);
+							viewHolder.mThumbnail.setBackgroundDrawable(drawable);
 						}
 					}
 
@@ -375,7 +375,7 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 						ImageView imageView = (ImageView) mListView
 								.findViewWithTag(String.valueOf(icInfo._id));
 						if (imageView != null) {
-							imageView.setImageDrawable(icInfo.mAppIcon);
+							imageView.setBackgroundDrawable(icInfo.mAppIcon);
 						}
 						if (mMarketListAdapter != null) {
 							mMarketListAdapter.notifyDataSetChanged();

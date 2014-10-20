@@ -321,7 +321,7 @@ public class MarketGoodsListActivity extends ListActivity implements
 						ImageView imageView = (ImageView) mListView
 								.findViewWithTag(String.valueOf(icInfo._id));
 						if (imageView != null) {
-							imageView.setImageDrawable(icInfo.mAppIcon);
+							imageView.setBackgroundDrawable(icInfo.mAppIcon);
 						}
 						if (mGoodsListAdapter != null) {
 							mGoodsListAdapter.notifyDataSetChanged();
@@ -446,7 +446,7 @@ public class MarketGoodsListActivity extends ListActivity implements
 				mThumb = ((MarketGoodsListActivity) mContext).getThumbnail(
 						position, goodsInfo.goodsId);
 
-				viewHolder.mThumbnail.setImageDrawable(mThumb);
+				viewHolder.mThumbnail.setBackgroundDrawable(mThumb);
 			}
 
 			return convertView;

@@ -10,6 +10,8 @@
     <string name="item_text_takeaway">30元起送</string>
     <string name="title_map">地图</string>
     <string name="location_now">正在定位</string>
+    <string name="non_login">未登录，请返回登陆界面登陆</string>
+    
 	<string name="title_import">请输入超市名称</string>
 	<string name="title_import_goods">请输入商品名称</string>
 	<string name="text_define"> 确定</string>

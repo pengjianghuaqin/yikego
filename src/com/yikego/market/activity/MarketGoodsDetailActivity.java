@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import com.yikego.android.rom.sdk.bean.OrderProductInfo;
 import com.yikego.android.rom.sdk.bean.PaginationStoreListInfo;
 import com.yikego.android.rom.sdk.bean.StoreInfo;
 import com.yikego.market.R;
@@ -78,10 +79,31 @@ public class MarketGoodsDetailActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				OrderProductInfo orderProductInfo = new OrderProductInfo();
+				orderProductInfo.productId = mGoodsData.goodsId;
+				orderProductInfo.price = mGoodsData.getGoodsPrice();
+				orderProductInfo.count = 1;
+				orderProductInfo.name = mGoodsData.getGoodsName();
+				if (MarketDetailActivity.orderDetailList != null
+						&& MarketDetailActivity.orderDetailList.size() > 0) {
+					int i = 0;
+					for (i = 0; i < MarketDetailActivity.orderDetailList.size(); i++) {
+						if (orderProductInfo.productId == MarketDetailActivity.orderDetailList
+								.get(i).productId) {
+							MarketDetailActivity.orderDetailList.get(i).count++;
+							break;
+						}
+					}
+					if (i == MarketDetailActivity.orderDetailList.size()) {
+						MarketDetailActivity.orderDetailList
+								.add(orderProductInfo);
+					}
+				} else {
+					MarketDetailActivity.orderDetailList.add(orderProductInfo);
+				}
 				Intent intent = new Intent(mContext,
-						MarketSettlementActivity.class);
-				startActivity(intent);
+						MarketShoppingCarActivity.class);
+				mContext.startActivity(intent);
 			}
 		});
 		ImageView back = (ImageView) findViewById(R.id.goods_detail_back);
@@ -93,15 +115,16 @@ public class MarketGoodsDetailActivity extends Activity {
 				finish();
 			}
 		});
-		LinearLayout enterMarket = (LinearLayout) findViewById(R.id.enter_market_area);
-		enterMarket.setOnClickListener(new OnClickListener() {
+		TextView distance = (TextView) findViewById(R.id.market_area_distance);
+		distance.setText("距离" + MarketDetailActivity.storeInfo.aboutDistance
+				+ "米");
+		TextView price = (TextView) findViewById(R.id.goods_detail_price);
+		price.setText("￥  " + mGoodsData.getGoodsPrice());
+		TextView detail = (TextView) findViewById(R.id.goods_detail);
+		detail.setText(mGoodsData.getGoodsDetail());
+		TextView marketName = (TextView) findViewById(R.id.market_name);
+		marketName.setText(MarketDetailActivity.storeInfo.name);
 
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				finish();
-			}
-		});
 		RelativeLayout enterShoppingCar = (RelativeLayout) findViewById(R.id.goods_detail_area);
 		enterShoppingCar.setOnClickListener(new OnClickListener() {
 
@@ -109,7 +132,7 @@ public class MarketGoodsDetailActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				EnterShoppingCarDialog dialog = new EnterShoppingCarDialog(
-						mContext);
+						mContext, mGoodsData);
 				dialog.show();
 			}
 		});

@@ -62,7 +62,7 @@
             android:drawableLeft="@drawable/image_code"
             android:drawablePadding="5.0dip"
             android:layout_below="@id/line_view"
-            android:inputType="number" />
+            />
     <Button
             android:textSize="17.0sp"
             android:textColor="#ffffffff"
