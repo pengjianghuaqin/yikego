@@ -67,15 +67,15 @@
                     android:layout_height="wrap_content"
                     android:padding="8dp"
                     android:textColor="@color/black"
-                    android:text="聂国罗" />
+                    android:visibility="gone"
+                    />
 
                 <TextView
                     android:id="@+id/tel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/name"
-                    android:paddingLeft="30dp"
-                    android:paddingTop="8dp"
+                    android:padding="8dp"
                     android:textColor="@color/black"
                     android:text="18312798683" />
 
@@ -83,7 +83,7 @@
                     android:id="@+id/addressee"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/name"
+                    android:layout_below="@+id/tel"
                     android:paddingBottom="8dp"
                     android:paddingLeft="8dp"
                     android:textColor="@color/black"

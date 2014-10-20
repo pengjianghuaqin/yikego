@@ -11,15 +11,14 @@
     <string name="title_map">地图</string>
     <string name="location_now">正在定位</string>
     <string name="non_login">未登录，请返回登陆界面登陆</string>
-    
-	<string name="title_import">请输入超市名称</string>
-	<string name="title_import_goods">请输入商品名称</string>
-	<string name="text_define"> 确定</string>
-	<string name="text_settlement"> 去结算</string>
-	<string name="text_title_goods_detail"> 商品详情</string>
-	<string name="text_enter_market_detail">进入店铺</string>
-	<string name="text_goods_Description">商品描述</string>
-	<string name="confirm_buy">立刻购买</string>
+    <string name="title_import">请输入超市名称</string>
+    <string name="title_import_goods">请输入商品名称</string>
+    <string name="text_define"> 确定</string>
+    <string name="text_settlement"> 去结算</string>
+    <string name="text_title_goods_detail"> 商品详情</string>
+    <string name="text_enter_market_detail">进入店铺</string>
+    <string name="text_goods_Description">商品描述</string>
+    <string name="confirm_buy">立刻购买</string>
     <string name="main_left_login_user">登录/注册</string>
     <string name="main_left_order_search">订单查询</string>
     <string name="user_order">我的订单</string>
@@ -81,7 +80,7 @@
     <string name="status">订单状态：</string>
     <string name="order_money">订单金额：</string>
     <string name="order_no">订单编号：</string>
-    <string name="order_time">订单时间：</string>
+    <string name="order_time">下单时间：</string>
     <string name="order_name">订单名称：</string>
     <string name="product_name">商品名称：</string>
     <string name="text_playment_way">支付方式</string>
@@ -93,6 +92,9 @@
     <string name="text_order_num">订单号: </string>
     <string name="text_order_amount">应付金额: </string>
     <string name="text_order_playway">支付方式: </string>
+    <string name="text_songhuo">送货信息</string>
+    <string name="order_info">订单信息</string>
+    <string name="text_user_order_detail">订单详情</string>
 
     <string name="point_type">积分类型：</string>
     <string name="point_desc">积分描述：</string>
@@ -107,4 +109,9 @@
 
     <string name="request_error">获取数据失败</string>
     <string name="back_home">首页</string>
+    <string name="location_history_edit_hint">请输入要切换的地址</string>
+    <string name="location_history_location_hint">点击定位在当前的位置</string>
+    <string name="location_history_his_location_hint">历史位置</string>
+    <string name="location_history_actionbar_title">切换位置</string>
+
 </resources>

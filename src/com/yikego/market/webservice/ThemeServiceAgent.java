@@ -151,7 +151,22 @@ public class ThemeServiceAgent {
 		}
 		return data;
 	}
-
+	public ProductListInfo getProductSearchList(
+			ProductSearchInfo productSearchInfo) throws SocketException {
+		ProductListInfo data = null;
+		if (!GlobalUtil.checkNetworkState(mContext)) {
+			throw new SocketException();
+		} else {
+			try {
+				data = ServiceProvider.getProductSearchList(productSearchInfo);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (HttpException e) {
+				e.printStackTrace();
+			}
+		}
+		return data;
+	}
 	public OrderResult PostOrder(CommitOrder commitOrder)
 			throws SocketException {
 		OrderResult data = null;
@@ -284,6 +299,21 @@ public class ThemeServiceAgent {
 			}
 		}
 		return userPointListInfo;
-
 	}
+    public UserOrderDetail getUserOrderDetail(PostOrderNo orderNo) throws SocketException{
+        UserOrderDetail userOrderDetail = null;
+        if (!GlobalUtil.checkNetworkState(mContext)) {
+            throw new SocketException();
+        } else {
+            try {
+                userOrderDetail = ServiceProvider
+                        .getUserOrderDetail(orderNo);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (HttpException e) {
+                e.printStackTrace();
+            }
+        }
+        return userOrderDetail;
+    }
 }

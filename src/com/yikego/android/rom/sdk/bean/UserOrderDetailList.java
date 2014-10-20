@@ -4,9 +4,10 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Created by wanglinglong on 14-10-11.
+ * Created by wll on 14-10-20.
  */
-public class OrderList implements Serializable{
+public class UserOrderDetailList implements Serializable{
+    private int resultCode;
     private int orderId;
     private int storeId;
     private int userId;
@@ -14,10 +15,19 @@ public class OrderList implements Serializable{
     private int orderType;
     private String subject;
     private String body;
-    private float totalFee;
+    private String totalFee;
     private int orderStatus;
+    private int orderSource;
     private String createTime;
-    private List<OrderDetail> orderDetailList;
+    private List<UserOrderDetailInfo> orderDetailList;
+
+    public int getResultCode() {
+        return resultCode;
+    }
+
+    public void setResultCode(int resultCode) {
+        this.resultCode = resultCode;
+    }
 
     public int getOrderId() {
         return orderId;
@@ -75,11 +85,11 @@ public class OrderList implements Serializable{
         this.body = body;
     }
 
-    public float getTotalFee() {
+    public String getTotalFee() {
         return totalFee;
     }
 
-    public void setTotalFee(float totalFee) {
+    public void setTotalFee(String totalFee) {
         this.totalFee = totalFee;
     }
 
@@ -91,6 +101,14 @@ public class OrderList implements Serializable{
         this.orderStatus = orderStatus;
     }
 
+    public int getOrderSource() {
+        return orderSource;
+    }
+
+    public void setOrderSource(int orderSource) {
+        this.orderSource = orderSource;
+    }
+
     public String getCreateTime() {
         return createTime;
     }
@@ -99,11 +117,11 @@ public class OrderList implements Serializable{
         this.createTime = createTime;
     }
 
-    public List<OrderDetail> getOrderDetailList() {
+    public List<UserOrderDetailInfo> getOrderDetailList() {
         return orderDetailList;
     }
 
-    public void setOrderDetailList(List<OrderDetail> orderDetailList) {
+    public void setOrderDetailList(List<UserOrderDetailInfo> orderDetailList) {
         this.orderDetailList = orderDetailList;
     }
 }

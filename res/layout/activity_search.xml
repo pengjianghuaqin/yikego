@@ -7,6 +7,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dip"
+        android:id="@+id/action_bar"
         android:background="@color/bg_color_blue" >
 
         <EditText
@@ -29,6 +30,7 @@
         <TextView 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/btn_search"
             android:text="@string/text_define"
             android:layout_marginRight="10dip"
             android:layout_alignParentRight="true"
@@ -38,4 +40,46 @@
             />
     </RelativeLayout>
 
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/action_bar"
+        android:layout_weight="0"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="@drawable/line_list_divider"
+        android:dividerHeight="1px"
+        android:drawSelectorOnTop="false"
+        android:fadingEdge="none"
+        android:footerDividersEnabled="true" />
+
+    <RelativeLayout
+        android:layout_width="80dp"
+        android:layout_height="80dp" 
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginRight="60dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:id="@+id/img_shopping_car"
+            android:background="@drawable/btn_shopping_car" />
+
+        <TextView
+            android:id="@+id/goods_index"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:background="@drawable/bg_shopping_car_index"
+            android:textColor="@color/red"
+            android:textSize="20dip" />
+    </RelativeLayout>
+<include
+		android:layout_width="fill_parent" android:layout_height="fill_parent"
+		android:layout_gravity="center"
+		layout="@layout/translateanimation_icon" />  
 </RelativeLayout>

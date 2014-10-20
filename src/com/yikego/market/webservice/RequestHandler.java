@@ -143,11 +143,21 @@ public class RequestHandler extends Thread {
                 case Constant.TYPE_GET_GOODS_LIST_INFO:
                     if (request.getData() != null){
                     	PostProductType postProductType = (PostProductType) request.getData();
-                    	Log.v("TYPE_GET_GOODS_LIST_INFO","postProductType nowPage="+postProductType.nowPage);
-                    	Log.v("TYPE_GET_GOODS_LIST_INFO","postProductType pageCount="+postProductType.pageCount);
-                    	Log.v("TYPE_GET_GOODS_LIST_INFO","postProductType productTypeId="+postProductType.productTypeId);
                         try {
                             data = mAgent.getMarketGoodsInfoList(postProductType);
+                            request.setStatus(Constant.STATUS_SUCCESS);
+                            request.notifyObservers(data);
+                        }catch (SocketException e){
+                            request.setStatus(Constant.STATUS_ERROR);
+                            request.notifyObservers(null);
+                        }
+                    }
+                    break;
+                case Constant.TYPE_GET_SEARCH_GOODS_LIST_INFO:
+                    if (request.getData() != null){
+                    	ProductSearchInfo productSearchInfo = (ProductSearchInfo) request.getData();
+                        try {
+                            data = mAgent.getProductSearchList(productSearchInfo);
                             request.setStatus(Constant.STATUS_SUCCESS);
                             request.notifyObservers(data);
                         }catch (SocketException e){
@@ -234,6 +244,20 @@ public class RequestHandler extends Thread {
                             }
                         }
                         break;
+                case Constant.TYPE_GET_ORDER_DETAIL:
+                    if (request.getData()!=null){
+                        PostOrderNo orderNo = (PostOrderNo) request.getData();
+                        Log.d(THREAD_NAME, "TYPE_GET_ORDER_DETAIL OrderNo : " + orderNo);
+                        try {
+                            data = mAgent.getUserOrderDetail(orderNo);
+                            request.setStatus(Constant.STATUS_SUCCESS);
+                            request.notifyObservers(data);
+                        } catch (SocketException e) {
+                            request.setStatus(Constant.STATUS_ERROR);
+                            request.notifyObservers(null);
+                        }
+                    }
+
 			default:
 				break;
 			}

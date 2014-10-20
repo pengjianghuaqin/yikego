@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -35,6 +36,7 @@ import com.yikego.market.utils.Constant;
 import com.yikego.market.webservice.Request;
 import com.yikego.market.webservice.ThemeService;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -121,8 +123,22 @@ public class MarketDetailActivity extends Activity implements
 				Intent intent = new Intent();
 				intent.setClass(MarketDetailActivity.this,
 						SearchGoodActivity.class);
+				intent.putExtra("storeId", storeID);
 				startActivity(intent);
 			}
+		});
+		
+		ImageView mShoppingcar = (ImageView) findViewById(R.id.market_detail_shopping_cart);
+		mShoppingcar.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(mContext,
+						MarketShoppingCarActivity.class);
+				startActivity(intent);
+			}
+
 		});
 		ImageView marketIcon = (ImageView) findViewById(R.id.market_detail_image);
 		marketIcon.setBackgroundDrawable(getThumbnail(storeInfo.storeId));
@@ -147,8 +163,20 @@ public class MarketDetailActivity extends Activity implements
 		marketAddress.setText(storeInfo.address);
 		TextView marketTel = (TextView) findViewById(R.id.market_detail_tel);
 		marketTel.setText(storeInfo.storeTel);
+        marketTel.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onDial((TextView) view);
+            }
+        });
 		TextView marketPhone = (TextView) findViewById(R.id.market_detail_phone);
 		marketPhone.setText(storeInfo.storePhone);
+        marketPhone.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onDial((TextView) view);
+            }
+        });
 		GetStoreInfo();
 	}
 
@@ -210,7 +238,18 @@ public class MarketDetailActivity extends Activity implements
 		mThemeService.getStoreList(request);
 	}
 
-	private class GridAdapter extends ArrayAdapter<MarketGoodsInfo> {
+    public void onDial(TextView view) {
+        try {
+            Uri uri= Uri.parse("tel:" + String.valueOf(view.getText()));
+            Intent intent = new Intent(Intent.ACTION_DIAL, uri);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private class GridAdapter extends ArrayAdapter<MarketGoodsInfo> {
 		private Context mContext;
 		private ViewHolder viewHolder = null;
 		private LayoutInflater mLayoutInflater;

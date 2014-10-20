@@ -103,6 +103,15 @@ public class ServiceProvider extends BaseResource {
 				+ "/product/getProductListForPaginationByProductTypeId",
 				postProductType, ProductListInfo.class);
 	}
+	/*
+	 * 搜索商品获取商品list
+	 */
+	public static ProductListInfo getProductSearchList(ProductSearchInfo productSearchInfo)
+			throws IOException, HttpException {
+		return post(ClientInfo.RESOURCE_ROOT_URL
+				+ "/product/getProductListForPaginationBystoreIdAndProductName",
+				productSearchInfo, ProductListInfo.class);
+	}
 
 	/*
 	 * 获取便利店list
@@ -148,4 +157,10 @@ public class ServiceProvider extends BaseResource {
         return userPointListInfo;
     }
 
+    public static UserOrderDetail getUserOrderDetail(PostOrderNo orderNo)
+        throws IOException, HttpException {
+        UserOrderDetail userOrderDetail = post(ClientInfo.RESOURCE_ROOT_URL
+                +"/order/getOrderDetail", orderNo, UserOrderDetail.class);
+        return userOrderDetail;
+    }
 }

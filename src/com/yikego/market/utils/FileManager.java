@@ -17,7 +17,7 @@ public class FileManager {
 	public static final String APP_ICON = "appicon";
 	public static final String GOODS_ICON = "goods";
 	public static final String CATE_ICON = "cateicon";
-	public static final String APP_DIR_NAME = "/fineos/theme";
+	public static final String APP_DIR_NAME = "/yikego/icons";
 	public static final String THEME_DIR_PATH = APP_DIR_NAME + "/themes";
 	public static final String APP_DIR_PATH = Environment.getExternalStorageDirectory() + APP_DIR_NAME;
 	public static final String RINGTONE_DIR_PATH = APP_DIR_NAME + "/ringtones";

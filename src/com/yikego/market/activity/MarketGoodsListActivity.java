@@ -223,6 +223,19 @@ public class MarketGoodsListActivity extends ListActivity implements
 			}
 
 		});
+		
+		TextView mSearch = (TextView) findViewById(R.id.market_search);
+		mSearch.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent();
+				intent.setClass(MarketGoodsListActivity.this,
+						SearchGoodActivity.class);
+				intent.putExtra("storeId", MarketDetailActivity.storeID);
+				startActivity(intent);
+			}
+		});
+		
 		mShoppingcarIndex = (TextView) findViewById(R.id.goods_index);
 		initHandler();
 		GetGoodsList();
@@ -373,7 +386,7 @@ public class MarketGoodsListActivity extends ListActivity implements
 						.findViewById(R.id.goods_listitem_price);
 				viewHolder.mThumbnail = (ImageView) convertView
 						.findViewById(R.id.goods_listitem_thumb);
-				viewHolder.mShoppingCar = (ImageView) convertView
+				viewHolder.mShoppingCar = (RelativeLayout) convertView
 						.findViewById(R.id.btn_shopping_car);
 
 				convertView.setTag(viewHolder);
@@ -528,7 +541,7 @@ public class MarketGoodsListActivity extends ListActivity implements
 			TextView mName;
 			TextView mDetail;
 			TextView mPrice;
-			ImageView mShoppingCar;
+			RelativeLayout mShoppingCar;
 			RelativeLayout mListItem;
 		}
 	}

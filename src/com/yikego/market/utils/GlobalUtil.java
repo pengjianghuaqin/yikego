@@ -123,7 +123,11 @@ public class GlobalUtil {
     public static int getUserId(Context context){
         mSharePreferences = context.getSharedPreferences("userInfo", Context.MODE_PRIVATE);
         userId = mSharePreferences.getString("userId", "");
-        return Integer.valueOf(userId);
+        if (userId!=null&&!userId.equals("")){
+            return Integer.valueOf(userId);
+        }else {
+            return -1;
+        }
     }
 
     public static String getUserPhone(Context context){

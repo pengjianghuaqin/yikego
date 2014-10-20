@@ -68,7 +68,7 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 	private PaginationStoreListInfo mPaginationStoreListInfo = null;
 	private Hashtable<Integer, Boolean> mIconStatusMap;
 	private boolean bBusy;
-
+	private String mStreetName;
 	public MarketBrowser() {
 		Log.v(TAG, "MarketBrowser");
 		isEnd = false;
@@ -87,23 +87,23 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 		Log.v(TAG, "onCreate");
 		setContentView(R.layout.activity_market_browser);
 		mThemeService = ThemeService.getServiceInstance(mContext);
-        mLatitude = new Latitude();
-        if (getIntent()!=null){
-            mLatitude.lat = (float) getIntent().getDoubleExtra("lat", 0);
-            mLatitude.lng = (float) getIntent().getDoubleExtra("lng", 0);
-        }else {
-            mLatitude.lat = 31.159488f;
-            mLatitude.lng = 121.579398f;
-        }
-        Log.d(TAG, "lat : "+mLatitude.lat);
-        Log.d(TAG, "lng : " + mLatitude.lng);
-        // 初始化搜索模块，注册事件监听
-        mSearch = GeoCoder.newInstance();
-        LatLng ptCenter = new LatLng((mLatitude.lat),(mLatitude.lng));
-        mSearch.setOnGetGeoCodeResultListener(this);
-        // 反Geo搜索
-        mSearch.reverseGeoCode(new ReverseGeoCodeOption()
-                .location(ptCenter));
+		mLatitude = new Latitude();
+		if (getIntent() != null) {
+			mLatitude.lat = (float) getIntent().getDoubleExtra("lat", 0);
+			mLatitude.lng = (float) getIntent().getDoubleExtra("lng", 0);
+			mStreetName = (String) getIntent().getStringExtra("street");
+		} else {
+			mLatitude.lat = 31.159488f;
+			mLatitude.lng = 121.579398f;
+		}
+		Log.d(TAG, "lat : " + mLatitude.lat);
+		Log.d(TAG, "lng : " + mLatitude.lng);
+		// 初始化搜索模块，注册事件监听
+		mSearch = GeoCoder.newInstance();
+		LatLng ptCenter = new LatLng((mLatitude.lat), (mLatitude.lng));
+		mSearch.setOnGetGeoCodeResultListener(this);
+		// 反Geo搜索
+		mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(ptCenter));
 		initHandler();
 		initListener();
 		initView();
@@ -112,6 +112,12 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 		// userLogin();
 	}
 
+	@Override
+	protected void onDestroy() {
+		mSearch.destroy();
+		super.onDestroy();
+	}
+	
 	private void initSlidingMenu() {
 		// 设置滑动菜单打开后的视图界面
 		setBehindContentView(R.layout.menu_frame);
@@ -131,8 +137,19 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 		mListView = (ListView) findViewById(android.R.id.list);
 		mListView.setOnScrollListener(mScrollListener);
 		mListView.setOnItemClickListener(this);
-        mTitleSpineer = (TextView) findViewById(R.id.title_spineer);
-        mMenuButton = (ImageView) findViewById(R.id.btn_menu);
+		mTitleSpineer = (TextView) findViewById(R.id.title_spineer);
+		if(mStreetName != null) {
+			mTitleSpineer.setText(mStreetName);			
+		}
+
+		mTitleSpineer.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent intent = new Intent(mContext, LocationHistoryActivity.class);
+				startActivity(intent);
+			}
+		});
+		mMenuButton = (ImageView) findViewById(R.id.btn_menu);
 		mMenuButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -150,7 +167,7 @@ public class MarketBrowser extends SlidingFragmentActivity implements
                 startActivity(intent);
             }
         });
-		EditText seacch = (EditText)findViewById(R.id.search_edittext);
+		TextView seacch = (TextView)findViewById(R.id.search_edittext);
 		seacch.setOnClickListener(new View.OnClickListener() {
 			@Override
             public void onClick(View view) {
@@ -201,13 +218,19 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 	}
 
 	private void addThumbnailRequest(int position, int id) {
-		String imgUrl = null;if(mMarketListAdapter.getItem(position).pictures!=null&&mMarketListAdapter.getItem(position).pictures.size()>0){
-			int index = mMarketListAdapter.getItem(position).pictures.get(0).picPath.lastIndexOf(".");
-			imgUrl = mMarketListAdapter.getItem(position).pictures.get(0).picPath.substring(0, index);
-			imgUrl += "_small"+mMarketListAdapter.getItem(position).pictures.get(0).picPath.substring(index);
+		String imgUrl = null;
+		if (mMarketListAdapter.getItem(position).pictures != null
+				&& mMarketListAdapter.getItem(position).pictures.size() > 0) {
+			int index = mMarketListAdapter.getItem(position).pictures.get(0).picPath
+					.lastIndexOf(".");
+			imgUrl = mMarketListAdapter.getItem(position).pictures.get(0).picPath
+					.substring(0, index);
+			imgUrl += "_small"
+					+ mMarketListAdapter.getItem(position).pictures.get(0).picPath
+							.substring(index);
 		}
-		
-		Log.v(TAG, "imgUrl2 ="+imgUrl);
+
+		Log.v(TAG, "imgUrl2 =" + imgUrl);
 		if (imgUrl != null) {
 			Request request = new Request(0L, Constant.TYPE_APP_ICON);
 			Object[] params = new Object[2];
@@ -267,7 +290,8 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 							int id = (int) mMarketListAdapter
 									.getItemId(position);
 							Drawable drawable = getThumbnail(position, id);
-							viewHolder.mThumbnail.setBackgroundDrawable(drawable);
+							viewHolder.mThumbnail
+									.setBackgroundDrawable(drawable);
 						}
 					}
 
@@ -399,22 +423,28 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 		mContext.startActivity(intent);
 	}
 
-    @Override
-    public void onGetGeoCodeResult(GeoCodeResult geoCodeResult) {
+	@Override
+	public void onGetGeoCodeResult(GeoCodeResult geoCodeResult) {
 
-    }
+	}
 
-    @Override
-    public void onGetReverseGeoCodeResult(ReverseGeoCodeResult reverseGeoCodeResult) {
-        if (reverseGeoCodeResult == null || reverseGeoCodeResult.error != SearchResult.ERRORNO.NO_ERROR) {
-            Toast.makeText(MarketBrowser.this, "定位失败", Toast.LENGTH_LONG)
-                    .show();
-            return;
-        }
-        Toast.makeText(MarketBrowser.this, reverseGeoCodeResult.getAddress(),
-                Toast.LENGTH_LONG).show();
-        Log.d(TAG, "onGetReverseGeoCodeResult : " + reverseGeoCodeResult.getAddress());
-        Log.d(TAG, "onGetReverseGeoCodeResult : " + reverseGeoCodeResult.getBusinessCircle());
-        mTitleSpineer.setText(reverseGeoCodeResult.getAddress());
-    }
+	@Override
+	public void onGetReverseGeoCodeResult(
+			ReverseGeoCodeResult reverseGeoCodeResult) {
+		if (reverseGeoCodeResult == null
+				|| reverseGeoCodeResult.error != SearchResult.ERRORNO.NO_ERROR) {
+			Toast.makeText(MarketBrowser.this, "定位失败", Toast.LENGTH_LONG)
+					.show();
+			return;
+		}
+		Toast.makeText(MarketBrowser.this, reverseGeoCodeResult.getAddress(),
+				Toast.LENGTH_LONG).show();
+		Log.d(TAG,
+				"onGetReverseGeoCodeResult : "
+						+ reverseGeoCodeResult.getAddress());
+		Log.d(TAG,
+				"onGetReverseGeoCodeResult : "
+						+ reverseGeoCodeResult.getBusinessCircle());
+		mTitleSpineer.setText(reverseGeoCodeResult.getAddress());
+	}
 }

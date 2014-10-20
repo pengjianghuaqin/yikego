@@ -39,6 +39,8 @@ public class Constant {
     public static final int TYPE_POST_SUBMIT_ORDER = 268501012;
     public static final int TYPE_GET_USER_ORDER = 268501013;
     public static final int TYPE_GET_USER_POINT = 268501014;
+    public static final int TYPE_GET_ORDER_DETAIL =268501015;
+    public static final int TYPE_GET_SEARCH_GOODS_LIST_INFO = 268501016;
     //get auth code type 1:register  2:quick login
     public static final int TYPE_AUTH_CODE_REGISTER = 1;
     public static final int TYPE_AUTH_CODE_QUICK_LOGIN = 2;
