@@ -38,6 +38,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import com.yikego.market.yikegoApplication;
 
 public class MarketSearchStoreActivity extends Activity implements
 		AdapterView.OnItemClickListener {
@@ -72,6 +73,7 @@ public class MarketSearchStoreActivity extends Activity implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.v(TAG, "onCreate");
+        yikegoApplication.getInstance().addActivity(this);
 		setContentView(R.layout.activity_market_search_store);
 		mThemeService = ThemeService.getServiceInstance(mContext);
 		initHandler();

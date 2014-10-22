@@ -29,6 +29,7 @@ import com.yikego.market.model.Latitude;
 import com.yikego.market.utils.Constant;
 import com.yikego.market.webservice.Request;
 import com.yikego.market.webservice.ThemeService;
+import com.yikego.market.yikegoApplication;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,6 +80,7 @@ public class LocationActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map);
         mThemeService = ThemeService.getServiceInstance(mContext);
+        yikegoApplication.getInstance().addActivity(this);
         mLatitude = new Latitude();
 //        initIntent();
 		mCurrentMode = LocationMode.NORMAL;

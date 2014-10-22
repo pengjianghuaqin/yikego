@@ -39,6 +39,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.yikego.market.utils.CachedThumbnails;
+import com.yikego.market.yikegoApplication;
 
 public class MarketShoppingCarActivity extends ListActivity {
 	private Context mContext;
@@ -56,6 +57,7 @@ public class MarketShoppingCarActivity extends ListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_shopping_car);
+        yikegoApplication.getInstance().addActivity(this);
 		initView();
 		SharedPreferences mSharePreferences = this.getSharedPreferences(
 				"userInfo", MODE_PRIVATE);

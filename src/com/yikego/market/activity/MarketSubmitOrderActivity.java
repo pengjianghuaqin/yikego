@@ -37,6 +37,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
+import com.yikego.market.yikegoApplication;
 
 public class MarketSubmitOrderActivity extends ListActivity implements
 		OnItemClickListener {
@@ -64,6 +65,7 @@ public class MarketSubmitOrderActivity extends ListActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_submitorder);
+        yikegoApplication.getInstance().addActivity(this);
 		mThemeService = ThemeService.getServiceInstance(mContext);
 		initView();
 		initHandler();
@@ -144,15 +146,33 @@ public class MarketSubmitOrderActivity extends ListActivity implements
         else
             commitOrder.userId = 1;
 		commitOrder.orderStatus = 0;
-		commitOrder.subject = "product subject";
-		commitOrder.body = "subject body";
 		commitOrder.orderDetailList = new ArrayList<OrderDetail>();
+        StringBuilder subjectSb = new StringBuilder();
+        StringBuilder summarySb = new StringBuilder();
 		for(int i=0;i<MarketDetailActivity.orderDetailList.size();i++){
 			OrderDetail orderDetail = new OrderDetail();
 			orderDetail.productId = MarketDetailActivity.orderDetailList.get(i).productId;
 			orderDetail.count = MarketDetailActivity.orderDetailList.get(i).count;
 			commitOrder.orderDetailList.add(orderDetail);
+
+            if (subjectSb.length()>256){
+                continue;
+            }else {
+                subjectSb = subjectSb.append(MarketDetailActivity.orderDetailList.get(i).name);
+                if (i!=MarketDetailActivity.orderDetailList.size()-1)
+                    subjectSb = subjectSb.append("，");
+                    summarySb = summarySb.append("；");
+            }
+            if (summarySb.length()>400){
+                continue;
+            }else {
+                summarySb = summarySb.append(MarketDetailActivity.orderDetailList.get(i).summary);
+                if (i!=MarketDetailActivity.orderDetailList.size()-1)
+                    summarySb = summarySb.append("；");
+            }
 		}
+        commitOrder.subject = subjectSb.toString();
+        commitOrder.body = summarySb.toString();
 		request.setData(commitOrder);
 		request.addObserver(new Observer() {
 

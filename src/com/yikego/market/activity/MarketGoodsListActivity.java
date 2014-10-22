@@ -54,6 +54,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+import com.yikego.market.yikegoApplication;
 
 public class MarketGoodsListActivity extends ListActivity implements
 		OnItemClickListener {
@@ -94,6 +95,7 @@ public class MarketGoodsListActivity extends ListActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_goods_list);
 		mThemeService = ThemeService.getServiceInstance(mContext);
+        yikegoApplication.getInstance().addActivity(this);
 		productTypeId = getIntent().getIntExtra("productTypeId", 0);
 		img = (ImageView) findViewById(R.id.img);
 		img.setVisibility(View.INVISIBLE);
@@ -200,6 +202,14 @@ public class MarketGoodsListActivity extends ListActivity implements
 		TextView actionbarTitle = (TextView) findViewById(R.id.actionbar_title);
 		actionbarTitle.setText(R.string.goods_list);
 		mListView = getListView();
+
+        ImageView mBack = (ImageView) findViewById(R.id.market_detail_back);
+        mBack.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 		// mListView.setScrollbarFadingEnabled(false); //disable
 		// mListView.setVisibility(View.GONE);
 

@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import com.yikego.market.yikegoApplication;
 
 public class PaySuccessActivity extends Activity {
 
@@ -30,6 +31,7 @@ public class PaySuccessActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		
         setContentView(R.layout.activity_pay_success);
+        yikegoApplication.getInstance().addActivity(this);
 
         if (getIntent()!=null){
             this.orderResult = (OrderResult) getIntent().getSerializableExtra("orderResult");
@@ -46,9 +48,8 @@ public class PaySuccessActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(PaySuccessActivity.this, MarketBrowser.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
-                finish();
+                yikegoApplication.getInstance().exit();
             }
         });
 

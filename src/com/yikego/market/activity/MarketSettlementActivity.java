@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import com.yikego.market.yikegoApplication;
 
 public class MarketSettlementActivity extends ListActivity implements
 		OnItemClickListener {
@@ -24,6 +25,7 @@ public class MarketSettlementActivity extends ListActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_settlement);
+        yikegoApplication.getInstance().addActivity(this);
 		initView();
 	}
 

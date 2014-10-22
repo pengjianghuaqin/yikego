@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import com.yikego.market.yikegoApplication;
 
 public class PaymentWayActivity extends Activity implements OnClickListener {
 	private TextView actionBar_title;
@@ -22,6 +23,7 @@ public class PaymentWayActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_paymentway);
+        yikegoApplication.getInstance().addActivity(this);
 
 		actionBar_title = (TextView) findViewById(R.id.actionbar_title);
 		actionBar_title.setText(R.string.text_playment_way);

@@ -61,6 +61,10 @@ public class MarketListAdapter extends ArrayAdapter<StoreInfo> {
 					.findViewById(R.id.market_business_time);
 			viewHolder.mThumbnail = (ImageView) convertView
 					.findViewById(R.id.market_listitem_thumb);
+			viewHolder.mArrPath = (TextView) convertView
+					.findViewById(R.id.market_listitem_arrpath);
+			viewHolder.mSpend = (TextView) convertView.findViewById(R.id.market_listitem_spend);
+			
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
@@ -68,6 +72,7 @@ public class MarketListAdapter extends ArrayAdapter<StoreInfo> {
 		if (marketInfo != null) {
 			viewHolder.mName.setText(marketInfo.name);
 			viewHolder.mPath.setText(marketInfo.aboutDistance + "米");
+			viewHolder.mArrPath.setText(R.string.item_text_arrive);
 			if (marketInfo.openMinute < 10) {
 				openTime = "0" + marketInfo.openMinute;
 			} else {
@@ -78,6 +83,7 @@ public class MarketListAdapter extends ArrayAdapter<StoreInfo> {
 			} else {
 				closeTime = "" + marketInfo.closeMinute;
 			}
+			viewHolder.mSpend.setText(marketInfo.sendPrice+"元起送");
 			viewHolder.mBusinessTime.setText("营业时间" + marketInfo.openHour + ":"
 					+ openTime + "-" + marketInfo.closeHour + ":" + closeTime);
 			if (mContext instanceof MarketBrowser) {
@@ -97,7 +103,9 @@ public class MarketListAdapter extends ArrayAdapter<StoreInfo> {
 		View mParent;
 		ImageView mThumbnail;
 		// TextView mAuthor;
+		TextView mArrPath;
 		TextView mName;
+		TextView mSpend;
 		TextView mPath;
 		TextView mBusinessTime;
 		RelativeLayout mListItem;

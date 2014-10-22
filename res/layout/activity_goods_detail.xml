@@ -123,6 +123,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dip"
             android:layout_marginTop="5dip"
+            android:id="@+id/market_detail_work_time"
             android:layout_below="@id/market_name"
             android:text="营业时间：0:00-24:00"
             android:textColor="@color/black"
@@ -131,6 +132,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/market_detail_spend"
             android:layout_centerInParent="true"
             android:text="30元起送"
             android:textColor="@color/bg_color_blue"

@@ -25,13 +25,13 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:ellipsize="end"
-            android:text="@string/location_now"
-            android:maxLength="11"
-            android:marqueeRepeatLimit="marquee_forever"
-            android:scrollHorizontally="true"
-            android:focusableInTouchMode="true"
-            android:singleLine="true"
             android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:maxLength="11"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:text="@string/location_now"
             android:textColor="@color/white"
             android:textSize="20dip" />
 
@@ -65,15 +65,15 @@
             android:id="@+id/search_edittext"
             android:layout_width="match_parent"
             android:layout_height="36dip"
-            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="40dip"
             android:layout_marginRight="40dip"
             android:background="@drawable/btn_search_bg"
-            android:text="@string/title_import"
-            android:gravity="center"
-            android:textSize="15dip"
+            android:gravity="center_vertical"
             android:paddingLeft="30dip"
-            android:textColor="@color/bg_color_gray" />
+            android:text="@string/title_import"
+            android:textColor="@color/bg_color_gray"
+            android:textSize="15dip" />
 
         <ImageView
             android:layout_width="wrap_content"

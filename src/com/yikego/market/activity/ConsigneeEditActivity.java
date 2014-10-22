@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-
+import com.yikego.market.yikegoApplication;
 
 
 public class ConsigneeEditActivity extends Activity {
@@ -21,6 +21,7 @@ public class ConsigneeEditActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_consignee_edit);
+        yikegoApplication.getInstance().addActivity(this);
 		mEditText = (EditText) findViewById(R.id.edit);
         mSure = (TextView) findViewById(R.id.confirm);
         mSure.setVisibility(View.VISIBLE);

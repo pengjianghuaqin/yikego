@@ -8,8 +8,10 @@ import com.baidu.mapapi.map.*;
 import com.baidu.mapapi.model.LatLng;
 import com.yikego.market.activity.MarketBrowser;
 import com.yikego.market.activity.SearchGoodActivity;
+import com.yikego.market.contentProvider.LoacationHistory.LoacationHistoryColumns;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,7 +29,7 @@ public class SplashActivity extends Activity {
 	private Handler mHandler;
 	private static final int ACTION_NETWORK_ERROR = 0;
 	private static final int ACTION_NEW_ACTIVITY = 1;
-
+	private String mStreetName;
     // 定位相关
     LocationClient mLocClient;
     public MyLocationListenner myListener = new MyLocationListenner();
@@ -61,7 +63,12 @@ public class SplashActivity extends Activity {
 //			mHandler.sendEmptyMessage(ACTION_NETWORK_ERROR);
 //		}
 	}
-	private void initHandler() {
+
+    private void updateDB(ContentValues values) {
+        getContentResolver().insert(LoacationHistoryColumns.CONTENT_URI, values);
+    }
+
+    private void initHandler() {
 		// TODO Auto-generated method stub
 		mHandler = new Handler() {
 
@@ -75,6 +82,8 @@ public class SplashActivity extends Activity {
                         LatLng latLng = (LatLng) msg.obj;
                         intent.putExtra("lat", latLng.latitude);
                         intent.putExtra("lng", latLng.longitude);
+                        intent.putExtra("street", mStreetName);
+
                     }else {
                         intent.putExtra("lat", 0f);
                         intent.putExtra("lng", 0f);
@@ -135,13 +144,18 @@ public class SplashActivity extends Activity {
                 mHandler.sendMessageDelayed(msg, 1000);
                 return;
             }
+            mStreetName = location.getStreet();
             MyLocationData locData = new MyLocationData.Builder()
                     .accuracy(location.getRadius())
                             // 此处设置开发者获取到的方向信息，顺时针0-360
                     .direction(100).latitude(location.getLatitude())
                     .longitude(location.getLongitude()).build();
 //            mBaiduMap.setMyLocationData(locData);
-
+            ContentValues values = new ContentValues();
+            values.put(LoacationHistoryColumns.STREETNAME, mStreetName);
+            values.put(LoacationHistoryColumns.LONGITUDE, location.getLongitude());
+            values.put(LoacationHistoryColumns.LATITUDE, location.getLatitude());
+            updateDB(values);
             if (isFirstLoc) {
                 isFirstLoc = false;
                 LatLng ll = new LatLng(location.getLatitude(),
@@ -149,6 +163,11 @@ public class SplashActivity extends Activity {
                 mLatLng = ll;
                 Log.d(TAG, "Location : lat " + ll.latitude);
                 Log.d(TAG, "Location :  lng : " + ll.longitude);
+                Log.d(TAG, "Location :  street : " + mStreetName);
+                Log.d(TAG, "Location :  street : " + location.getAddrStr());
+                Log.d(TAG, "Location :  street : " + location.getCity());
+                Log.d(TAG, "Location :  street : " + location.getProvince());
+                Log.d(TAG, "Location :  street : " + location.getDistrict());
                 MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
 //                mBaiduMap.animateMapStatus(u);
                 Message msg = new Message();

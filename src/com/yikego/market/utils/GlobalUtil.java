@@ -107,6 +107,7 @@ public class GlobalUtil {
     private static String userId;
     private static String userPhone;
     private static String address;
+    private static String curStreet;
     private static int playmentWay;
     public static boolean isLogin(Context context) {
         mSharePreferences = context.getSharedPreferences("userInfo" ,Context.MODE_PRIVATE);
@@ -146,6 +147,19 @@ public class GlobalUtil {
         mSharePreferences = context.getSharedPreferences("userInfo", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = mSharePreferences.edit();
         editor.putString("address", address);
+        editor.commit();
+    }
+
+    public static String getCurrentStreet(Context context){
+        mSharePreferences = context.getSharedPreferences("curStreet", Context.MODE_PRIVATE);
+        curStreet = mSharePreferences.getString("curStreet", "");
+        return curStreet;
+    }
+    
+    public static void setCurrentStreet(Context context, String street){
+        mSharePreferences = context.getSharedPreferences("curStreet", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = mSharePreferences.edit();
+        editor.putString("curStreet", street);
         editor.commit();
     }
     

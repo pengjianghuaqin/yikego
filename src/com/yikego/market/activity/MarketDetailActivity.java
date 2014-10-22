@@ -35,6 +35,7 @@ import com.yikego.market.utils.CachedThumbnails;
 import com.yikego.market.utils.Constant;
 import com.yikego.market.webservice.Request;
 import com.yikego.market.webservice.ThemeService;
+import com.yikego.market.yikegoApplication;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -74,6 +75,7 @@ public class MarketDetailActivity extends Activity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_market_detail);
+        yikegoApplication.getInstance().addActivity(this);
 		storeInfo = (StoreInfo) getIntent().getSerializableExtra("storeInfo");
 		storeID = storeInfo.storeId;
 		mThemeService = ThemeService.getServiceInstance(mContext);
@@ -144,6 +146,9 @@ public class MarketDetailActivity extends Activity implements
 		marketIcon.setBackgroundDrawable(getThumbnail(storeInfo.storeId));
 		TextView marketName = (TextView) findViewById(R.id.market_detail_name);
 		marketName.setText(storeInfo.name);
+		TextView marketSpend = (TextView) findViewById(R.id.market_detail_spend);
+		marketSpend.setText(storeInfo.sendPrice+"元起送");
+		
 		TextView marketDistance = (TextView) findViewById(R.id.market_detail_distance);
 		marketDistance.setText("距离 :"+storeInfo.aboutDistance+"米");
 		TextView marketWorkTime = (TextView) findViewById(R.id.market_detail_work_time);

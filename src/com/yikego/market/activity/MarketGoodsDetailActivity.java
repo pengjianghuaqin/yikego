@@ -46,6 +46,7 @@ import android.widget.Gallery.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import com.yikego.market.yikegoApplication;
 
 public class MarketGoodsDetailActivity extends Activity {
 	private final String TAG = "MarketGoodsDetailActivity";
@@ -67,6 +68,7 @@ public class MarketGoodsDetailActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		Log.v("MarketGoodsDetailActivity", "onCreate");
 		mThemeService = ThemeService.getServiceInstance(mContext);
+        yikegoApplication.getInstance().addActivity(this);
 		setContentView(R.layout.activity_goods_detail);
 		mGoodsData = (GoodsData) getIntent().getSerializableExtra("goodsData");
 		initHandler();
@@ -124,8 +126,23 @@ public class MarketGoodsDetailActivity extends Activity {
 		detail.setText(mGoodsData.getGoodsDetail());
 		TextView marketName = (TextView) findViewById(R.id.market_name);
 		marketName.setText(MarketDetailActivity.storeInfo.name);
-
+		TextView marketSpend = (TextView) findViewById(R.id.market_detail_spend);
+		marketSpend.setText(MarketDetailActivity.storeInfo.sendPrice+"元起送");
 		RelativeLayout enterShoppingCar = (RelativeLayout) findViewById(R.id.goods_detail_area);
+		TextView marketWorkTime = (TextView) findViewById(R.id.market_detail_work_time);
+		String openTime,closeTime;
+		if (MarketDetailActivity.storeInfo.openMinute < 10) {
+			openTime = "0" + MarketDetailActivity.storeInfo.openMinute;
+		} else {
+			openTime = "" + MarketDetailActivity.storeInfo.openMinute;
+		}
+		if (MarketDetailActivity.storeInfo.closeMinute < 10) {
+			closeTime = "0" + MarketDetailActivity.storeInfo.closeMinute;
+		} else {
+			closeTime = "" + MarketDetailActivity.storeInfo.closeMinute;
+		}
+		marketWorkTime.setText("营业时间" + MarketDetailActivity.storeInfo.openHour + ":"
+				+ openTime + "-" + MarketDetailActivity.storeInfo.closeHour + ":" + closeTime);TextView marketAddress = (TextView) findViewById(R.id.market_detail_address);
 		enterShoppingCar.setOnClickListener(new OnClickListener() {
 
 			@Override

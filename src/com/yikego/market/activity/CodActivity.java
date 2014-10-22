@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import com.yikego.market.yikegoApplication;
 
 public class CodActivity extends Activity{
 	
@@ -14,6 +15,7 @@ public class CodActivity extends Activity{
         super.onCreate(savedInstanceState);
         Log.v("CodActivity", "onCreate");
         setContentView(R.layout.activity_cod);
+        yikegoApplication.getInstance().addActivity(this);
     }
 	
 	public void onBackButton(View v) {
