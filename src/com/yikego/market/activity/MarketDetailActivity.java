@@ -131,17 +131,8 @@ public class MarketDetailActivity extends Activity implements
 		});
 		
 		ImageView mShoppingcar = (ImageView) findViewById(R.id.market_detail_shopping_cart);
-		mShoppingcar.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(mContext,
-						MarketShoppingCarActivity.class);
-				startActivity(intent);
-			}
-
-		});
+		mShoppingcar.setOnClickListener(mShoppingCarListener);
+        findViewById(R.id.market_detail_spend).setOnClickListener(mShoppingCarListener);
 		ImageView marketIcon = (ImageView) findViewById(R.id.market_detail_image);
 		marketIcon.setBackgroundDrawable(getThumbnail(storeInfo.storeId));
 		TextView marketName = (TextView) findViewById(R.id.market_detail_name);
@@ -185,6 +176,14 @@ public class MarketDetailActivity extends Activity implements
 		GetStoreInfo();
 	}
 
+    private OnClickListener mShoppingCarListener = new OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(mContext,
+                    MarketShoppingCarActivity.class);
+            startActivity(intent);
+        }
+    };
 	private void initHandler() {
 		// TODO Auto-generated method stub
 		mHandler = new Handler() {

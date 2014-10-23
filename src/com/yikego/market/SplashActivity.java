@@ -64,10 +64,6 @@ public class SplashActivity extends Activity {
 //		}
 	}
 
-    private void updateDB(ContentValues values) {
-        getContentResolver().insert(LoacationHistoryColumns.CONTENT_URI, values);
-    }
-
     private void initHandler() {
 		// TODO Auto-generated method stub
 		mHandler = new Handler() {
@@ -151,11 +147,6 @@ public class SplashActivity extends Activity {
                     .direction(100).latitude(location.getLatitude())
                     .longitude(location.getLongitude()).build();
 //            mBaiduMap.setMyLocationData(locData);
-            ContentValues values = new ContentValues();
-            values.put(LoacationHistoryColumns.STREETNAME, mStreetName);
-            values.put(LoacationHistoryColumns.LONGITUDE, location.getLongitude());
-            values.put(LoacationHistoryColumns.LATITUDE, location.getLatitude());
-            updateDB(values);
             if (isFirstLoc) {
                 isFirstLoc = false;
                 LatLng ll = new LatLng(location.getLatitude(),

@@ -70,6 +70,12 @@ public class MarketShoppingCarActivity extends ListActivity {
 
 	private void initView() {
 		Button settlement = (Button) findViewById(R.id.btn_settlement);
+        findViewById(R.id.market_detail_back).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 		settlement.setOnClickListener(new OnClickListener() {
 
 			@Override

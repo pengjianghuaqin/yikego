@@ -20,16 +20,19 @@ import com.yikego.android.rom.sdk.bean.StoreInfo;
 import com.yikego.android.rom.sdk.bean.UserLoginInfo;
 import com.yikego.market.R;
 import com.yikego.market.activity.MarketListAdapter.ViewHolder;
+import com.yikego.market.contentProvider.LoacationHistory.LoacationHistoryColumns;
 import com.yikego.market.fragment.SlidingMenuFragment;
 import com.yikego.market.model.Image2;
 import com.yikego.market.model.Latitude;
 import com.yikego.market.model.MarketData;
 import com.yikego.market.utils.CachedThumbnails;
 import com.yikego.market.utils.Constant;
+import com.yikego.market.utils.DBHelper;
 import com.yikego.market.webservice.Request;
 import com.yikego.market.webservice.ThemeService;
 
 import android.app.ListActivity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -81,6 +84,8 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 		mIconStatusMap = new Hashtable<Integer, Boolean>();
 	}
 
+
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -92,6 +97,7 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 			mLatitude.lat = (float) getIntent().getDoubleExtra("lat", 0);
 			mLatitude.lng = (float) getIntent().getDoubleExtra("lng", 0);
 			mStreetName = (String) getIntent().getStringExtra("street");
+
 		} else {
 			mLatitude.lat = 31.159488f;
 			mLatitude.lng = 121.579398f;
@@ -322,7 +328,7 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 		postUserLocationInfo.distance = 25.0f;
 		postUserLocationInfo.lat = mLatitude.lat;
 		postUserLocationInfo.lng = mLatitude.lng;
-        postUserLocationInfo.name = "";
+		postUserLocationInfo.name = "";
 		postUserLocationInfo.nowPage = 1;
 		postUserLocationInfo.pageCount = 25;
 		request.setData(postUserLocationInfo);
@@ -446,5 +452,13 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 				"onGetReverseGeoCodeResult : "
 						+ reverseGeoCodeResult.getBusinessCircle());
 		mTitleSpineer.setText(reverseGeoCodeResult.getAddress());
+        if(reverseGeoCodeResult.getAddress() != null){
+            ContentValues values = new ContentValues();
+            values.put(LoacationHistoryColumns.STREETNAME, reverseGeoCodeResult.getAddress());
+            values.put(LoacationHistoryColumns.LONGITUDE, mLatitude.lng);
+            values.put(LoacationHistoryColumns.LATITUDE, mLatitude.lat);
+            DBHelper.updateDB(getContentResolver(), values);
+        }
+
 	}
 }

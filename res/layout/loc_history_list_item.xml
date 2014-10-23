@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="40dp"
     android:layout_marginLeft="@dimen/user_order_margin_left"
     android:layout_marginRight="@dimen/user_order_margin_left"
     android:background="@color/white" >
@@ -14,6 +14,5 @@
         android:layout_marginLeft="20dp"
         android:gravity="center_vertical"
         android:textColor="@color/black"
-        android:textSize="@dimen/text_size_middle" />
-
+        android:textSize="18dp" />
 </RelativeLayout>

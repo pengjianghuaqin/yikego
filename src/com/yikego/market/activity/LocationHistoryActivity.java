@@ -10,13 +10,21 @@ import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.geocode.GeoCodeResult;
+import com.baidu.mapapi.search.geocode.GeoCoder;
+import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.yikego.android.rom.sdk.bean.LocationHistoryList;
 import com.yikego.market.R;
 import com.yikego.market.SplashActivity.MyLocationListenner;
+import com.yikego.market.utils.DBHelper;
 import com.yikego.market.yikegoApplication;
 import com.yikego.market.adapter.LocHistoryAdapter;
 import com.yikego.market.adapter.UserOrderAdapter;
 import com.yikego.market.contentProvider.LoacationHistory.LoacationHistoryColumns;
+import com.yikego.market.model.Latitude;
 import com.yikego.market.utils.GlobalUtil;
 
 import android.app.Activity;
@@ -31,9 +39,13 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class LocationHistoryActivity extends Activity implements
-		AdapterView.OnItemClickListener {
+		AdapterView.OnItemClickListener, OnGetGeoCoderResultListener {
+    private static final String TAG = "LocationHistoryActivity";
+	GeoCoder mSearch = null; // 搜索模块，也可去掉地图模块独立使用
+	private Latitude mLatitude;
 	private TextView mActionBarText;
 	private ListView mListView;
 	private String mLocationName;
@@ -47,6 +59,10 @@ public class LocationHistoryActivity extends Activity implements
 	LocationClient mLocClient;
 	public MyLocationListenner myListener = new MyLocationListenner();
 	private yikegoApplication mApplication;
+	
+	
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -59,8 +75,11 @@ public class LocationHistoryActivity extends Activity implements
 		option.setOpenGps(true);// 打开gps
 		option.setCoorType("bd09ll"); // 设置坐标类型
 		option.setScanSpan(1000);
+        // 初始化搜索模块，注册事件监听
+        mSearch = GeoCoder.newInstance();
+        mSearch.setOnGetGeoCodeResultListener(LocationHistoryActivity.this);
 		mLocClient.setLocOption(option);
-		
+		mLatitude = new Latitude();
 		setContentView(R.layout.activity_location_history);
 		mActionBarText = (TextView) findViewById(R.id.actionbar_title);
 		mActionBarText.setText(R.string.location_history_actionbar_title);
@@ -72,6 +91,14 @@ public class LocationHistoryActivity extends Activity implements
 		initView();
 	}
 
+	@Override
+	protected void onDestroy() {
+        mSearch.destroy();
+        mLocClient.stop();
+		super.onDestroy();
+	}
+	
+	
 	private void initView() {
 		mLayout_locat_cur = (RelativeLayout) findViewById(R.id.layout_location_cur);
 		mLayout_locat_cur.setOnClickListener(new OnClickListener() {
@@ -108,11 +135,7 @@ public class LocationHistoryActivity extends Activity implements
 
 	}
 
-    private void updateDB(ContentValues values) {
-        getContentResolver().insert(LoacationHistoryColumns.CONTENT_URI, values);
-    }
-
-    /**
+	/**
 	 * 定位SDK监听函数
 	 */
 	public class MyLocationListenner implements BDLocationListener {
@@ -129,18 +152,20 @@ public class LocationHistoryActivity extends Activity implements
 			} else {
 				mTitle_map.setText(R.string.location_history_location_hint);
 			}
-			if (mStreetName != null) {
-				ContentValues values = new ContentValues();
-				values.put(LoacationHistoryColumns.STREETNAME, mStreetName);
-				values.put(LoacationHistoryColumns.LONGITUDE,
-						location.getLongitude());
-				values.put(LoacationHistoryColumns.LATITUDE,
-						location.getLatitude());
-				updateDB(values);
-			}
+            Log.d(TAG, "Location : lat " + location.getLatitude());
+            Log.d(TAG, "Location :  lng : " + location.getLongitude());
+            Log.d(TAG, "Location :  street : " + mStreetName);
+            mLatitude.lat = (float) location.getLatitude();
+            mLatitude.lng = (float) location.getLongitude();
+
+            LatLng ptCenter = new LatLng((location.getLatitude()), (location.getLongitude()));
+			// 反Geo搜索
+			mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(ptCenter));
 			List<LocationHistoryList> locHistoryLists = mApplication.getLocationHistoryList();
 			mLocHistoryAdapter.setLocationHistoryLists(locHistoryLists);
 			mLocHistoryAdapter.notifyDataSetChanged();
+            if (mLocClient!=null)
+                mLocClient.stop();
 		}
 
 		@Override
@@ -148,5 +173,42 @@ public class LocationHistoryActivity extends Activity implements
 			// TODO Auto-generated method stub
 
 		}
+	}
+
+	@Override
+	public void onGetGeoCodeResult(GeoCodeResult arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onGetReverseGeoCodeResult(ReverseGeoCodeResult reverseGeoCodeResult) {
+		if (reverseGeoCodeResult == null
+				|| reverseGeoCodeResult.error != SearchResult.ERRORNO.NO_ERROR) {
+			Toast.makeText(LocationHistoryActivity.this, "定位失败", Toast.LENGTH_LONG)
+					.show();
+			return;
+		}
+		Toast.makeText(LocationHistoryActivity.this, reverseGeoCodeResult.getAddress(),
+				Toast.LENGTH_LONG).show();
+		Log.d(TAG,
+				"LocationHistoryActivity:   onGetReverseGeoCodeResult : "
+						+ reverseGeoCodeResult.getAddress());
+		Log.d(TAG,
+				"LocationHistoryActivity:   onGetReverseGeoCodeResult : "
+						+ reverseGeoCodeResult.getBusinessCircle());
+		mStreetName = reverseGeoCodeResult.getAddress();
+		if (mStreetName != null) {
+			mTitle_map.setText(mStreetName);
+			ContentValues values = new ContentValues();
+			values.put(LoacationHistoryColumns.STREETNAME, reverseGeoCodeResult.getAddress());
+			values.put(LoacationHistoryColumns.LONGITUDE, mLatitude.lng);
+			values.put(LoacationHistoryColumns.LATITUDE, mLatitude.lat);
+            DBHelper.updateDB(getContentResolver(), values);
+		} else {
+			mTitle_map.setText(R.string.location_history_location_hint);
+		}
+
+		
 	}
 }
