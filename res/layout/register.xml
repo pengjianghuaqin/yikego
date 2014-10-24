@@ -109,12 +109,7 @@
             android:textSize="17.0sp"
             android:textColor="#ffffffff"
             android:id="@+id/register_Button"
-            android:background="@drawable/select_button_dial"
-            android:layout_width="fill_parent"
-            android:layout_height="40.0dip"
-            android:layout_marginLeft="20.0dip"
-            android:layout_marginTop="30.0dip"
-            android:layout_marginRight="20.0dip"
+            style="@style/button_blue_large"
             android:text="@string/register_title"
             android:layout_below="@id/address_editText" />
 </RelativeLayout>
