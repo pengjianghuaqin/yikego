@@ -40,12 +40,14 @@
             android:layout_height="40dp"
             android:id="@+id/left_menu_order_search"
             android:layout_marginTop="@dimen/left_menu_item_margin_top"
-            android:layout_marginLeft="@dimen/left_menu_imageview_margin_left"
             android:layout_below="@+id/head_image_layout"
+            android:clickable="true"
+            android:background="@drawable/slidingmenu_selector"
             >
         <ImageView
                 android:id="@+id/left_menu_order_search_img"
                 android:layout_width="35dp"
+                android:layout_marginLeft="@dimen/left_menu_imageview_margin_left"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
@@ -69,12 +71,14 @@
                 android:layout_height="40dp"
                 android:id="@+id/left_menu_shop_score"
                 android:layout_marginTop="@dimen/left_menu_item_margin_top"
-                android:layout_marginLeft="@dimen/left_menu_imageview_margin_left"
                 android:layout_below="@+id/left_menu_order_search"
+                android:clickable="true"
+                android:background="@drawable/slidingmenu_selector"
                 >
             <ImageView
                     android:id="@+id/left_menu_shop_score_img"
                     android:layout_width="35dp"
+                    android:layout_marginLeft="@dimen/left_menu_imageview_margin_left"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
@@ -98,13 +102,15 @@
             android:layout_height="40dp"
             android:id="@+id/left_menu_shop_quan"
             android:layout_marginTop="@dimen/left_menu_item_margin_top"
-            android:layout_marginLeft="@dimen/left_menu_imageview_margin_left"
             android:layout_below="@+id/left_menu_shop_score"
+            android:clickable="true"
+            android:background="@drawable/slidingmenu_selector"
             >
         <ImageView
                 android:id="@+id/left_menu_shop_quan_img"
                 android:layout_width="35dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/left_menu_imageview_margin_left"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:src="@drawable/ic_shop_quan"/>
@@ -127,14 +133,16 @@
             android:layout_height="40dp"
             android:id="@+id/left_menu_feedback"
             android:layout_marginTop="@dimen/left_menu_item_margin_top"
-            android:layout_marginLeft="@dimen/left_menu_imageview_margin_left"
             android:layout_below="@+id/left_menu_shop_quan"
+            android:clickable="true"
+            android:background="@drawable/slidingmenu_selector"
             >
         <ImageView
                 android:id="@+id/left_menu_feedback_img"
                 android:layout_width="35dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
+                android:layout_marginLeft="@dimen/left_menu_imageview_margin_left"
                 android:layout_centerVertical="true"
                 android:src="@drawable/ic_feedback"/>
         <TextView
@@ -156,14 +164,16 @@
             android:layout_height="40dp"
             android:id="@+id/left_menu_setting"
             android:layout_marginTop="@dimen/left_menu_item_margin_top"
-            android:layout_marginLeft="@dimen/left_menu_imageview_margin_left"
             android:layout_below="@+id/left_menu_feedback"
+            android:clickable="true"
+            android:background="@drawable/slidingmenu_selector"
             >
         <ImageView
                 android:id="@+id/left_menu_setting_img"
                 android:layout_width="35dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
+                android:layout_marginLeft="@dimen/left_menu_imageview_margin_left"
                 android:layout_centerVertical="true"
                 android:src="@drawable/ic_setting"/>
         <TextView
@@ -186,9 +196,10 @@
                 android:layout_height="40.0dp"
                 android:visibility="invisible"
                 android:layout_below="@+id/left_menu_setting"
-                android:layout_marginLeft="@dimen/left_menu_imageview_margin_left"
                 android:layout_marginTop="@dimen/left_menu_item_margin_top"
                 android:layout_alignParentLeft="true"
+                android:clickable="true"
+                android:background="@drawable/slidingmenu_selector"
                 >
             <ImageView
                     android:id="@+id/iv_quit"
@@ -197,6 +208,7 @@
                     android:src="@drawable/ic_main_left_quit"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="@dimen/left_menu_imageview_margin_left"
                     android:contentDescription="@null" />
             <TextView
                     android:id="@+id/tv_quit"
