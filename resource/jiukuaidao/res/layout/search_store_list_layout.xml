@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<RelativeLayout android:id="@id/tuijian_store_layout" android:background="#ffffffff" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <RelativeLayout android:id="@id/tuijian_layout" android:background="@color/text_gray_color_e3" android:layout_width="fill_parent" android:layout_height="50.0dip" android:layout_below="@id/search_top">
-        <TextView android:textSize="17.0sp" android:textColor="#ff676767" android:id="@id/total_textView1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15.0dip" android:text="您可能感兴趣的店铺" android:layout_centerVertical="true" />
-    </RelativeLayout>
-    <ListView android:id="@id/storeList" android:layout_below="@id/tuijian_layout" style="\@style/mywidget_listview" />
-</RelativeLayout>

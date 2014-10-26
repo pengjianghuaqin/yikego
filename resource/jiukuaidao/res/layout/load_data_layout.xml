@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<RelativeLayout android:orientation="horizontal" android:id="@id/load_data_layout" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <ProgressBar android:id="@id/imageView1" android:layout_width="20.0dip" android:layout_height="20.0dip" android:layout_centerVertical="true" />
-    <TextView android:layout_gravity="center_horizontal" android:id="@id/textView" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="3.0dip" android:text="加载中..." android:layout_toRightOf="@id/imageView1" android:layout_centerVertical="true" />
-</RelativeLayout>

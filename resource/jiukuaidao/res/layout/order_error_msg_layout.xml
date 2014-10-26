@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<LinearLayout android:orientation="vertical" android:id="@id/error_layout" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <ImageView android:layout_gravity="center_horizontal" android:id="@id/imageView1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/ic_error" android:contentDescription="@string/description" />
-    <TextView android:textSize="18.0sp" android:textColor="#ff666666" android:layout_gravity="center_horizontal" android:id="@id/error_text_view" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" />
-    <Button android:textSize="18.0sp" android:textColor="@color/bai" android:layout_gravity="center_horizontal" android:id="@id/tip_button" android:background="@drawable/ic_order_tip_bg" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="20.0dip" android:text="快去逛逛吧" />
-</LinearLayout>
