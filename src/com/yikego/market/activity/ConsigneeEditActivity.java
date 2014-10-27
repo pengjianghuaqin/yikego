@@ -31,6 +31,12 @@ public class ConsigneeEditActivity extends Activity {
                 saveAddressInfo();
             }
         });
+        findViewById(R.id.market_detail_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 	
 	public void onConfirmClick(View v) {

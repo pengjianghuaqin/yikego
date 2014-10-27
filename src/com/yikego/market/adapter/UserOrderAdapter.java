@@ -58,6 +58,7 @@ public class UserOrderAdapter extends BaseAdapter{
             viewHolder.mOrderId = (TextView) convertView.findViewById(R.id.user_order_item_id);
             viewHolder.mOrderTime = (TextView) convertView.findViewById(R.id.user_order_item_time);
             viewHolder.mOrderName = (TextView) convertView.findViewById(R.id.user_order_item_name);
+            viewHolder.pos = position;
             convertView.setTag(viewHolder);
         }else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -65,20 +66,33 @@ public class UserOrderAdapter extends BaseAdapter{
 
         if (orderLists != null && orderLists.size()> 0){
             orderList = orderLists.get(position);
-            viewHolder.mOrderStatus.setText(String.valueOf(orderList.getOrderStatus()));
+            int orderStatus = orderList.getOrderStatus();
             viewHolder.mOrderMoney.setText(String.valueOf(orderList.getTotalFee()));
             viewHolder.mOrderId.setText(String.valueOf(orderList.getOrderNo()));
             viewHolder.mOrderTime.setText(orderList.getCreateTime());
             viewHolder.mOrderName.setText(orderList.getSubject());
-        }
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(mContext, UserOrderDetailActivity.class);
-                intent.putExtra("orderList", orderList);
-                mContext.startActivity(intent);
+
+            String status  = "";
+            if (orderStatus == 0){
+                status = mContext.getString(R.string.order_status_create);
+            }else if (orderStatus == 1){
+                status = mContext.getString(R.string.order_status_costed);
+            }else if (orderStatus == 2){
+                status = mContext.getString(R.string.order_status_sending);
+            }else if (orderStatus == 3){
+                status = mContext.getString(R.string.order_status_ok);
             }
-        });
+            viewHolder.mOrderStatus.setText(status);
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    OrderList list = orderLists.get(((ViewHolder)view.getTag()).pos);
+                    Intent intent = new Intent(mContext, UserOrderDetailActivity.class);
+                    intent.putExtra("orderList", list);
+                    mContext.startActivity(intent);
+                }
+            });
+        }
 
         return convertView;
     }
@@ -89,6 +103,7 @@ public class UserOrderAdapter extends BaseAdapter{
         TextView mOrderMoney;
         TextView mOrderTime;
         TextView mOrderName;
+        int pos;
     }
 
     public void setOrderLists(List<OrderList> orderLists){

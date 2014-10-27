@@ -13,12 +13,8 @@
 
         <ImageView
             android:id="@+id/goods_detail_back"
-            android:layout_width="20dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="8dp"
-            android:scaleType="center"
-            android:layout_centerVertical="true"
-            android:src="@drawable/ic_back" />
+            style="@style/back_syle"
+            />
 
         <TextView
             android:id="@+id/actionbar_title"

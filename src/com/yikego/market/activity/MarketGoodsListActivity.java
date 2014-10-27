@@ -24,6 +24,7 @@ import com.yikego.market.webservice.ThemeService;
 
 import android.app.Activity;
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -54,6 +55,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+
 import com.yikego.market.yikegoApplication;
 
 public class MarketGoodsListActivity extends ListActivity implements
@@ -80,6 +82,7 @@ public class MarketGoodsListActivity extends ListActivity implements
 	private int screenHeight = 0;
 	private Hashtable<Integer, Boolean> mIconStatusMap;
 	private boolean bBusy;
+	private ProgressDialog mProgressDialog;
 
 	public MarketGoodsListActivity() {
 		nowPage = 1;
@@ -88,14 +91,16 @@ public class MarketGoodsListActivity extends ListActivity implements
 		mContext = this;
 		bBusy = false;
 		mIconStatusMap = new Hashtable<Integer, Boolean>();
+		
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		mProgressDialog = new ProgressDialog(mContext);
 		setContentView(R.layout.activity_goods_list);
 		mThemeService = ThemeService.getServiceInstance(mContext);
-        yikegoApplication.getInstance().addActivity(this);
+		yikegoApplication.getInstance().addActivity(this);
 		productTypeId = getIntent().getIntExtra("productTypeId", 0);
 		img = (ImageView) findViewById(R.id.img);
 		img.setVisibility(View.INVISIBLE);
@@ -203,13 +208,13 @@ public class MarketGoodsListActivity extends ListActivity implements
 		actionbarTitle.setText(R.string.goods_list);
 		mListView = getListView();
 
-        ImageView mBack = (ImageView) findViewById(R.id.market_detail_back);
-        mBack.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+		ImageView mBack = (ImageView) findViewById(R.id.market_detail_back);
+		mBack.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				finish();
+			}
+		});
 		// mListView.setScrollbarFadingEnabled(false); //disable
 		// mListView.setVisibility(View.GONE);
 
@@ -233,7 +238,7 @@ public class MarketGoodsListActivity extends ListActivity implements
 			}
 
 		});
-		
+
 		TextView mSearch = (TextView) findViewById(R.id.market_search);
 		mSearch.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -245,7 +250,7 @@ public class MarketGoodsListActivity extends ListActivity implements
 				startActivity(intent);
 			}
 		});
-		
+
 		mShoppingcarIndex = (TextView) findViewById(R.id.goods_index);
 		initHandler();
 		GetGoodsList();
@@ -270,6 +275,12 @@ public class MarketGoodsListActivity extends ListActivity implements
 		if (isEnd) {
 			return;
 		}
+		mProgressDialog.setMessage(getResources()
+				.getText(R.string.text_loading));
+		mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		mProgressDialog.setCancelable(false);
+		mProgressDialog.setProgress(0);
+		mProgressDialog.show();
 		Request request = new Request(0, Constant.TYPE_GET_GOODS_LIST_INFO);
 		PostProductType mPostProductType = new PostProductType();
 		mPostProductType.nowPage = nowPage;
@@ -332,7 +343,7 @@ public class MarketGoodsListActivity extends ListActivity implements
 						mListView.setAdapter(mGoodsListAdapter);
 					}
 					mListView.setVisibility(View.VISIBLE);
-
+					
 					break;
 				case ACTION_GOODS_ICON:
 					Image2 icInfo = (Image2) msg.obj;
@@ -353,6 +364,9 @@ public class MarketGoodsListActivity extends ListActivity implements
 					break;
 				default:
 					break;
+				}
+				if(mProgressDialog.isShowing()){
+					mProgressDialog.dismiss();
 				}
 			}
 		};
@@ -448,15 +462,15 @@ public class MarketGoodsListActivity extends ListActivity implements
 												.get(i).productId) {
 											MarketDetailActivity.orderDetailList
 													.get(i).count++;
-                                            break;
-										} 
+											break;
+										}
 									}
-									if(i == MarketDetailActivity.orderDetailList
-											.size()){
+									if (i == MarketDetailActivity.orderDetailList
+											.size()) {
 										MarketDetailActivity.orderDetailList
-										.add(orderProductInfo);
+												.add(orderProductInfo);
 									}
-									
+
 								} else {
 									MarketDetailActivity.orderDetailList
 											.add(orderProductInfo);

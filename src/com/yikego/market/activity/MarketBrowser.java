@@ -32,6 +32,7 @@ import com.yikego.market.webservice.Request;
 import com.yikego.market.webservice.ThemeService;
 
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -71,6 +72,7 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 	private PaginationStoreListInfo mPaginationStoreListInfo = null;
 	private Hashtable<Integer, Boolean> mIconStatusMap;
 	private boolean bBusy;
+	protected ProgressDialog mProgressDialog;
 	private String mStreetName;
 	public MarketBrowser() {
 		Log.v(TAG, "MarketBrowser");
@@ -102,14 +104,18 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 			mLatitude.lat = 31.159488f;
 			mLatitude.lng = 121.579398f;
 		}
+		mProgressDialog = new ProgressDialog(mContext);
+		
 		Log.d(TAG, "lat : " + mLatitude.lat);
 		Log.d(TAG, "lng : " + mLatitude.lng);
-		// 初始化搜索模块，注册事件监听
-		mSearch = GeoCoder.newInstance();
-		LatLng ptCenter = new LatLng((mLatitude.lat), (mLatitude.lng));
-		mSearch.setOnGetGeoCodeResultListener(this);
-		// 反Geo搜索
-		mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(ptCenter));
+        if (mStreetName == null||mStreetName.equals("")){
+            // 初始化搜索模块，注册事件监听
+            mSearch = GeoCoder.newInstance();
+            LatLng ptCenter = new LatLng((mLatitude.lat), (mLatitude.lng));
+            mSearch.setOnGetGeoCodeResultListener(this);
+            // 反Geo搜索
+            mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(ptCenter));
+        }
 		initHandler();
 		initListener();
 		initView();
@@ -118,9 +124,33 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 		// userLogin();
 	}
 
-	@Override
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        String street = null;
+        if (getIntent() != null) {
+            mLatitude.lat = (float) getIntent().getDoubleExtra("lat", 0);
+            mLatitude.lng = (float) getIntent().getDoubleExtra("lng", 0);
+            street = getIntent().getStringExtra("street");
+            mTitleSpineer.setText(street);
+            if (street!=null&&street.equals(mStreetName)){
+
+            }else {
+                if (mMarketListAdapter!=null){
+                    mMarketListAdapter = null;
+                }
+                PostUserLocalInfo();
+            }
+        } else {
+//            mLatitude.lat = 31.159488f;
+//            mLatitude.lng = 121.579398f;
+        }
+    }
+
+    @Override
 	protected void onDestroy() {
-		mSearch.destroy();
+        if (mSearch != null)
+            mSearch.destroy();
 		super.onDestroy();
 	}
 	
@@ -331,6 +361,12 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 		postUserLocationInfo.name = "";
 		postUserLocationInfo.nowPage = 1;
 		postUserLocationInfo.pageCount = 25;
+		mProgressDialog.setMessage(getResources().getText(
+				R.string.text_loading));
+		mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		mProgressDialog.setCancelable(false);
+		mProgressDialog.setProgress(0);
+		mProgressDialog.show();
 		request.setData(postUserLocationInfo);
 		request.addObserver(new Observer() {
 
@@ -393,6 +429,7 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 						}
 						mListView.setAdapter(mMarketListAdapter);
 					}
+					
 					mListView.setVisibility(View.VISIBLE);
 					break;
 				case ACTION_MARKET_ICON:
@@ -414,6 +451,9 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 					break;
 				default:
 					break;
+				}
+				if(mProgressDialog.isShowing()){
+					mProgressDialog.dismiss();
 				}
 			}
 		};
@@ -457,7 +497,7 @@ public class MarketBrowser extends SlidingFragmentActivity implements
             values.put(LoacationHistoryColumns.STREETNAME, reverseGeoCodeResult.getAddress());
             values.put(LoacationHistoryColumns.LONGITUDE, mLatitude.lng);
             values.put(LoacationHistoryColumns.LATITUDE, mLatitude.lat);
-            DBHelper.updateDB(getContentResolver(), values);
+//            DBHelper.updateDB(getContentResolver(), values);
         }
 
 	}

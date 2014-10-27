@@ -94,8 +94,13 @@ public class MarketSubmitOrderActivity extends ListActivity implements
 				// TODO Auto-generated method stub
 				PostSubmitOrder();
 			}
-
 		});
+        findViewById(R.id.market_detail_back).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 		mListView = getListView();
 		mAdapter = new OrderListAdapter(mContext,
 				MarketDetailActivity.orderDetailList);

@@ -1,6 +1,7 @@
 package com.yikego.market.activity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import com.yikego.android.rom.sdk.bean.PointList;
 import com.yikego.android.rom.sdk.bean.PostUserOrderBody;
 import com.yikego.android.rom.sdk.bean.UserOrderListInfo;
@@ -52,6 +54,7 @@ public class UserPointActivity extends Activity{
     private UserPointListInfo mUserPointListInfo = null;
     private List<PointList> mPointLists;
     private int userId;
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +68,7 @@ public class UserPointActivity extends Activity{
         }
         mThemeService = ThemeService.getServiceInstance(this);
         mUserPointAdapter = new UserPointAdapter(this);
-
+        mProgressDialog = new ProgressDialog(this);
         initHandler();
         initActionBar();
         initView();
@@ -77,6 +80,9 @@ public class UserPointActivity extends Activity{
 
         mTotalPoint = (TextView) findViewById(R.id.score_text);
         setNumberText(0);
+        setPostData();
+
+        getUserPointInfo();
     }
 
     private void initActionBar() {
@@ -100,12 +106,16 @@ public class UserPointActivity extends Activity{
     @Override
     protected void onResume() {
         super.onResume();
-        setPostData();
-
-        getUserPointInfo();
+        
     }
 
     private void getUserPointInfo() {
+    	mProgressDialog.setMessage(getResources()
+				.getText(R.string.text_loading));
+		mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		mProgressDialog.setCancelable(false);
+		mProgressDialog.setProgress(0);
+		mProgressDialog.show();
         Request request = new Request(0, Constant.TYPE_GET_USER_POINT);
         // Object[] params = new Object[2];
         request.setData(mPostUserOrderBody);
@@ -135,8 +145,8 @@ public class UserPointActivity extends Activity{
         if (userId < 0)
             return;
         mPostUserOrderBody.setNowPage(1);
-//        mPostUserOrderBody.setUserId(userId);
-        mPostUserOrderBody.setUserId(1);
+        mPostUserOrderBody.setUserId(userId);
+//        mPostUserOrderBody.setUserId(1);
         mPostUserOrderBody.setPageCount(25);
     }
 
@@ -165,6 +175,7 @@ public class UserPointActivity extends Activity{
                     case ACTION_UPDATE_POINT_NUMBER:
                         int total = getTotalNumber();
                         setNumberText(total);
+                        mProgressDialog.dismiss();
                         break;
 
                     default:

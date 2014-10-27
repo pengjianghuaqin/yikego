@@ -1,6 +1,7 @@
 package com.yikego.market.activity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import com.yikego.android.rom.sdk.bean.OrderList;
 import com.yikego.android.rom.sdk.bean.PostUserOrderBody;
 import com.yikego.android.rom.sdk.bean.UserOrderListInfo;
@@ -27,112 +29,119 @@ import java.util.Observer;
 /**
  * Created by wll on 14-9-15.
  */
-public class UserOrderActivity extends Activity{
+public class UserOrderActivity extends Activity {
 
-    private static final String TAG = "UserOrderActivity";
-    private ImageView mSearchView;
-    private TextView mSearchText;
-    private TextView actionBarText;
-    private ImageView actionBack;
-    private ImageView mDeleteView;
-    private ListView mListView;
+	private static final String TAG = "UserOrderActivity";
+	private ImageView mSearchView;
+	private TextView mSearchText;
+	private TextView actionBarText;
+	private ImageView actionBack;
+	private ImageView mDeleteView;
+	private ListView mListView;
 
-    private Request mCurrentRequest;
-    private ThemeService mThemeService;
-    private Handler mHandler ;
-    private static final int ACTION_NETWORK_ERROR = 0;
-    private static final int ACTION_USER_ORDER_INFO = 1;
-    private PostUserOrderBody mPostUserOrderBody = new PostUserOrderBody();
-    private UserOrderListInfo mUserOrderListInfo;
-    private int userId;
+	private Request mCurrentRequest;
+	private ThemeService mThemeService;
+	private Handler mHandler;
+	private static final int ACTION_NETWORK_ERROR = 0;
+	private static final int ACTION_USER_ORDER_INFO = 1;
+	private PostUserOrderBody mPostUserOrderBody = new PostUserOrderBody();
+	private UserOrderListInfo mUserOrderListInfo;
+	private int userId;
+	private ProgressDialog mProgressDialog;
+	private UserOrderAdapter mUserOrderAdapter;
 
-    private UserOrderAdapter mUserOrderAdapter;
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		mProgressDialog = new ProgressDialog(this);
+		setContentView(R.layout.activity_user_order);
+		if (!GlobalUtil.isLogin(this)) {
+			Intent intent = new Intent(this, LoginActivity.class);
+			startActivity(intent);
+			finish();
+		}
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_order);
-        if (!GlobalUtil.isLogin(this)){
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-        }
+		mThemeService = ThemeService.getServiceInstance(this);
+		mUserOrderAdapter = new UserOrderAdapter(this);
+		initHandler();
+		initActionBar();
+		initView();
+	}
 
-        mThemeService = ThemeService.getServiceInstance(this);
-        mUserOrderAdapter = new UserOrderAdapter(this);
-        initHandler();
-        initActionBar();
-        initView();
-    }
+	private void initView() {
+		mListView = (ListView) findViewById(R.id.user_order_list);
+		mListView.setAdapter(mUserOrderAdapter);
+		setPostData();
 
-    private void initView() {
-        mListView = (ListView) findViewById(R.id.user_order_list);
-        mListView.setAdapter(mUserOrderAdapter);
+		postUserOrderInfo();
+	}
 
-    }
+	private void initActionBar() {
+		mSearchView = (ImageView) findViewById(R.id.market_detail_search);
+		mSearchText = (TextView) findViewById(R.id.market_search);
+		mSearchText.setVisibility(View.GONE);
+		mSearchView.setVisibility(View.GONE);
+		mDeleteView = (ImageView) findViewById(R.id.market_detail_delete);
+		mDeleteView.setVisibility(View.GONE);
+		actionBarText = (TextView) findViewById(R.id.actionbar_title);
+		actionBarText.setText(R.string.user_order);
+		actionBack = (ImageView) findViewById(R.id.market_detail_back);
+		actionBack.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				finish();
+			}
+		});
+	}
 
-    private void initActionBar() {
-        mSearchView = (ImageView) findViewById(R.id.market_detail_search);
-        mSearchText = (TextView) findViewById(R.id.market_search);
-        mSearchText.setVisibility(View.GONE);
-        mSearchView.setVisibility(View.GONE);
-        mDeleteView = (ImageView) findViewById(R.id.market_detail_delete);
-        mDeleteView.setVisibility(View.GONE);
-        actionBarText = (TextView) findViewById(R.id.actionbar_title);
-        actionBarText.setText(R.string.user_order);
-        actionBack = (ImageView) findViewById(R.id.market_detail_back);
-        actionBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-    }
+	@Override
+	protected void onResume() {
+		super.onResume();
+		Log.d(TAG, "onResume");
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(TAG, "onResume");
-        setPostData();
+	}
 
-        postUserOrderInfo();
-    }
+	private void postUserOrderInfo() {
+		mProgressDialog.setMessage(getResources()
+				.getText(R.string.text_loading));
+		mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		mProgressDialog.setCancelable(false);
+		mProgressDialog.setProgress(0);
+		mProgressDialog.show();
+		Request request = new Request(0, Constant.TYPE_GET_USER_ORDER);
+		// Object[] params = new Object[2];
+		request.setData(mPostUserOrderBody);
+		request.addObserver(new Observer() {
 
-    private void postUserOrderInfo() {
-        Request request = new Request(0, Constant.TYPE_GET_USER_ORDER);
-        // Object[] params = new Object[2];
-        request.setData(mPostUserOrderBody);
-        request.addObserver(new Observer() {
+			@Override
+			public void update(Observable observable, Object data) {
+				// TODO Auto-generated method stub
+				if (data != null) {
+					Message msg = Message.obtain(mHandler,
+							ACTION_USER_ORDER_INFO, data);
+					mHandler.sendMessage(msg);
+				} else {
+					Request request = (Request) observable;
+					if (request.getStatus() == Constant.STATUS_ERROR) {
+						mHandler.sendEmptyMessage(ACTION_NETWORK_ERROR);
+					}
+				}
+			}
+		});
+		mCurrentRequest = request;
+		mThemeService.getUserOrder(request);
+	}
 
-            @Override
-            public void update(Observable observable, Object data) {
-                // TODO Auto-generated method stub
-                if (data != null) {
-                    Message msg = Message.obtain(mHandler,
-                            ACTION_USER_ORDER_INFO, data);
-                    mHandler.sendMessage(msg);
-                } else {
-                    Request request = (Request) observable;
-                    if (request.getStatus() == Constant.STATUS_ERROR) {
-                        mHandler.sendEmptyMessage(ACTION_NETWORK_ERROR);
-                    }
-                }
-            }
-        });
-        mCurrentRequest = request;
-        mThemeService.getUserOrder(request);
-    }
+	private void setPostData() {
+		userId = GlobalUtil.getUserId(UserOrderActivity.this);
+		if (userId < 0)
+			return;
+		mPostUserOrderBody.setNowPage(1);
+		mPostUserOrderBody.setUserId(userId);
+		mPostUserOrderBody.setPageCount(25);
+	}
 
-    private void setPostData() {
-        userId = GlobalUtil.getUserId(UserOrderActivity.this);
-        if (userId < 0)
-            return;
-        mPostUserOrderBody.setNowPage(1);
-        mPostUserOrderBody.setUserId(userId);
-        mPostUserOrderBody.setPageCount(25);
-    }
-
-    private void initHandler(){
+	private void initHandler(){
         mHandler = new Handler(){
             @Override
             public void handleMessage(Message msg) {
@@ -156,8 +165,8 @@ public class UserOrderActivity extends Activity{
                     default:
                         break;
                 }
+                mProgressDialog.dismiss();
             }
         };
     }
-
 }

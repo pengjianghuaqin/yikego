@@ -12,12 +12,7 @@
 
         <ImageView
                 android:id="@+id/market_detail_back"
-                android:layout_width="20dp"
-                android:layout_height="50dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="8dp"
-                android:src="@drawable/ic_back"
-                android:scaleType="center"
+                style="@style/back_syle"
                 />
 
         <TextView
@@ -33,7 +28,7 @@
     <RelativeLayout
                     android:id="@+id/user_order_detail_info"
                     android:layout_below="@+id/market_detail_actionbar"
-                    android:background="@color/bg_color_gray"
+                    android:background="@color/white"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
             >
@@ -42,7 +37,7 @@
                 android:id="@+id/user_order_item_time_layout"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:background="@color/white"
+                style="@style/title_color_style"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
             <TextView
@@ -200,7 +195,7 @@
                     android:id="@+id/info_title"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/white"
+                    style="@style/title_color_style"
                     android:padding="8dp"
                     android:text="@string/text_songhuo"
                     android:textColor="@color/black" />
@@ -209,7 +204,7 @@
                     android:id="@+id/layout_detail"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/text_gray_color_e3"
+                    style="@style/input_color_style"
                     >
 
                 <TextView
@@ -254,7 +249,7 @@
         <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
+                style="@style/title_color_style"
                 android:padding="8dp"
                 android:textColor="@color/black"
                 android:text="支付方式" />
@@ -262,7 +257,7 @@
         <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/text_gray_color_e3"
+                style="@style/input_color_style"
                 >
 
             <TextView
@@ -287,6 +282,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
+                style="@style/title_color_style"
                 android:textColor="@color/black"
                 android:text="商品清单" />
 
@@ -295,7 +291,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:cacheColorHint="@android:color/transparent"
-                android:divider="@color/white"
+                android:divider="@color/text_gray_color_e3"
                 android:dividerHeight="1px"
                 android:drawSelectorOnTop="false"
                 android:fadingEdge="none"
@@ -305,13 +301,15 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
+                style="@style/title_color_style"
                 android:textColor="@color/black"
                 android:text="付款信息" />
 
         <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dip"
-                android:background="@color/text_gray_color_e3" >
+                style="@style/input_color_style"
+                >
 
             <TextView
                     android:layout_width="wrap_content"

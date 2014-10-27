@@ -42,4 +42,20 @@
         <item name="android:layout_marginRight">20dp</item>
         <item name="android:layout_marginTop">30dp</item>
     </style>
+
+    <style name="title_color_style">
+        <item name="android:background">@color/text_gray_color_e3</item>
+    </style>
+
+    <style name="input_color_style">
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="back_syle">
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:scaleType">center</item>
+        <item name="android:src">@drawable/ic_back</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
 </resources>

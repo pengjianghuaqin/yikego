@@ -17,7 +17,7 @@ import android.util.Log;
 
 public class LoacationHistoryProvider extends ContentProvider {
     private static final String DATABASE_NAME = "locationHistory.db";
-    private static final String TABLE_NAME = "locationHistory";
+    public static final String TABLE_NAME = "locationHistory";
     private static final int DATABASE_VERSION = 6;
     
     DatabaseHelper dbhelper;
@@ -45,8 +45,11 @@ public class LoacationHistoryProvider extends ContentProvider {
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
 		// TODO Auto-generated method stub
-		return 0;
-	}
+        SQLiteDatabase db = dbhelper.getWritableDatabase();
+       //执行删除，得到删除的行数
+        int count = db.delete(TABLE_NAME, selection, selectionArgs);
+        return count;
+    }
 
 	@Override
 	public String getType(Uri uri) {

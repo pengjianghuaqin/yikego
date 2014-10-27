@@ -127,9 +127,21 @@ public class UserOrderDetailActivity extends ListActivity {
         mOrderMoneyTv.setText(String.valueOf(orderList.getTotalFee()));
         mOrderTimeTv.setText(orderList.getCreateTime());
         mOrderNoTv.setText(String.valueOf(orderList.getOrderNo()));
-        mOrderStatusTv.setText(String.valueOf(orderList.getOrderStatus()));
         mUserTelTv.setText(GlobalUtil.getUserPhone(this));
         mUserAddTv.setText(GlobalUtil.getUserAddress(this));
+
+        String status  = "";
+        orderStatus = orderList.getOrderStatus();
+        if (orderStatus == 0){
+            status = getString(R.string.order_status_create);
+        }else if (orderStatus == 1){
+            status = getString(R.string.order_status_costed);
+        }else if (orderStatus == 2){
+            status = getString(R.string.order_status_sending);
+        }else if (orderStatus == 3){
+            status = getString(R.string.order_status_ok);
+        }
+        mOrderStatusTv.setText(status);
 
         if (orderList.getOrderType()==1){
             mOrderType.setText(R.string.text_playment_cod);

@@ -1,6 +1,7 @@
 package com.yikego.market.activity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -64,42 +65,67 @@ public class MarketDetailActivity extends Activity implements
 	private static final int ACTION_STORE_INFO = 1;
 	private Handler mHandler;
 	public static int storeID;
+	private ProgressDialog mProgressDialog;
 	public static ArrayList<OrderProductInfo> orderDetailList;
+	private TextView shoppingCarIndex;
 
 	public MarketDetailActivity() {
 		mContext = this;
 		orderDetailList = new ArrayList<OrderProductInfo>();
+
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		mProgressDialog = new ProgressDialog(mContext);
 		setContentView(R.layout.activity_market_detail);
-        yikegoApplication.getInstance().addActivity(this);
+		yikegoApplication.getInstance().addActivity(this);
 		storeInfo = (StoreInfo) getIntent().getSerializableExtra("storeInfo");
 		storeID = storeInfo.storeId;
 		mThemeService = ThemeService.getServiceInstance(mContext);
 		initHandler();
 		initViews();
 	}
+	private String getGoodsCout() {
+		int cout = 0;
+		if (MarketDetailActivity.orderDetailList != null
+				&& MarketDetailActivity.orderDetailList.size() > 0) {
+			for (int i = 0; i < MarketDetailActivity.orderDetailList.size(); i++) {
+				cout += MarketDetailActivity.orderDetailList.get(i).count;
+			}
+			return cout + "";
+		} else {
+			return null;
+		}
 
+	}
 	@Override
 	protected void onResume() {
 		super.onResume();
 		// initActionBar();
+		if(orderDetailList !=null){
+			if(orderDetailList.size() == 0){
+				shoppingCarIndex.setVisibility(View.GONE);
+			}else{
+				shoppingCarIndex.setVisibility(View.VISIBLE);
+				shoppingCarIndex.setText(getGoodsCout());
+			}
+		}
 	}
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		if(orderDetailList!=null){
+		if (orderDetailList != null) {
 			orderDetailList.clear();
 		}
 		// initActionBar();
 	}
-	
+
 	public Drawable getThumbnail(int id) {
 		// TODO Auto-generated method stub
-		
+
 		Drawable drawable = CachedThumbnails.getThumbnail(this, id);
 		if (drawable == null) {
 			return CachedThumbnails.getDefaultIcon(this);
@@ -107,6 +133,7 @@ public class MarketDetailActivity extends Activity implements
 			return drawable;
 		}
 	}
+
 	private void initViews() {
 		mGridView = (GridView) findViewById(R.id.market_detail_grid);
 		mGridView.setOnItemClickListener(this);
@@ -139,6 +166,8 @@ public class MarketDetailActivity extends Activity implements
 		marketName.setText(storeInfo.name);
 		TextView marketSpend = (TextView) findViewById(R.id.market_detail_spend);
 		marketSpend.setText(storeInfo.sendPrice+"元起送");
+		
+		shoppingCarIndex = (TextView) findViewById(R.id.market_detail_shopping_car_index);
 		
 		TextView marketDistance = (TextView) findViewById(R.id.market_detail_distance);
 		marketDistance.setText("距离 :"+storeInfo.aboutDistance+"米");
@@ -176,14 +205,15 @@ public class MarketDetailActivity extends Activity implements
 		GetStoreInfo();
 	}
 
-    private OnClickListener mShoppingCarListener = new OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            Intent intent = new Intent(mContext,
-                    MarketShoppingCarActivity.class);
-            startActivity(intent);
-        }
-    };
+	private OnClickListener mShoppingCarListener = new OnClickListener() {
+		@Override
+		public void onClick(View view) {
+			Intent intent = new Intent(mContext,
+					MarketShoppingCarActivity.class);
+			startActivity(intent);
+		}
+	};
+
 	private void initHandler() {
 		// TODO Auto-generated method stub
 		mHandler = new Handler() {
@@ -194,12 +224,15 @@ public class MarketDetailActivity extends Activity implements
 				switch (msg.what) {
 				case ACTION_STORE_INFO:
 					MarketGoodsInfoListData marketGoodsInfoList = (MarketGoodsInfoListData) msg.obj;
-					
+
 					if (marketGoodsInfoList != null) {
 						if (marketGoodsInfoList.productTypeList != null) {
 							mGridAdapter = new GridAdapter(mContext,
 									marketGoodsInfoList.productTypeList);
-							Log.v("ACTION_STORE_INFO", "productTypeList ="+marketGoodsInfoList.productTypeList.size());
+							Log.v("ACTION_STORE_INFO",
+									"productTypeList ="
+											+ marketGoodsInfoList.productTypeList
+													.size());
 						}
 						mGridView.setAdapter(mGridAdapter);
 					}
@@ -210,13 +243,21 @@ public class MarketDetailActivity extends Activity implements
 				default:
 					break;
 				}
+				if (mProgressDialog.isShowing()) {
+					mProgressDialog.dismiss();
+				}
 			}
 		};
 	}
 
 	private void GetStoreInfo() {
 		// TODO Auto-generated method stub
-
+		mProgressDialog.setMessage(getResources()
+				.getText(R.string.text_loading));
+		mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		mProgressDialog.setCancelable(false);
+		mProgressDialog.setProgress(0);
+		mProgressDialog.show();
 		Request request = new Request(0, Constant.TYPE_GET_GOODS_TYPE_INFO);
 		StoreId mStoreId = new StoreId();
 		mStoreId.storeId = storeInfo.storeId;
@@ -242,18 +283,18 @@ public class MarketDetailActivity extends Activity implements
 		mThemeService.getStoreList(request);
 	}
 
-    public void onDial(TextView view) {
-        try {
-            Uri uri= Uri.parse("tel:" + String.valueOf(view.getText()));
-            Intent intent = new Intent(Intent.ACTION_DIAL, uri);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public void onDial(TextView view) {
+		try {
+			Uri uri = Uri.parse("tel:" + String.valueOf(view.getText()));
+			Intent intent = new Intent(Intent.ACTION_DIAL, uri);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(intent);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-    private class GridAdapter extends ArrayAdapter<MarketGoodsInfo> {
+	private class GridAdapter extends ArrayAdapter<MarketGoodsInfo> {
 		private Context mContext;
 		private ViewHolder viewHolder = null;
 		private LayoutInflater mLayoutInflater;
@@ -288,7 +329,7 @@ public class MarketDetailActivity extends Activity implements
 			}
 			if (marketGoodsInfo != null) {
 				viewHolder.mName.setText(marketGoodsInfo.name);
-				if(marketGoodsInfo.shortDescription!=null){
+				if (marketGoodsInfo.shortDescription != null) {
 					viewHolder.detail.setText(marketGoodsInfo.shortDescription);
 				}
 			}
@@ -305,10 +346,9 @@ public class MarketDetailActivity extends Activity implements
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		// TODO Auto-generated method stub
-		MarketGoodsInfo marketGoodsInfo= mGridAdapter.getItem(position);
-		Intent intent = new Intent(mContext,
-				MarketGoodsListActivity.class);
-		intent.putExtra("productTypeId",marketGoodsInfo.productTypeId);
+		MarketGoodsInfo marketGoodsInfo = mGridAdapter.getItem(position);
+		Intent intent = new Intent(mContext, MarketGoodsListActivity.class);
+		intent.putExtra("productTypeId", marketGoodsInfo.productTypeId);
 		startActivity(intent);
 	}
 }

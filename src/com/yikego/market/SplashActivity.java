@@ -54,6 +54,7 @@ public class SplashActivity extends Activity {
         LocationClientOption option = new LocationClientOption();
         option.setOpenGps(true);// 打开gps
         option.setCoorType("bd09ll"); // 设置坐标类型
+        option.setAddrType("all");// 返回的定位结果包含地址信息
         option.setScanSpan(1000);
         mLocClient.setLocOption(option);
         mLocClient.start();

@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white" >
+    android:background="@color/text_gray_color_e3" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,11 +17,8 @@
 
             <ImageView
                 android:id="@+id/market_detail_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dip"
-                android:background="@drawable/ic_back" />
+                style="@style/back_syle"
+                />
 
             <TextView
                 android:id="@+id/actionbar_title"
@@ -43,22 +40,16 @@
                 android:id="@+id/info_title"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/text_gray_color_e3"
+                style="@style/title_color_style"
                 android:padding="8dp"
                 android:text="收货人信息"
                 android:textColor="@color/black" />
-
-            <ImageView
-                android:id="@+id/line"
-                android:layout_width="fill_parent"
-                android:layout_height="2dp"
-                android:background="#919191" />
 
             <RelativeLayout
                 android:id="@+id/layout_detail"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/text_gray_color_e3" 
+                style="@style/input_color_style"
                 android:onClick="layout_detail_onclick">
 
                 <TextView
@@ -103,20 +94,15 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
-            android:background="@color/text_gray_color_e3"
+            style="@style/title_color_style"
             android:padding="8dp"
             android:textColor="@color/black"
             android:text="支付方式" />
 
-        <ImageView
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="#d1d1d1" />
-
         <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" 
-            android:background="@color/text_gray_color_e3"
+            android:layout_height="wrap_content"
+            style="@style/input_color_style"
             android:onClick="layout_cod_onclick">
 
             <TextView
@@ -140,6 +126,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:padding="8dp"
+            style="@style/title_color_style"
             android:textColor="@color/black"
             android:text="商品清单" />
 
@@ -148,7 +135,7 @@
             android:layout_width="fill_parent"
             android:layout_height="200dip"
             android:cacheColorHint="@android:color/transparent"
-            android:divider="@color/white"
+            android:divider="@color/text_gray_color_e3"
             android:dividerHeight="1px"
             android:drawSelectorOnTop="false"
             android:fadingEdge="none"
@@ -158,13 +145,14 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
+                style="@style/title_color_style"
                 android:textColor="@color/black"
                 android:text="付款信息" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="50dip"
-            android:background="@color/text_gray_color_e3" >
+            style="@style/input_color_style">
 
             <TextView
                     android:layout_width="wrap_content"
@@ -200,7 +188,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dip"
         android:layout_alignParentBottom="true"
-        android:background="@color/edit_text_color" >
+        android:background="@color/bg_color_blue" >
 
         <TextView
             android:id="@+id/order_pay_money"
@@ -218,9 +206,9 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="15dip"
-            android:background="@color/bg_color_blue"
+            android:background="@color/white"
             android:text="提交订单"
-            android:textColor="@color/white"
+            android:textColor="@color/bg_color_blue"
             android:textSize="15dip" />
     </RelativeLayout>
 

@@ -15,6 +15,7 @@
     <string name="title_import_goods">请输入商品名称</string>
     <string name="text_define"> 确定</string>
     <string name="text_settlement"> 去结算</string>
+    <string name="text_loading"> 加载ing...</string>
     <string name="text_title_goods_detail"> 商品详情</string>
     <string name="text_enter_market_detail">进入店铺</string>
     <string name="text_goods_Description">商品描述</string>
@@ -30,7 +31,7 @@
     <string name="goods_detail">商品详情</string>
     <string name="text_shopping_car">购物车</string>
     <string name="text_submit_order">填写订单</string>
-    <string name="text_consignee_title">收货人信息</string>
+    <string name="text_consignee_title">编辑收货地址</string>
     <string name="text_settlement_amount">结算</string>
     <string name="cod_orders_completed">订单已完成</string>
     <string name="cod_call_to_advisory">详情可电话咨询</string>
@@ -114,4 +115,8 @@
     <string name="location_history_his_location_hint">历史位置</string>
     <string name="location_history_actionbar_title">切换位置</string>
 
+    <string name="order_status_create">未支付</string>
+    <string name="order_status_costed">已支付</string>
+    <string name="order_status_sending">交易中</string>
+    <string name="order_status_ok">交易完成</string>
 </resources>

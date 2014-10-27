@@ -2,6 +2,8 @@ package com.yikego.market.activity;
 
 import java.util.List;
 
+import android.content.Intent;
+import android.widget.*;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -19,6 +21,8 @@ import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.yikego.android.rom.sdk.bean.LocationHistoryList;
 import com.yikego.market.R;
 import com.yikego.market.SplashActivity.MyLocationListenner;
+import com.yikego.market.contentProvider.LoacationHistory;
+import com.yikego.market.contentProvider.LoacationHistoryProvider;
 import com.yikego.market.utils.DBHelper;
 import com.yikego.market.yikegoApplication;
 import com.yikego.market.adapter.LocHistoryAdapter;
@@ -34,12 +38,6 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class LocationHistoryActivity extends Activity implements
 		AdapterView.OnItemClickListener, OnGetGeoCoderResultListener {
@@ -48,21 +46,20 @@ public class LocationHistoryActivity extends Activity implements
 	private Latitude mLatitude;
 	private TextView mActionBarText;
 	private ListView mListView;
+    private ImageView mDeleteHistory;
 	private String mLocationName;
 	private String mStreetName;
 	private EditText mSearchName;
 	private RelativeLayout mLayout_locat_cur;
 	private TextView mTitle_map;
+    private TextView mSure;
 	private LocHistoryAdapter mLocHistoryAdapter;
     private List<LocationHistoryList> mLocHistoryLists;
 	// 定位相关
 	LocationClient mLocClient;
 	public MyLocationListenner myListener = new MyLocationListenner();
 	private yikegoApplication mApplication;
-	
-	
-	
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -75,6 +72,7 @@ public class LocationHistoryActivity extends Activity implements
 		option.setOpenGps(true);// 打开gps
 		option.setCoorType("bd09ll"); // 设置坐标类型
 		option.setScanSpan(1000);
+        option.setAddrType("all");// 返回的定位结果包含地址信息
         // 初始化搜索模块，注册事件监听
         mSearch = GeoCoder.newInstance();
         mSearch.setOnGetGeoCodeResultListener(LocationHistoryActivity.this);
@@ -107,6 +105,7 @@ public class LocationHistoryActivity extends Activity implements
 				mLocClient.start();
 			}
 		});
+        mDeleteHistory = (ImageView) findViewById(R.id.delete_location);
 		mListView = (ListView) findViewById(android.R.id.list);
 		mListView.setAdapter(mLocHistoryAdapter);
 		// mListView.setOnScrollListener(mScrollListener);
@@ -121,7 +120,26 @@ public class LocationHistoryActivity extends Activity implements
 				finish();
 			}
 		});
+        mDeleteHistory.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getContentResolver().delete(LoacationHistoryColumns.CONTENT_URI,null,null);
+//                getApplicationContext().deleteDatabase(LoacationHistoryProvider.TABLE_NAME);
+                mLocHistoryAdapter.setLocationHistoryLists(null);
+                mLocHistoryAdapter.notifyDataSetChanged();
+            }
+        });
 		mSearchName = (EditText) findViewById(R.id.search_edittext);
+        mSure.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+/*                String search = null;
+                search = mSearchName.getText().toString();
+                if (search !=null&&!search.equals("")){
+                    getContentResolver().query(LoacationHistoryColumns.CONTENT_URI, "", null);
+                }*/
+            }
+        });
 
 	}
 
@@ -132,8 +150,15 @@ public class LocationHistoryActivity extends Activity implements
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		// TODO Auto-generated method stub
+        final LocationHistoryList orderList = mLocHistoryLists.get(arg2);
+        Intent intent = new Intent(this, MarketBrowser.class);
+        intent.putExtra("lat", orderList.getStreetLatitude());
+        intent.putExtra("lng", orderList.getStreetLongitude());
+        intent.putExtra("street", orderList.getStreetName());
+        this.startActivity(intent);
+        finish();
+    }
 
-	}
 
 	/**
 	 * 定位SDK监听函数
@@ -147,25 +172,30 @@ public class LocationHistoryActivity extends Activity implements
 				return;
 			}
 			mStreetName = location.getStreet();
-			if (mStreetName != null) {
-				mTitle_map.setText(mStreetName);
-			} else {
-				mTitle_map.setText(R.string.location_history_location_hint);
-			}
             Log.d(TAG, "Location : lat " + location.getLatitude());
             Log.d(TAG, "Location :  lng : " + location.getLongitude());
             Log.d(TAG, "Location :  street : " + mStreetName);
             mLatitude.lat = (float) location.getLatitude();
             mLatitude.lng = (float) location.getLongitude();
+            if (mStreetName != null) {
+                mTitle_map.setText(mStreetName);
+            } else {
+                mTitle_map.setText(R.string.location_history_location_hint);
+                LatLng ptCenter = new LatLng((location.getLatitude()), (location.getLongitude()));
+                // 反Geo搜索
+                mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(ptCenter));
+            }
+            ContentValues values = new ContentValues();
+            values.put(LoacationHistoryColumns.STREETNAME, mStreetName);
+            values.put(LoacationHistoryColumns.LONGITUDE, mLatitude.lng);
+            values.put(LoacationHistoryColumns.LATITUDE, mLatitude.lat);
+            DBHelper.updateDB(getContentResolver(), values);
 
-            LatLng ptCenter = new LatLng((location.getLatitude()), (location.getLongitude()));
-			// 反Geo搜索
-			mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(ptCenter));
 			List<LocationHistoryList> locHistoryLists = mApplication.getLocationHistoryList();
-			mLocHistoryAdapter.setLocationHistoryLists(locHistoryLists);
-			mLocHistoryAdapter.notifyDataSetChanged();
             if (mLocClient!=null)
                 mLocClient.stop();
+            mLocHistoryAdapter.setLocationHistoryLists(locHistoryLists);
+            mLocHistoryAdapter.notifyDataSetChanged();
 		}
 
 		@Override
@@ -205,10 +235,9 @@ public class LocationHistoryActivity extends Activity implements
 			values.put(LoacationHistoryColumns.LONGITUDE, mLatitude.lng);
 			values.put(LoacationHistoryColumns.LATITUDE, mLatitude.lat);
             DBHelper.updateDB(getContentResolver(), values);
+            mLocHistoryAdapter.notifyDataSetChanged();
 		} else {
 			mTitle_map.setText(R.string.location_history_location_hint);
 		}
-
-		
 	}
 }

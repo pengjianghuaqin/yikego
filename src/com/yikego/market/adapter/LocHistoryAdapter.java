@@ -1,15 +1,18 @@
 package com.yikego.market.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.baidu.mapapi.model.LatLng;
 import com.yikego.android.rom.sdk.bean.LocationHistoryList;
 import com.yikego.android.rom.sdk.bean.OrderList;
 import com.yikego.market.R;
+import com.yikego.market.activity.MarketBrowser;
 
 import java.util.List;
 
@@ -60,9 +63,18 @@ public class LocHistoryAdapter extends BaseAdapter{
         }
 
         if (mLocHistoryLists != null && mLocHistoryLists.size()> 0){
-            LocationHistoryList orderList = mLocHistoryLists.get(position);
+            final LocationHistoryList orderList = mLocHistoryLists.get(position);
             viewHolder.mStreetName.setText(String.valueOf(orderList.getStreetName()));
-
+/*            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, MarketBrowser.class);
+                    intent.putExtra("lat", orderList.getStreetLatitude());
+                    intent.putExtra("lng", orderList.getStreetLongitude());
+                    intent.putExtra("street", orderList.getStreetName());
+                    mContext.startActivity(intent);
+                }
+            });*/
         }
         return convertView;
     }

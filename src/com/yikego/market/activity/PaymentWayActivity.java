@@ -32,6 +32,12 @@ public class PaymentWayActivity extends Activity implements OnClickListener {
 		mButton_online = (Button)findViewById(R.id.button_online);
 		mButton_cod.setOnClickListener(this);
 		mButton_online.setOnClickListener(this);
+        findViewById(R.id.market_detail_back).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 	}
 
 	@Override
