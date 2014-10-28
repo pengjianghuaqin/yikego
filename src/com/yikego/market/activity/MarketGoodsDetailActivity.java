@@ -154,6 +154,12 @@ public class MarketGoodsDetailActivity extends Activity {
 			}
 		});
 		imgGallery = (Gallery) findViewById(R.id.goods_detail_img);
+		Drawable tmpImg = getResources().getDrawable(R.drawable.img_bg_goods_detail);
+		Log.v(TAG, "MarketGoodsDetailActivity tmpImg="+tmpImg);
+		ArrayList<Drawable> icInfo = new ArrayList<Drawable>();
+		icInfo.add(tmpImg);
+		imgGallery.setAdapter(new GoodsImgListAdapter(mContext,
+				icInfo));
 		addThumbnailRequest();
 	}
 
@@ -210,6 +216,7 @@ public class MarketGoodsDetailActivity extends Activity {
 				imgUrlList.add(imgUrl);
 			}
 		}
+		Log.v(TAG, "MarketGoodsDetailActivity imgUrlList="+imgUrlList+",imgUrlList.size="+imgUrlList.size());
 		if (imgUrlList != null && imgUrlList.size() > 0) {
 			Request request = new Request(0L, Constant.TYPE_GOODS_IMG_LIST);
 			Object[] params = new Object[1];

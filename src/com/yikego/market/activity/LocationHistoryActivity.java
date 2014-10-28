@@ -3,6 +3,7 @@ package com.yikego.market.activity;
 import java.util.List;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.widget.*;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -130,20 +131,53 @@ public class LocationHistoryActivity extends Activity implements
             }
         });
 		mSearchName = (EditText) findViewById(R.id.search_edittext);
+        mSure = (TextView) findViewById(R.id.text_define);
         mSure.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-/*                String search = null;
+                String search = null;
                 search = mSearchName.getText().toString();
                 if (search !=null&&!search.equals("")){
-                    getContentResolver().query(LoacationHistoryColumns.CONTENT_URI, "", null);
-                }*/
+                    searchHistory(search);
+                }
             }
         });
 
 	}
 
-	public void onBackButton(View v) {
+    private void searchHistory(String search) {
+        String where = LoacationHistoryColumns.STREETNAME + " LIKE '%"+search+"%'";
+        Cursor cursor = getContentResolver().query(LoacationHistoryColumns.CONTENT_URI,
+                new String[]{where}, null, null, LoacationHistoryColumns.STREETNAME + " ASC ");
+        Log.d(TAG, "search : " + cursor.getCount());
+        try {
+            cursor.moveToFirst();
+            while (cursor.moveToNext()) {
+                LocationHistoryList locHistory = new LocationHistoryList();
+                String streetName = cursor
+                        .getString(cursor
+                                .getColumnIndex(LoacationHistory.LoacationHistoryColumns.STREETNAME));
+                String longitude = cursor
+                        .getString(cursor
+                                .getColumnIndex(LoacationHistory.LoacationHistoryColumns.LONGITUDE));
+                String latitude = cursor
+                        .getString(cursor
+                                .getColumnIndex(LoacationHistory.LoacationHistoryColumns.LATITUDE));
+                locHistory.setStreetName(streetName);
+                locHistory.setStreetLongitude(longitude);
+                locHistory.setStreetLatitude(latitude);
+                List<LocationHistoryList> locHistoryLists = mApplication.getLocationHistoryList();
+                locHistoryLists.add(locHistory);
+                mLocHistoryAdapter.setLocationHistoryLists(locHistoryLists);
+                mLocHistoryAdapter.notifyDataSetChanged();
+            }
+        } finally {
+            cursor.close();
+        }
+
+    }
+
+    public void onBackButton(View v) {
 		finish();
 	}
 

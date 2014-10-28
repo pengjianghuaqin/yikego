@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.yikego.android.rom.sdk.bean.OrderProductInfo;
 import com.yikego.market.R;
 import com.yikego.market.utils.CachedThumbnails;
+import com.yikego.market.activity.MarketSubmitOrderActivity;
 
 import java.util.List;
 
@@ -74,9 +75,7 @@ public class OrderListAdapter extends ArrayAdapter<OrderProductInfo> {
             viewHolder.mName.setText(orderInfo.name);
             viewHolder.mDetail.setText(orderInfo.name);
             viewHolder.mOrderCout.setText("X " + orderInfo.count);
-            if (orderInfo.productId!=0)
-                viewHolder.mThumbnail.setBackgroundDrawable(CachedThumbnails.getGoodsThumbnail(
-                        mContext, orderInfo.productId));
+			   viewHolder.mThumbnail.setBackground(((MarketSubmitOrderActivity)mContext).getThumbnail(orderInfo.productId));
         }
         return convertView;
     }

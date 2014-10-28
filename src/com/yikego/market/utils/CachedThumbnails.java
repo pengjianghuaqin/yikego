@@ -34,7 +34,14 @@ public class CachedThumbnails {
 		}
 		return defaultIcon;
 	}
-
+	public static Drawable getGoodsDefaultIcon(Context context) {
+		// TODO Auto-generated method stub
+		if (defaultIcon == null) {
+			defaultIcon = context.getResources().getDrawable(R.drawable.img_bg_goods_icon);
+		}
+		return defaultIcon;
+	}
+	
 	/*
 	 * push to local map collection, then save to file system
 	 */

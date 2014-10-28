@@ -112,7 +112,7 @@ public class MarketGoodsListActivity extends ListActivity implements
 		boolean bThumbExists = mIconStatusMap.containsKey(Integer
 				.valueOf(position));
 		if (bBusy && !bThumbExists) {
-			return CachedThumbnails.getDefaultIcon(this);
+			return CachedThumbnails.getGoodsDefaultIcon(this);
 		}
 
 		Drawable drawable = CachedThumbnails.getGoodsThumbnail(this, id);
@@ -125,7 +125,7 @@ public class MarketGoodsListActivity extends ListActivity implements
 			if (bThumbExists && !bThumbCached) {
 				// cause thumb record existed
 				// do not sent thumb request again, just return default icon
-				return CachedThumbnails.getDefaultIcon(this);
+				return CachedThumbnails.getGoodsDefaultIcon(this);
 			} else {
 				// cause thumb record not existed
 				// or thumb not cached yet,
@@ -133,7 +133,7 @@ public class MarketGoodsListActivity extends ListActivity implements
 				mIconStatusMap.put(Integer.valueOf(position),
 						Boolean.valueOf(false));
 				addThumbnailRequest(position, id);
-				return CachedThumbnails.getDefaultIcon(this);
+				return CachedThumbnails.getGoodsDefaultIcon(this);
 			}
 		} else {
 			// cause thumb has been cached

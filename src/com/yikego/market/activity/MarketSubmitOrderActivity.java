@@ -64,13 +64,22 @@ public class MarketSubmitOrderActivity extends ListActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		setContentView(R.layout.activity_submitorder);
         yikegoApplication.getInstance().addActivity(this);
 		mThemeService = ThemeService.getServiceInstance(mContext);
 		initView();
 		initHandler();
 	}
-
+	public Drawable getThumbnail( int id) {
+		// TODO Auto-generated method stub
+		Drawable drawable = CachedThumbnails.getGoodsThumbnail(this, id);
+		if (drawable == null) {
+				return CachedThumbnails.getGoodsDefaultIcon(this);
+		} else {
+			return drawable;
+		}
+	}
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -94,6 +103,7 @@ public class MarketSubmitOrderActivity extends ListActivity implements
 				// TODO Auto-generated method stub
 				PostSubmitOrder();
 			}
+
 		});
         findViewById(R.id.market_detail_back).setOnClickListener(new OnClickListener() {
             @Override

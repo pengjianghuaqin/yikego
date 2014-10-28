@@ -102,7 +102,15 @@ public class MarketShoppingCarActivity extends ListActivity {
 				MarketDetailActivity.orderDetailList);
 		mListView.setAdapter(mAdapter);
 	}
-
+	public Drawable getThumbnail( int id) {
+		// TODO Auto-generated method stub
+		Drawable drawable = CachedThumbnails.getGoodsThumbnail(this, id);
+		if (drawable == null) {
+				return CachedThumbnails.getGoodsDefaultIcon(this);
+		} else {
+			return drawable;
+		}
+	}
 	private float getCoutPrice() {
 		float coutPrice = 0;
 		for (int i = 0; i < MarketDetailActivity.orderDetailList.size(); i++) {
@@ -182,6 +190,7 @@ public class MarketShoppingCarActivity extends ListActivity {
 					+ getCoutPrice());
 		}
 
+		@SuppressWarnings("deprecation")
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			OrderProductInfo orderInfo = null;
@@ -221,8 +230,7 @@ public class MarketShoppingCarActivity extends ListActivity {
 			viewHolder.mPlus.setTag(position);
 			viewHolder.mSubtract.setOnClickListener(mOnClickListener);
 			viewHolder.mSubtract.setTag(position);
-			viewHolder.mThumbnail.setBackgroundDrawable(CachedThumbnails
-					.getGoodsThumbnail(mContext, orderInfo.productId));
+			viewHolder.mThumbnail.setBackgroundDrawable(((MarketShoppingCarActivity)mContext).getThumbnail(orderInfo.productId));
 			if (orderInfo != null) {
 				viewHolder.mName.setText(orderInfo.name);
 				viewHolder.mDetail.setText(orderInfo.name);
