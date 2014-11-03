@@ -47,8 +47,8 @@ public class PaySuccessActivity extends Activity {
         actionBar_backHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PaySuccessActivity.this, MarketBrowser.class);
-                startActivity(intent);
+//                Intent intent = new Intent(PaySuccessActivity.this, MarketBrowser.class);
+//                startActivity(intent);
                 yikegoApplication.getInstance().exit();
             }
         });

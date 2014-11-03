@@ -102,7 +102,7 @@ public class MarketShoppingCarActivity extends ListActivity {
 				MarketDetailActivity.orderDetailList);
 		mListView.setAdapter(mAdapter);
 	}
-	public Drawable getThumbnail( int id) {
+	public Drawable getThumbnail( String id) {
 		// TODO Auto-generated method stub
 		Drawable drawable = CachedThumbnails.getGoodsThumbnail(this, id);
 		if (drawable == null) {
@@ -230,7 +230,7 @@ public class MarketShoppingCarActivity extends ListActivity {
 			viewHolder.mPlus.setTag(position);
 			viewHolder.mSubtract.setOnClickListener(mOnClickListener);
 			viewHolder.mSubtract.setTag(position);
-			viewHolder.mThumbnail.setBackgroundDrawable(((MarketShoppingCarActivity)mContext).getThumbnail(orderInfo.productId));
+			viewHolder.mThumbnail.setBackgroundDrawable(((MarketShoppingCarActivity)mContext).getThumbnail(orderInfo.name));
 			if (orderInfo != null) {
 				viewHolder.mName.setText(orderInfo.name);
 				viewHolder.mDetail.setText(orderInfo.name);

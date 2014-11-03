@@ -186,7 +186,7 @@ public class RequestHandler extends Thread {
     					Image2 img = new Image2();
     					
     					try {
-    						img._id = ((Integer) params[0]).intValue();
+    						img.path = (String) params[0];
     						img.mAppIcon = mAgent.getAppIcon(imgUrl);
     						request.setStatus(Constant.STATUS_SUCCESS);
     						request.notifyObservers(img);

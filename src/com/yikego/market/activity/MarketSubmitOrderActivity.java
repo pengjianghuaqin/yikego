@@ -71,7 +71,7 @@ public class MarketSubmitOrderActivity extends ListActivity implements
 		initView();
 		initHandler();
 	}
-	public Drawable getThumbnail( int id) {
+	public Drawable getThumbnail( String id) {
 		// TODO Auto-generated method stub
 		Drawable drawable = CachedThumbnails.getGoodsThumbnail(this, id);
 		if (drawable == null) {

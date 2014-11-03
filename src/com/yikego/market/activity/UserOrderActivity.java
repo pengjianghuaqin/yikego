@@ -17,6 +17,7 @@ import com.yikego.android.rom.sdk.bean.PostUserOrderBody;
 import com.yikego.android.rom.sdk.bean.UserOrderListInfo;
 import com.yikego.market.R;
 import com.yikego.market.adapter.UserOrderAdapter;
+import com.yikego.market.model.LoadingDialog;
 import com.yikego.market.utils.Constant;
 import com.yikego.market.utils.GlobalUtil;
 import com.yikego.market.webservice.Request;
@@ -47,13 +48,13 @@ public class UserOrderActivity extends Activity {
 	private PostUserOrderBody mPostUserOrderBody = new PostUserOrderBody();
 	private UserOrderListInfo mUserOrderListInfo;
 	private int userId;
-	private ProgressDialog mProgressDialog;
+	private LoadingDialog mProgressDialog;
 	private UserOrderAdapter mUserOrderAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mProgressDialog = new ProgressDialog(this);
+		mProgressDialog = new LoadingDialog(this);
 		setContentView(R.layout.activity_user_order);
 		if (!GlobalUtil.isLogin(this)) {
 			Intent intent = new Intent(this, LoginActivity.class);
@@ -102,11 +103,7 @@ public class UserOrderActivity extends Activity {
 	}
 
 	private void postUserOrderInfo() {
-		mProgressDialog.setMessage(getResources()
-				.getText(R.string.text_loading));
-		mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		mProgressDialog.setCancelable(false);
-		mProgressDialog.setProgress(0);
 		mProgressDialog.show();
 		Request request = new Request(0, Constant.TYPE_GET_USER_ORDER);
 		// Object[] params = new Object[2];

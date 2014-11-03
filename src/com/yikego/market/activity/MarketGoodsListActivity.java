@@ -16,6 +16,7 @@ import com.yikego.market.R;
 import com.yikego.market.activity.MarketListAdapter.ViewHolder;
 import com.yikego.market.model.GoodsData;
 import com.yikego.market.model.Image2;
+import com.yikego.market.model.LoadingDialog;
 import com.yikego.market.model.MarketData;
 import com.yikego.market.utils.CachedThumbnails;
 import com.yikego.market.utils.Constant;
@@ -82,7 +83,7 @@ public class MarketGoodsListActivity extends ListActivity implements
 	private int screenHeight = 0;
 	private Hashtable<Integer, Boolean> mIconStatusMap;
 	private boolean bBusy;
-	private ProgressDialog mProgressDialog;
+	private LoadingDialog mProgressDialog;
 
 	public MarketGoodsListActivity() {
 		nowPage = 1;
@@ -91,13 +92,13 @@ public class MarketGoodsListActivity extends ListActivity implements
 		mContext = this;
 		bBusy = false;
 		mIconStatusMap = new Hashtable<Integer, Boolean>();
-		
+
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mProgressDialog = new ProgressDialog(mContext);
+		mProgressDialog = new LoadingDialog(mContext);
 		setContentView(R.layout.activity_goods_list);
 		mThemeService = ThemeService.getServiceInstance(mContext);
 		yikegoApplication.getInstance().addActivity(this);
@@ -107,21 +108,24 @@ public class MarketGoodsListActivity extends ListActivity implements
 		initView();
 	}
 
-	public Drawable getThumbnail(int position, int id) {
+	public Drawable getThumbnail(int position, String id) {
 		// TODO Auto-generated method stub
+		Log.v(TAG, "getThumbnail id ="+id);
 		boolean bThumbExists = mIconStatusMap.containsKey(Integer
 				.valueOf(position));
 		if (bBusy && !bThumbExists) {
 			return CachedThumbnails.getGoodsDefaultIcon(this);
 		}
-
 		Drawable drawable = CachedThumbnails.getGoodsThumbnail(this, id);
+		Log.v(TAG, "getThumbnail drawable ="+drawable);
 		if (drawable == null) {
 			boolean bThumbCached = false;
+			Log.v(TAG, "getThumbnail bThumbExists ="+bThumbExists);
 			if (bThumbExists) {
 				bThumbCached = mIconStatusMap.get(Integer.valueOf(position))
 						.booleanValue();
 			}
+			Log.v(TAG, "getThumbnail bThumbCached ="+bThumbCached);
 			if (bThumbExists && !bThumbCached) {
 				// cause thumb record existed
 				// do not sent thumb request again, just return default icon
@@ -130,9 +134,11 @@ public class MarketGoodsListActivity extends ListActivity implements
 				// cause thumb record not existed
 				// or thumb not cached yet,
 				// set cached flag as false, and send thumb request
+				Log.v(TAG, "getThumbnail mIconStatusMap ="+mIconStatusMap);
 				mIconStatusMap.put(Integer.valueOf(position),
 						Boolean.valueOf(false));
 				addThumbnailRequest(position, id);
+				
 				return CachedThumbnails.getGoodsDefaultIcon(this);
 			}
 		} else {
@@ -144,7 +150,7 @@ public class MarketGoodsListActivity extends ListActivity implements
 		}
 	}
 
-	private void addThumbnailRequest(int position, int id) {
+	private void addThumbnailRequest(int position, String id) {
 		String imgUrl = null;
 		if (mGoodsListAdapter.getItem(position).getGoodsIconUrl() != null
 				&& mGoodsListAdapter.getItem(position).getGoodsIconUrl().size() > 0) {
@@ -185,7 +191,14 @@ public class MarketGoodsListActivity extends ListActivity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
-		mShoppingcarIndex.setText(getGoodsCout());
+		if (MarketDetailActivity.orderDetailList != null) {
+			if (MarketDetailActivity.orderDetailList.size() == 0) {
+				mShoppingcarIndex.setVisibility(View.GONE);
+			} else {
+				mShoppingcarIndex.setVisibility(View.VISIBLE);
+				mShoppingcarIndex.setText(getGoodsCout());
+			}
+		}
 	}
 
 	@Override
@@ -275,11 +288,7 @@ public class MarketGoodsListActivity extends ListActivity implements
 		if (isEnd) {
 			return;
 		}
-		mProgressDialog.setMessage(getResources()
-				.getText(R.string.text_loading));
-		mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		mProgressDialog.setCancelable(false);
-		mProgressDialog.setProgress(0);
 		mProgressDialog.show();
 		Request request = new Request(0, Constant.TYPE_GET_GOODS_LIST_INFO);
 		PostProductType mPostProductType = new PostProductType();
@@ -343,7 +352,7 @@ public class MarketGoodsListActivity extends ListActivity implements
 						mListView.setAdapter(mGoodsListAdapter);
 					}
 					mListView.setVisibility(View.VISIBLE);
-					
+
 					break;
 				case ACTION_GOODS_ICON:
 					Image2 icInfo = (Image2) msg.obj;
@@ -365,7 +374,7 @@ public class MarketGoodsListActivity extends ListActivity implements
 				default:
 					break;
 				}
-				if(mProgressDialog.isShowing()){
+				if (mProgressDialog.isShowing()) {
 					mProgressDialog.dismiss();
 				}
 			}
@@ -476,12 +485,18 @@ public class MarketGoodsListActivity extends ListActivity implements
 											.add(orderProductInfo);
 								}
 								IconAnimation(v);
+								mShoppingcarIndex.setVisibility(View.VISIBLE);
 								mShoppingcarIndex.setText(getGoodsCout());
 							}
 						});
-
-				mThumb = ((MarketGoodsListActivity) mContext).getThumbnail(
-						position, goodsInfo.goodsId);
+				if (goodsInfo.getGoodsIconUrl() != null
+						&& goodsInfo.getGoodsIconUrl().size() > 0) {
+					mThumb = ((MarketGoodsListActivity) mContext).getThumbnail(
+							position, goodsInfo.getGoodsIconUrl().get(0));
+				}else{
+					Log.v(TAG, "CachedThumbnails.getGoodsDefaultIcon(this)");
+					mThumb = CachedThumbnails.getGoodsDefaultIcon(mContext);
+				}
 
 				viewHolder.mThumbnail.setBackgroundDrawable(mThumb);
 			}

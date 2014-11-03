@@ -6,10 +6,12 @@ import java.util.Hashtable;
 
 
 
+
 import com.yikego.market.R;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 public class CachedThumbnails {
 
@@ -18,10 +20,11 @@ public class CachedThumbnails {
 	private static final int MAX_SIZE = 50;
 	private static final int FREE_COUNT = 10;
 	
-	private static Hashtable<Integer, Drawable> cachedDrawables = 
-			new Hashtable<Integer, Drawable>();
-	private static ArrayList<Integer> keys = new ArrayList<Integer>();
+	private static Hashtable<String, Drawable> cachedDrawables = 
+			new Hashtable<String, Drawable>();
+	private static ArrayList<String> keys = new ArrayList<String>();
 	private static Drawable defaultIcon;
+	private static Drawable goodsDefaultIcon;
 
 	/*
 	 * get default icon displayed for applications
@@ -36,30 +39,32 @@ public class CachedThumbnails {
 	}
 	public static Drawable getGoodsDefaultIcon(Context context) {
 		// TODO Auto-generated method stub
-		if (defaultIcon == null) {
-			defaultIcon = context.getResources().getDrawable(R.drawable.img_bg_goods_icon);
+		if (goodsDefaultIcon == null) {
+			Log.v("defaultIcon", "getGoodsDefaultIcon ");
+			goodsDefaultIcon = context.getResources().getDrawable(R.drawable.img_bg_goods_icon);
+			Log.v("defaultIcon", "getGoodsDefaultIcon defaultIcon"+defaultIcon);
 		}
-		return defaultIcon;
+		return goodsDefaultIcon;
 	}
 	
 	/*
 	 * push to local map collection, then save to file system
 	 */
-	public static void cacheThumbnail(Context context, int id, Drawable drawable) {
+	public static void cacheThumbnail(Context context, String Md5Path, Drawable drawable) {
 		// TODO Auto-generated method stub
-		pushToCache(id, drawable);
+		pushToCache(Md5.encode(Md5Path), drawable);
 		
 //		if (bAllowBufferIcon) {
-			FileManager.writeAppIconToFile(context, id, drawable);
+			FileManager.writeAppIconToFile(context, Md5.encode(Md5Path), drawable);
 //		}
 	}
 	
-	public static void cacheGoodsIconThumbnail(Context context, int id, Drawable drawable) {
+	public static void cacheGoodsIconThumbnail(Context context,String Md5Path, Drawable drawable) {
 		// TODO Auto-generated method stub
-		pushToCache(id, drawable);
+		pushToCache(Md5.encode(Md5Path), drawable);
 		
 //		if (bAllowBufferIcon) {
-			FileManager.writeGoodsIconToFile(context, id, drawable);
+			FileManager.writeGoodsIconToFile(context, Md5.encode(Md5Path), drawable);
 //		}
 	}
 	/*
@@ -67,10 +72,11 @@ public class CachedThumbnails {
 	 * If not found, then try to read from file system with appId
 	 */
 	@SuppressWarnings("unused")
-	public static Drawable getThumbnail(Context context, int id) {
+	public static Drawable getThumbnail(Context context, String id) {
 		// TODO Auto-generated method stub
-		if (cachedDrawables.containsKey(id)) {
-			return cachedDrawables.get(id);
+		String mId = Md5.encode(id);
+		if (cachedDrawables.containsKey(mId)) {
+			return cachedDrawables.get(mId);
 		} else {
 			Drawable drawable = null;
 
@@ -80,19 +86,20 @@ public class CachedThumbnails {
 //					{
 //						drawable.setCallback(null);
 //					}
-					drawable = FileManager.readAppIconFromFile(context, id);
+					drawable = FileManager.readAppIconFromFile(context, mId);
 				}
 				if (drawable != null) {
-					pushToCache(id, drawable);
+					pushToCache(mId, drawable);
 				}
 			return drawable;
 		}
 	}
 	@SuppressWarnings("unused")
-	public static Drawable getGoodsThumbnail(Context context, int id) {
+	public static Drawable getGoodsThumbnail(Context context, String id) {
 		// TODO Auto-generated method stub
-		if (cachedDrawables.containsKey(id)) {
-			return cachedDrawables.get(id);
+		String mId = Md5.encode(id);
+		if (cachedDrawables.containsKey(mId)) {
+			return cachedDrawables.get(mId);
 		} else {
 			Drawable drawable = null;
 
@@ -102,10 +109,10 @@ public class CachedThumbnails {
 //					{
 //						drawable.setCallback(null);
 //					}
-					drawable = FileManager.readGoodsIconFromFile(context, id);
+					drawable = FileManager.readGoodsIconFromFile(context, mId);
 				}
 				if (drawable != null) {
-					pushToCache(id, drawable);
+					pushToCache(mId, drawable);
 				}
 			return drawable;
 		}
@@ -114,7 +121,7 @@ public class CachedThumbnails {
 	/*
 	 * Push drawable resource to local cache map with appId
 	 */
-	public static void pushToCache(int id, Drawable drawable) {
+	public static void pushToCache(String path, Drawable drawable) {
 		// TODO Auto-generated method stub
 		if (cachedDrawables.size() >= MAX_SIZE) {
 			// pop the oldest FREE_COUNT items in cachedDrawables
@@ -122,8 +129,8 @@ public class CachedThumbnails {
 				cachedDrawables.remove(keys.remove(i));
 			}
 		}
-		cachedDrawables.put(id, drawable);
+		cachedDrawables.put(path, drawable);
 		// add id to keys collection
-		keys.add(id);
+		keys.add(path);
 	}
 }

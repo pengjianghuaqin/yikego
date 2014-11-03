@@ -24,10 +24,12 @@ import com.yikego.market.contentProvider.LoacationHistory.LoacationHistoryColumn
 import com.yikego.market.fragment.SlidingMenuFragment;
 import com.yikego.market.model.Image2;
 import com.yikego.market.model.Latitude;
+import com.yikego.market.model.LoadingDialog;
 import com.yikego.market.model.MarketData;
 import com.yikego.market.utils.CachedThumbnails;
 import com.yikego.market.utils.Constant;
 import com.yikego.market.utils.DBHelper;
+import com.yikego.market.utils.Md5;
 import com.yikego.market.webservice.Request;
 import com.yikego.market.webservice.ThemeService;
 
@@ -72,7 +74,7 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 	private PaginationStoreListInfo mPaginationStoreListInfo = null;
 	private Hashtable<Integer, Boolean> mIconStatusMap;
 	private boolean bBusy;
-	protected ProgressDialog mProgressDialog;
+	protected LoadingDialog mProgressDialog;
 	private String mStreetName;
 	public MarketBrowser() {
 		Log.v(TAG, "MarketBrowser");
@@ -104,7 +106,7 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 			mLatitude.lat = 31.159488f;
 			mLatitude.lng = 121.579398f;
 		}
-		mProgressDialog = new ProgressDialog(mContext);
+		mProgressDialog = new LoadingDialog(mContext);
 		
 		Log.d(TAG, "lat : " + mLatitude.lat);
 		Log.d(TAG, "lng : " + mLatitude.lng);
@@ -146,7 +148,10 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 //            mLatitude.lng = 121.579398f;
         }
     }
-
+    @Override
+	protected void onResume() {
+		super.onResume();
+	}
     @Override
 	protected void onDestroy() {
         if (mSearch != null)
@@ -215,7 +220,7 @@ public class MarketBrowser extends SlidingFragmentActivity implements
         PostUserLocalInfo();
 	}
 
-	public Drawable getThumbnail(int position, int id) {
+	public Drawable getThumbnail(int position, String id) {
 		// TODO Auto-generated method stub
 		Log.v(TAG, "getThumbnail");
 		boolean bThumbExists = mIconStatusMap.containsKey(Integer
@@ -253,7 +258,7 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 		}
 	}
 
-	private void addThumbnailRequest(int position, int id) {
+	private void addThumbnailRequest(int position, String id) {
 		String imgUrl = null;
 		if (mMarketListAdapter.getItem(position).pictures != null
 				&& mMarketListAdapter.getItem(position).pictures.size() > 0) {
@@ -271,7 +276,7 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 			Request request = new Request(0L, Constant.TYPE_APP_ICON);
 			Object[] params = new Object[2];
 
-			params[0] = Integer.valueOf(id);
+			params[0] = mMarketListAdapter.getItem(position).pictures.get(0).picPath;
 			params[1] = imgUrl;
 			request.setData(params);
 			request.addObserver(new Observer() {
@@ -323,8 +328,8 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 								.getTag();
 						if (viewHolder != null) {
 							// mAppListAdapter.initBtnStatus(viewHolder,(Application2)viewHolder.mButton.getTag());
-							int id = (int) mMarketListAdapter
-									.getItemId(position);
+							String id = mMarketListAdapter
+									.getItem(position).pictures.get(0).picPath;
 							Drawable drawable = getThumbnail(position, id);
 							viewHolder.mThumbnail
 									.setBackgroundDrawable(drawable);
@@ -361,11 +366,7 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 		postUserLocationInfo.name = "";
 		postUserLocationInfo.nowPage = 1;
 		postUserLocationInfo.pageCount = 25;
-		mProgressDialog.setMessage(getResources().getText(
-				R.string.text_loading));
-		mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		mProgressDialog.setCancelable(false);
-		mProgressDialog.setProgress(0);
 		mProgressDialog.show();
 		request.setData(postUserLocationInfo);
 		request.addObserver(new Observer() {
@@ -436,11 +437,11 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 					Image2 icInfo = (Image2) msg.obj;
 					Log.v(TAG, "icInfo =" + icInfo.mAppIcon);
 					if (icInfo.mAppIcon != null) {
-						CachedThumbnails.cacheThumbnail(mContext, icInfo._id,
+						CachedThumbnails.cacheThumbnail(mContext, icInfo.path,
 								icInfo.mAppIcon);
 
 						ImageView imageView = (ImageView) mListView
-								.findViewWithTag(String.valueOf(icInfo._id));
+								.findViewWithTag(String.valueOf(icInfo.path));
 						if (imageView != null) {
 							imageView.setBackgroundDrawable(icInfo.mAppIcon);
 						}

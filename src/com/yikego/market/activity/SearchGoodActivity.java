@@ -103,12 +103,12 @@ public class SearchGoodActivity extends ListActivity implements
 		initView();
 	}
 
-	public Drawable getThumbnail(int position, int id) {
+	public Drawable getThumbnail(int position, String id) {
 		// TODO Auto-generated method stub
 		boolean bThumbExists = mIconStatusMap.containsKey(Integer
 				.valueOf(position));
 		if (bBusy && !bThumbExists) {
-			return CachedThumbnails.getDefaultIcon(this);
+			return CachedThumbnails.getGoodsDefaultIcon(this);
 		}
 
 		Drawable drawable = CachedThumbnails.getGoodsThumbnail(this, id);
@@ -121,7 +121,7 @@ public class SearchGoodActivity extends ListActivity implements
 			if (bThumbExists && !bThumbCached) {
 				// cause thumb record existed
 				// do not sent thumb request again, just return default icon
-				return CachedThumbnails.getDefaultIcon(this);
+				return CachedThumbnails.getGoodsDefaultIcon(this);
 			} else {
 				// cause thumb record not existed
 				// or thumb not cached yet,
@@ -129,7 +129,7 @@ public class SearchGoodActivity extends ListActivity implements
 				mIconStatusMap.put(Integer.valueOf(position),
 						Boolean.valueOf(false));
 				addThumbnailRequest(position, id);
-				return CachedThumbnails.getDefaultIcon(this);
+				return CachedThumbnails.getGoodsDefaultIcon(this);
 			}
 		} else {
 			// cause thumb has been cached
@@ -140,7 +140,7 @@ public class SearchGoodActivity extends ListActivity implements
 		}
 	}
 
-	private void addThumbnailRequest(int position, int id) {
+	private void addThumbnailRequest(int position, String id) {
 		String imgUrl = null;
 		if (mGoodsListAdapter.getItem(position).getGoodsIconUrl() != null
 				&& mGoodsListAdapter.getItem(position).getGoodsIconUrl().size() > 0) {
@@ -181,7 +181,14 @@ public class SearchGoodActivity extends ListActivity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
-		mShoppingcarIndex.setText(getGoodsCout());
+		if (MarketDetailActivity.orderDetailList != null) {
+			if (MarketDetailActivity.orderDetailList.size() == 0) {
+				mShoppingcarIndex.setVisibility(View.GONE);
+			} else {
+				mShoppingcarIndex.setVisibility(View.VISIBLE);
+				mShoppingcarIndex.setText(getGoodsCout());
+			}
+		}
 	}
 
 	@Override
@@ -207,7 +214,7 @@ public class SearchGoodActivity extends ListActivity implements
 		ArrayList<GoodsData> goodstList = new ArrayList<GoodsData>();
 		mSearchArea = (EditText) findViewById(R.id.search_text);
 		TextView search = (TextView) findViewById(R.id.btn_search);
-		search.setOnClickListener(new OnClickListener(){
+		search.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -256,7 +263,8 @@ public class SearchGoodActivity extends ListActivity implements
 		if (isEnd) {
 			return;
 		}
-		Request request = new Request(0, Constant.TYPE_GET_SEARCH_GOODS_LIST_INFO);
+		Request request = new Request(0,
+				Constant.TYPE_GET_SEARCH_GOODS_LIST_INFO);
 		ProductSearchInfo mPostProductType = new ProductSearchInfo();
 		mPostProductType.nowPage = nowPage;
 		mPostProductType.storeId = storeId;
@@ -326,7 +334,7 @@ public class SearchGoodActivity extends ListActivity implements
 					Log.v(TAG, "icInfo =" + icInfo.mAppIcon);
 					if (icInfo.mAppIcon != null) {
 						CachedThumbnails.cacheGoodsIconThumbnail(mContext,
-								icInfo._id, icInfo.mAppIcon);
+								icInfo.path, icInfo.mAppIcon);
 
 						ImageView imageView = (ImageView) mListView
 								.findViewWithTag(String.valueOf(icInfo._id));
@@ -449,12 +457,19 @@ public class SearchGoodActivity extends ListActivity implements
 											.add(orderProductInfo);
 								}
 								IconAnimation(v);
+								mShoppingcarIndex.setVisibility(View.VISIBLE);
 								mShoppingcarIndex.setText(getGoodsCout());
 							}
 						});
-
-				mThumb = ((SearchGoodActivity) mContext).getThumbnail(position,
-						goodsInfo.goodsId);
+				if (goodsInfo.getGoodsIconUrl() != null
+						&& goodsInfo.getGoodsIconUrl().size() > 0) {
+					mThumb = ((SearchGoodActivity) mContext).getThumbnail(position,
+							goodsInfo.getGoodsIconUrl().get(0));
+				}else{
+					mThumb = ((SearchGoodActivity) mContext).getThumbnail(position,
+							goodsInfo.getGoodsName());
+				}
+				
 
 				viewHolder.mThumbnail.setBackgroundDrawable(mThumb);
 			}

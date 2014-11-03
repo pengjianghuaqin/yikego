@@ -27,13 +27,13 @@ public class FileManager {
 	/*
 	 * Save application icon resource with id
 	 */
-	public static void writeAppIconToFile(Context context, int id, Drawable drawable) {
+	public static void writeAppIconToFile(Context context, String id, Drawable drawable) {
 		writeIconToFile(context, APP_ICON + id, drawable);
 	}
 	/*
 	 * Save wallpaper icon resource with id
 	 */
-	public static void writeGoodsIconToFile(Context context, int id, Drawable drawable) {
+	public static void writeGoodsIconToFile(Context context, String id, Drawable drawable) {
 		writeIconToFile(context, GOODS_ICON + id, drawable);
 	}
 
@@ -81,11 +81,11 @@ public class FileManager {
 	/*
 	 * Read application icon resource with id
 	 */
-	public static Drawable readAppIconFromFile(Context context, int id) {
+	public static Drawable readAppIconFromFile(Context context, String id) {
 		return readIconFromFile(context, APP_ICON + id);
 	}
 
-	public static Drawable readGoodsIconFromFile(Context context, int id) {
+	public static Drawable readGoodsIconFromFile(Context context, String id) {
 		return readIconFromFile(context, GOODS_ICON + id);
 	}
 

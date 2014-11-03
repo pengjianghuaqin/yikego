@@ -75,7 +75,7 @@ public class OrderListAdapter extends ArrayAdapter<OrderProductInfo> {
             viewHolder.mName.setText(orderInfo.name);
             viewHolder.mDetail.setText(orderInfo.name);
             viewHolder.mOrderCout.setText("X " + orderInfo.count);
-			   viewHolder.mThumbnail.setBackground(((MarketSubmitOrderActivity)mContext).getThumbnail(orderInfo.productId));
+			   viewHolder.mThumbnail.setBackgroundDrawable(((MarketSubmitOrderActivity)mContext).getThumbnail(orderInfo.name));
         }
         return convertView;
     }

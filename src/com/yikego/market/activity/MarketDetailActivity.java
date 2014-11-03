@@ -32,6 +32,7 @@ import com.yikego.android.rom.sdk.bean.StoreId;
 import com.yikego.android.rom.sdk.bean.StoreInfo;
 import com.yikego.market.R;
 import com.yikego.market.activity.MarketListAdapter.ViewHolder;
+import com.yikego.market.model.LoadingDialog;
 import com.yikego.market.utils.CachedThumbnails;
 import com.yikego.market.utils.Constant;
 import com.yikego.market.webservice.Request;
@@ -65,7 +66,7 @@ public class MarketDetailActivity extends Activity implements
 	private static final int ACTION_STORE_INFO = 1;
 	private Handler mHandler;
 	public static int storeID;
-	private ProgressDialog mProgressDialog;
+	private LoadingDialog mProgressDialog;
 	public static ArrayList<OrderProductInfo> orderDetailList;
 	private TextView shoppingCarIndex;
 
@@ -78,7 +79,7 @@ public class MarketDetailActivity extends Activity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mProgressDialog = new ProgressDialog(mContext);
+		mProgressDialog = new LoadingDialog(mContext);
 		setContentView(R.layout.activity_market_detail);
 		yikegoApplication.getInstance().addActivity(this);
 		storeInfo = (StoreInfo) getIntent().getSerializableExtra("storeInfo");
@@ -123,7 +124,7 @@ public class MarketDetailActivity extends Activity implements
 		// initActionBar();
 	}
 
-	public Drawable getThumbnail(int id) {
+	public Drawable getThumbnail(String id) {
 		// TODO Auto-generated method stub
 
 		Drawable drawable = CachedThumbnails.getThumbnail(this, id);
@@ -161,7 +162,11 @@ public class MarketDetailActivity extends Activity implements
 		mShoppingcar.setOnClickListener(mShoppingCarListener);
         findViewById(R.id.market_detail_spend).setOnClickListener(mShoppingCarListener);
 		ImageView marketIcon = (ImageView) findViewById(R.id.market_detail_image);
-		marketIcon.setBackgroundDrawable(getThumbnail(storeInfo.storeId));
+		if(storeInfo.pictures!=null&&storeInfo.pictures.size()>0){
+			marketIcon.setBackgroundDrawable(getThumbnail(storeInfo.pictures.get(0).picPath));
+		}else{
+			marketIcon.setBackgroundDrawable(getThumbnail(storeInfo.name));
+		}
 		TextView marketName = (TextView) findViewById(R.id.market_detail_name);
 		marketName.setText(storeInfo.name);
 		TextView marketSpend = (TextView) findViewById(R.id.market_detail_spend);
@@ -252,11 +257,7 @@ public class MarketDetailActivity extends Activity implements
 
 	private void GetStoreInfo() {
 		// TODO Auto-generated method stub
-		mProgressDialog.setMessage(getResources()
-				.getText(R.string.text_loading));
-		mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		mProgressDialog.setCancelable(false);
-		mProgressDialog.setProgress(0);
 		mProgressDialog.show();
 		Request request = new Request(0, Constant.TYPE_GET_GOODS_TYPE_INFO);
 		StoreId mStoreId = new StoreId();

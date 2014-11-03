@@ -1,6 +1,7 @@
 package com.yikego.market.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -8,9 +9,11 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.*;
+
 import com.yikego.android.rom.sdk.bean.AuthCodeInfo;
 import com.yikego.android.rom.sdk.bean.MessageRecord;
 import com.yikego.android.rom.sdk.bean.UserId;
+import com.yikego.android.rom.sdk.bean.UserLoginInfo;
 import com.yikego.android.rom.sdk.bean.UserRegisterInfo;
 import com.yikego.market.R;
 import com.yikego.market.utils.Constant;
@@ -217,9 +220,16 @@ public class Register extends Activity{
                         break;
                     case ACTION_USER_REGISTER:
                         UserId userId = (UserId) msg.obj;
-                        Log.d(TAG, "UserId : " + userId.userId);
+                        UserLoginInfo userInfo = new UserLoginInfo();
                         if (userId.resultCode.equals(String.valueOf(REGISTER_RESULT_CODE_OK))){
+                        	userInfo.userPhone=userRegisterInfo.user.userPhone;
+                        	userInfo.passWord=userRegisterInfo.user.passWord;
+                        	Intent intent = new Intent();
+                            intent.setAction(LoginActivity.ACTION_USER_REGISTER);
+                            intent.putExtra("userRegisterInfo",userInfo);
+                            sendBroadcast(intent);
                             Toast.makeText(Register.this, getString(R.string.register_ok), Toast.LENGTH_SHORT).show();
+                            
                             finish();
                         }else if (userId.equals(String.valueOf(REGISTER_RESULT_CODE_EXIST))){
                             Toast.makeText(Register.this, getString(R.string.register_exist), Toast.LENGTH_SHORT).show();
@@ -228,6 +238,12 @@ public class Register extends Activity{
                         }else {
                             Toast.makeText(Register.this, getString(R.string.register_error), Toast.LENGTH_SHORT).show();
                         }
+//                        userInfo.userPhone="18801625752";
+//                        userInfo.passWord="123456";
+//                        Intent intent = new Intent();
+//                        intent.setAction(LoginActivity.ACTION_USER_REGISTER);
+//                        intent.putExtra("userRegisterInfo",userInfo);
+//                        sendBroadcast(intent);
                         break;
 
                     default:

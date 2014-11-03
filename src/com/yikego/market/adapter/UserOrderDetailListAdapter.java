@@ -77,7 +77,7 @@ public class UserOrderDetailListAdapter extends ArrayAdapter<UserOrderDetailInfo
             Log.d(TAG, "productID : " + orderInfo.getProductId());
             if (orderInfo.getProductId()!=0)
                 viewHolder.mThumbnail.setBackgroundDrawable(CachedThumbnails.getGoodsThumbnail(
-                        mContext, orderInfo.getProductId()));
+                        mContext, orderInfo.getName()));
         }
         return convertView;
     }

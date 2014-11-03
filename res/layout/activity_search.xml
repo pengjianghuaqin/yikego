@@ -61,7 +61,7 @@
         android:layout_marginBottom="30dp"
         android:layout_marginRight="60dp">
 
-        <ImageView
+       <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -70,13 +70,16 @@
 
         <TextView
             android:id="@+id/goods_index"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
             android:layout_alignParentRight="true"
+            android:layout_marginTop="18dp"
+            android:layout_marginRight="8dp"
             android:gravity="center"
-            android:background="@drawable/bg_shopping_car_index"
-            android:textColor="@color/red"
-            android:textSize="20dip" />
+            android:visibility="gone"
+            android:background="@drawable/circle"
+            android:textColor="@color/white"
+            android:textSize="10sp" />
     </RelativeLayout>
 <include
 		android:layout_width="fill_parent" android:layout_height="fill_parent"

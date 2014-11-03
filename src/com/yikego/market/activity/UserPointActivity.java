@@ -19,6 +19,7 @@ import com.yikego.android.rom.sdk.bean.UserOrderListInfo;
 import com.yikego.android.rom.sdk.bean.UserPointListInfo;
 import com.yikego.market.R;
 import com.yikego.market.adapter.UserPointAdapter;
+import com.yikego.market.model.LoadingDialog;
 import com.yikego.market.utils.Constant;
 import com.yikego.market.utils.GlobalUtil;
 import com.yikego.market.webservice.Request;
@@ -54,7 +55,7 @@ public class UserPointActivity extends Activity{
     private UserPointListInfo mUserPointListInfo = null;
     private List<PointList> mPointLists;
     private int userId;
-    private ProgressDialog mProgressDialog;
+    private LoadingDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +69,7 @@ public class UserPointActivity extends Activity{
         }
         mThemeService = ThemeService.getServiceInstance(this);
         mUserPointAdapter = new UserPointAdapter(this);
-        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog = new LoadingDialog(this);
         initHandler();
         initActionBar();
         initView();
@@ -110,11 +111,7 @@ public class UserPointActivity extends Activity{
     }
 
     private void getUserPointInfo() {
-    	mProgressDialog.setMessage(getResources()
-				.getText(R.string.text_loading));
-		mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		mProgressDialog.setCancelable(false);
-		mProgressDialog.setProgress(0);
 		mProgressDialog.show();
         Request request = new Request(0, Constant.TYPE_GET_USER_POINT);
         // Object[] params = new Object[2];

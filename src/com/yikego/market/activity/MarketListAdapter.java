@@ -86,8 +86,8 @@ public class MarketListAdapter extends ArrayAdapter<StoreInfo> {
 			viewHolder.mSpend.setText(marketInfo.sendPrice+"元起送");
 			viewHolder.mBusinessTime.setText("营业时间" + marketInfo.openHour + ":"
 					+ openTime + "-" + marketInfo.closeHour + ":" + closeTime);
-			if (mContext instanceof MarketBrowser) {
-				mThumb = ((MarketBrowser) mContext).getThumbnail(position, marketInfo.storeId);
+			if (mContext instanceof MarketBrowser&&marketInfo.pictures!=null&&marketInfo.pictures.size()>0) {
+				mThumb = ((MarketBrowser) mContext).getThumbnail(position, marketInfo.pictures.get(0).picPath);
 			}else {
 				mThumb = CachedThumbnails.getDefaultIcon(mContext);
 			}
