@@ -17,6 +17,7 @@
     <orderEntry type="module" module-name="library_Sliding" />
     <orderEntry type="library" name="android-support-v4" level="project" />
     <orderEntry type="library" name="armeabi-v7a" level="project" />
+    <orderEntry type="library" name="ShareSDK" level="project" />
   </component>
 </module>
 

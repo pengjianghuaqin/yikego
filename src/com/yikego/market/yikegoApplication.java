@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import android.app.Activity;
+import cn.sharesdk.framework.ShareSDK;
 import com.baidu.mapapi.SDKInitializer;
 import com.yikego.android.rom.sdk.bean.LocationHistoryList;
 import com.yikego.market.contentProvider.LoacationHistory;
@@ -25,6 +26,8 @@ public class yikegoApplication extends Application {
 		mLocationHistoryList = new ArrayList<LocationHistoryList>();
 		// 在使用 SDK 各组间之前初始化 context 信息，传入 ApplicationContext
 		SDKInitializer.initialize(this);
+        //ShareSDK init
+        ShareSDK.initSDK(this);
 	}
 
 	public static synchronized yikegoApplication getInstance() {
