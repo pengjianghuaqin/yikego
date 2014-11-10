@@ -147,7 +147,7 @@ public class SlidingMenuFragment extends Fragment implements View.OnClickListene
         	intent.setClass(getActivity(), UserPointActivity.class);
             startActivity(intent);
         }else if(id == R.id.left_menu_shop_quan){
-        	intent.setClass(getActivity(), TicketVerifyActivity.class);
+        	intent.setClass(getActivity(), MarketCouponListActivity.class);
             startActivity(intent);
         }else if(id == R.id.left_menu_feedback){
         	intent.setClass(getActivity(), FeedbackActivtiy.class);

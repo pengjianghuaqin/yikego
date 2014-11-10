@@ -26,7 +26,7 @@
             android:id="@+id/verify_ticket_layout"
             android:layout_below="@+id/verify_ticket_text"
             android:layout_marginTop="10dp"
-            android:background="@color/text_gray_color_e3"
+            android:background="@color/bg_color_blue"
             android:layout_width="match_parent"
             android:layout_height="100dp">
 

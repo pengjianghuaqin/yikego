@@ -86,6 +86,9 @@ public class MarketShoppingCarActivity extends ListActivity {
 							MarketSubmitOrderActivity.class);
 					startActivity(intent);
 				} else {
+					Intent intent = new Intent(mContext,
+							LoginActivity.class);
+					startActivity(intent);
 					Toast.makeText(mContext,
 							mContext.getString(R.string.non_login),
 							Toast.LENGTH_LONG).show();

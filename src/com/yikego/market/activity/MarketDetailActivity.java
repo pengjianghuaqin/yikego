@@ -25,6 +25,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.yikego.android.rom.sdk.bean.MarketGoodsInfo;
 import com.yikego.android.rom.sdk.bean.MarketGoodsInfoListData;
+import com.yikego.android.rom.sdk.bean.MarketOrderList;
 import com.yikego.android.rom.sdk.bean.OrderProductInfo;
 import com.yikego.android.rom.sdk.bean.PaginationStoreListInfo;
 import com.yikego.android.rom.sdk.bean.PostUserLocationInfo;
@@ -72,8 +73,6 @@ public class MarketDetailActivity extends Activity implements
 
 	public MarketDetailActivity() {
 		mContext = this;
-		orderDetailList = new ArrayList<OrderProductInfo>();
-
 	}
 
 	@Override
@@ -84,16 +83,28 @@ public class MarketDetailActivity extends Activity implements
 		yikegoApplication.getInstance().addActivity(this);
 		storeInfo = (StoreInfo) getIntent().getSerializableExtra("storeInfo");
 		storeID = storeInfo.storeId;
+		
+		if(MarketBrowser.mMarketOrderList.get(storeID)!=null){
+			Log.v("MarketDetailActivity", "MarketDetailActivity MarketBrowser.mMarketOrderList="+MarketBrowser.mMarketOrderList.get(storeID).orderDetailList);
+			orderDetailList = MarketBrowser.mMarketOrderList.get(storeID).orderDetailList;
+		}
+		Log.v("MarketDetailActivity", "MarketDetailActivity orderDetailList="+orderDetailList);
+		if(orderDetailList==null){
+			orderDetailList = new ArrayList<OrderProductInfo>();
+			MarketOrderList tmpList = new MarketOrderList();
+			tmpList.orderDetailList = orderDetailList;
+			MarketBrowser.mMarketOrderList.put(storeID, tmpList);
+		}
 		mThemeService = ThemeService.getServiceInstance(mContext);
 		initHandler();
 		initViews();
 	}
 	private String getGoodsCout() {
 		int cout = 0;
-		if (MarketDetailActivity.orderDetailList != null
-				&& MarketDetailActivity.orderDetailList.size() > 0) {
-			for (int i = 0; i < MarketDetailActivity.orderDetailList.size(); i++) {
-				cout += MarketDetailActivity.orderDetailList.get(i).count;
+		if (orderDetailList != null
+				&& orderDetailList.size() > 0) {
+			for (int i = 0; i < orderDetailList.size(); i++) {
+				cout += orderDetailList.get(i).count;
 			}
 			return cout + "";
 		} else {
@@ -119,6 +130,14 @@ public class MarketDetailActivity extends Activity implements
 	protected void onDestroy() {
 		super.onDestroy();
 		if (orderDetailList != null) {
+			MarketOrderList tmpList = new MarketOrderList();
+			
+			tmpList.orderDetailList = new ArrayList<OrderProductInfo>() ;
+			for(int i=0;i<orderDetailList.size();i++){
+				tmpList.orderDetailList.add(orderDetailList.get(i));
+			}
+			MarketBrowser.mMarketOrderList.put(storeID, tmpList);
+			Log.v("MarketDetailActivity", "MarketDetailActivity MarketBrowser.mMarketOrderList="+MarketBrowser.mMarketOrderList.get(storeID).orderDetailList.size());
 			orderDetailList.clear();
 		}
 		// initActionBar();

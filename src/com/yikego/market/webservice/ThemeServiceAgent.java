@@ -100,7 +100,39 @@ public class ThemeServiceAgent {
 		}
 		return data;
 	}
-
+	public Object postUserCouponInfo(PostUserCouponInfo postUserCouponInfo)
+			throws SocketException {
+		Object data = null;
+		if (!GlobalUtil.checkNetworkState(mContext)) {
+			throw new SocketException();
+		} else {
+			try {
+				data = ServiceProvider.postCouponListInfo(postUserCouponInfo);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (HttpException e) {
+				e.printStackTrace();
+			}
+		}
+		return data;
+	}
+	public Object postCouponCheck(CouponCheckInfo couponCheckInfo)
+			throws SocketException {
+		Object data = null;
+		if (!GlobalUtil.checkNetworkState(mContext)) {
+			throw new SocketException();
+		} else {
+			try {
+				data = ServiceProvider.postCouponCheck(couponCheckInfo);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (HttpException e) {
+				e.printStackTrace();
+			}
+		}
+		return data;
+	}
+	
 	public PaginationStoreListInfo postUserLocationInfo(
 			PostUserLocationInfo postUserLocationInfo) throws SocketException {
 		PaginationStoreListInfo data = null;

@@ -289,7 +289,7 @@
         <ListView
                 android:id="@android:id/list"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:cacheColorHint="@android:color/transparent"
                 android:divider="@color/text_gray_color_e3"
                 android:dividerHeight="1px"

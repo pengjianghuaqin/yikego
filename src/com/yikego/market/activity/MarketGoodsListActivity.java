@@ -48,6 +48,7 @@ import android.view.animation.AnimationSet;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -81,6 +82,7 @@ public class MarketGoodsListActivity extends ListActivity implements
 	private Display mDisplay;
 	private int screenWidth = 0;
 	private int screenHeight = 0;
+	private AbsListView.OnScrollListener mScrollListener;
 	private Hashtable<Integer, Boolean> mIconStatusMap;
 	private boolean bBusy;
 	private LoadingDialog mProgressDialog;
@@ -215,7 +217,62 @@ public class MarketGoodsListActivity extends ListActivity implements
 			startActivity(intent);
 		}
 	}
+	private void initListener() {
+		// TODO Auto-generated method stub
+		mScrollListener = new AbsListView.OnScrollListener() {
 
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				// TODO Auto-generated method stub
+				return;
+			}
+
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				// TODO Auto-generated method stub
+				switch (scrollState) {
+				case SCROLL_STATE_IDLE:
+					bBusy = false;
+					int start = view.getFirstVisiblePosition();
+					int counts = view.getChildCount();
+					int position = 0;
+
+					for (int i = 0; i < counts; i++) {
+						position = start + i;
+
+						// if
+						// (!mIconStatusMap.containsKey(Integer.valueOf(position)))
+						// {
+						ViewHolder viewHolder = (ViewHolder) view.getChildAt(i)
+								.getTag();
+						if (viewHolder != null) {
+							// mAppListAdapter.initBtnStatus(viewHolder,(Application2)viewHolder.mButton.getTag());
+							String id = mGoodsListAdapter
+									.getItem(position).getGoodsIconUrl().get(position);
+							Drawable drawable = getThumbnail(position, id);
+							viewHolder.mThumbnail
+									.setBackgroundDrawable(drawable);
+						}
+					}
+
+					// as list scrolled to end, send request to get above data
+					if (!isEnd) {
+						GetGoodsList();
+					}
+					break;
+				case SCROLL_STATE_TOUCH_SCROLL:
+				case SCROLL_STATE_FLING:
+					// if (!bBusy) {
+					// clearPendingThumbRequest();
+					// bBusy = true;
+					// }
+				default:
+					break;
+				}
+			}
+		};
+	}
 	private void initView() {
 		TextView actionbarTitle = (TextView) findViewById(R.id.actionbar_title);
 		actionbarTitle.setText(R.string.goods_list);
@@ -238,6 +295,7 @@ public class MarketGoodsListActivity extends ListActivity implements
 		screenWidth = mDisplay.getWidth();
 		screenHeight = mDisplay.getHeight();
 		mListView.setAdapter(mGoodsListAdapter);
+		mListView.setOnScrollListener(mScrollListener);
 		mListView.setOnItemClickListener(this);
 		mShoppingcar = (ImageView) findViewById(R.id.img_shopping_car);
 		mShoppingcar.setOnClickListener(new OnClickListener() {
@@ -266,6 +324,7 @@ public class MarketGoodsListActivity extends ListActivity implements
 
 		mShoppingcarIndex = (TextView) findViewById(R.id.goods_index);
 		initHandler();
+		initListener();
 		GetGoodsList();
 	}
 

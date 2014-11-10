@@ -165,6 +165,10 @@ public class ThemeService implements IThemeService {
     }
 
     @Override
+    public void postCouponCheck(Request request) {
+        mRequestQueues[THREAD_THUMB].pushRequest(request);
+    }
+    @Override
     public void getUserOrder(Request request) {
         mRequestQueues[THREAD_LIST].pushRequest(request);
     }

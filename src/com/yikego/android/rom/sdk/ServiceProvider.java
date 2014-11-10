@@ -126,6 +126,21 @@ public class ServiceProvider extends BaseResource {
 		return paginationStoreListInfo;
 	}
 
+	public static Object postCouponCheck(CouponCheckInfo couponCheckInfo)
+			throws IOException, HttpException {
+		Log.d(TAG, "postUserLogin couponCheckInfo.couponId : "
+				+ couponCheckInfo.couponId + " couponCheckInfo.userId : "
+				+ couponCheckInfo.userId);
+		CouponInfo couponInfo = post(ClientInfo.RESOURCE_ROOT_URL
+				+ "/coupon/verifyCoupon", couponCheckInfo, CouponInfo.class);
+		return couponInfo;
+	}
+	public static Object postCouponListInfo(PostUserCouponInfo userCouponInfo)
+			throws IOException, HttpException {
+		CouponListInfo couponListInfo = post(ClientInfo.RESOURCE_ROOT_URL
+				+ "/coupon/getCouponListForPaginationByUserId", userCouponInfo, CouponListInfo.class);
+		return couponListInfo;
+	}
 	public static Object postUserLogin(UserLoginInfo userLoginInfo)
 			throws IOException, HttpException {
 		Log.d(TAG, "postUserLogin userLoginInfo loginType : "

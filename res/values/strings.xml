@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <string name="app_name">yikego</string>
     <string name="hello_world">Hello world!</string>
@@ -10,7 +10,7 @@
     <string name="item_text_takeaway">30元起送</string>
     <string name="title_map">地图</string>
     <string name="location_now">正在定位</string>
-    <string name="non_login">未登录，请返回登陆界面登陆</string>
+    <string name="non_login">未登录，请先登录</string>
     <string name="title_import">请输入超市名称</string>
     <string name="title_import_goods">请输入商品名称</string>
     <string name="text_define"> 确定</string>
@@ -25,6 +25,7 @@
     <string name="user_order">我的订单</string>
     <string name="main_left_shop_score">购物积分</string>
     <string name="main_left_shop_quan">购物券</string>
+    <string name="main_left_shop_quan_verify">验证购物券</string>
     <string name="main_left_feedback">意见反馈</string>
     <string name="main_left_setting">设置</string>
     <string name="goods_list">产品列表</string>
@@ -119,4 +120,15 @@
     <string name="order_status_costed">已支付</string>
     <string name="order_status_sending">交易中</string>
     <string name="order_status_ok">交易完成</string>
+    <string name="coupon_check_ok">优惠券验证成功</string>
+    <string name="coupon_no_exist">优惠券不存在</string>
+    <string name="coupon_checked">优惠券已验证</string>
+    <string name="coupon_used">优惠券已使用</string>
+    <string name="coupon_cancel">优惠券已取消</string>
+    <string name="coupon_overdue">优惠券已过期</string>
+    <string name="coupon_list_store_text">便利店:</string>
+    <string name="coupon_list_coupon_text">优惠券码:</string>
+    <string name="coupon_valid_text">有效日期:</string>
+    <string name="coupon_cost">￥ <xliff:g id="number">%d</xliff:g></string>
+
 </resources>

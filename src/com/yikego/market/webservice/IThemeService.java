@@ -27,4 +27,6 @@ public abstract interface IThemeService {
 
     public abstract void getAppIcon(Request request);
 
+    public abstract void postCouponCheck(Request request);
+
 }

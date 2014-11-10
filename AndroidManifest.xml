@@ -184,10 +184,14 @@
                   android:screenOrientation="portrait"
                 >
         </activity>
+        <activity android:name=".activity.MarketCouponListActivity"
+                  android:configChanges="keyboardHidden|orientation|screenLayout|uiMode"
+                  android:screenOrientation="portrait"
+                >
+        </activity>
         <activity android:name=".activity.UserOrderDetailActivity"
                   android:configChanges="keyboardHidden|orientation|screenLayout|uiMode"
                   android:screenOrientation="portrait"
-                  android:launchMode="singleTask"
                 >
         </activity>
                 <service

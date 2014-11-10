@@ -13,7 +13,9 @@ import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.geocode.*;
 import com.slidingmenu.lib.SlidingMenu;
 import com.slidingmenu.lib.app.SlidingFragmentActivity;
+import com.yikego.android.rom.sdk.bean.MarketOrderList;
 import com.yikego.android.rom.sdk.bean.MessageRecord;
+import com.yikego.android.rom.sdk.bean.OrderProductInfo;
 import com.yikego.android.rom.sdk.bean.PaginationStoreListInfo;
 import com.yikego.android.rom.sdk.bean.PostUserLocationInfo;
 import com.yikego.android.rom.sdk.bean.StoreInfo;
@@ -52,15 +54,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MarketBrowser extends SlidingFragmentActivity implements
-		AdapterView.OnItemClickListener,OnGetGeoCoderResultListener {
+		AdapterView.OnItemClickListener, OnGetGeoCoderResultListener {
 
-    GeoCoder mSearch = null; // 搜索模块，也可去掉地图模块独立使用
+	GeoCoder mSearch = null; // 搜索模块，也可去掉地图模块独立使用
 	private ListView mListView;
 	private MarketListAdapter mMarketListAdapter;
 	private ImageView mMenuButton;
 	private Context mContext;
 	private Request mCurrentRequest;
-    private TextView mTitleSpineer;
+	private TextView mTitleSpineer;
 	private ThemeService mThemeService;
 	private String TAG = "MarketBrowser";
 	private static final int ACTION_NETWORK_ERROR = 0;
@@ -76,6 +78,7 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 	private boolean bBusy;
 	protected LoadingDialog mProgressDialog;
 	private String mStreetName;
+	public static Hashtable<Integer, MarketOrderList> mMarketOrderList;
 	public MarketBrowser() {
 		Log.v(TAG, "MarketBrowser");
 		isEnd = false;
@@ -84,12 +87,11 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 		mLatitude.lat = 31.159488f;
 		mLatitude.lng = 121.579398f;
 		storeLatitude = new ArrayList<Latitude>();
+		mMarketOrderList = new Hashtable<Integer, MarketOrderList>();
 		bBusy = false;
 		mIconStatusMap = new Hashtable<Integer, Boolean>();
 	}
 
-
-	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -107,17 +109,18 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 			mLatitude.lng = 121.579398f;
 		}
 		mProgressDialog = new LoadingDialog(mContext);
-		
+
 		Log.d(TAG, "lat : " + mLatitude.lat);
 		Log.d(TAG, "lng : " + mLatitude.lng);
-        if (mStreetName == null||mStreetName.equals("")){
-            // 初始化搜索模块，注册事件监听
-            mSearch = GeoCoder.newInstance();
-            LatLng ptCenter = new LatLng((mLatitude.lat), (mLatitude.lng));
-            mSearch.setOnGetGeoCodeResultListener(this);
-            // 反Geo搜索
-            mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(ptCenter));
-        }
+		if (mStreetName == null || mStreetName.equals("")) {
+			// 初始化搜索模块，注册事件监听
+			mSearch = GeoCoder.newInstance();
+			LatLng ptCenter = new LatLng((mLatitude.lat), (mLatitude.lng));
+			mSearch.setOnGetGeoCodeResultListener(this);
+			// 反Geo搜索
+			mSearch.reverseGeoCode(new ReverseGeoCodeOption()
+					.location(ptCenter));
+		}
 		initHandler();
 		initListener();
 		initView();
@@ -126,39 +129,44 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 		// userLogin();
 	}
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        String street = null;
-        if (getIntent() != null) {
-            mLatitude.lat = (float) getIntent().getDoubleExtra("lat", 0);
-            mLatitude.lng = (float) getIntent().getDoubleExtra("lng", 0);
-            street = getIntent().getStringExtra("street");
-            mTitleSpineer.setText(street);
-            if (street!=null&&street.equals(mStreetName)){
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		String street = null;
+		if (getIntent() != null) {
+			mLatitude.lat = (float) getIntent().getDoubleExtra("lat", 0);
+			mLatitude.lng = (float) getIntent().getDoubleExtra("lng", 0);
+			street = getIntent().getStringExtra("street");
+			mTitleSpineer.setText(street);
+			if (street != null && street.equals(mStreetName)) {
 
-            }else {
-                if (mMarketListAdapter!=null){
-                    mMarketListAdapter = null;
-                }
-                PostUserLocalInfo();
-            }
-        } else {
-//            mLatitude.lat = 31.159488f;
-//            mLatitude.lng = 121.579398f;
-        }
-    }
-    @Override
+			} else {
+				if (mMarketListAdapter != null) {
+					mMarketListAdapter = null;
+				}
+				PostUserLocalInfo();
+			}
+		} else {
+			// mLatitude.lat = 31.159488f;
+			// mLatitude.lng = 121.579398f;
+		}
+	}
+
+	@Override
 	protected void onResume() {
 		super.onResume();
+		if (mMarketListAdapter != null) {
+			mMarketListAdapter.notifyDataSetChanged();
+		}
 	}
-    @Override
+
+	@Override
 	protected void onDestroy() {
-        if (mSearch != null)
-            mSearch.destroy();
+		if (mSearch != null)
+			mSearch.destroy();
 		super.onDestroy();
 	}
-	
+
 	private void initSlidingMenu() {
 		// 设置滑动菜单打开后的视图界面
 		setBehindContentView(R.layout.menu_frame);
@@ -179,14 +187,15 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 		mListView.setOnScrollListener(mScrollListener);
 		mListView.setOnItemClickListener(this);
 		mTitleSpineer = (TextView) findViewById(R.id.title_spineer);
-		if(mStreetName != null) {
-			mTitleSpineer.setText(mStreetName);			
+		if (mStreetName != null) {
+			mTitleSpineer.setText(mStreetName);
 		}
 
 		mTitleSpineer.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Intent intent = new Intent(mContext, LocationHistoryActivity.class);
+				Intent intent = new Intent(mContext,
+						LocationHistoryActivity.class);
 				startActivity(intent);
 			}
 		});
@@ -197,27 +206,28 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 				toggle();
 			}
 		});
-		TextView map = (TextView)findViewById(R.id.title_map);
+		TextView map = (TextView) findViewById(R.id.title_map);
 		map.setOnClickListener(new View.OnClickListener() {
 			@Override
-            public void onClick(View view) {
-                Intent intent = new Intent(mContext,LocationActivity.class);
-                if (mPaginationStoreListInfo!=null){
-                    intent.putExtra("StoreInfo", mPaginationStoreListInfo);
-                }
-                startActivity(intent);
-            }
-        });
-		TextView seacch = (TextView)findViewById(R.id.search_edittext);
+			public void onClick(View view) {
+				Intent intent = new Intent(mContext, LocationActivity.class);
+				if (mPaginationStoreListInfo != null) {
+					intent.putExtra("StoreInfo", mPaginationStoreListInfo);
+				}
+				startActivity(intent);
+			}
+		});
+		TextView seacch = (TextView) findViewById(R.id.search_edittext);
 		seacch.setOnClickListener(new View.OnClickListener() {
 			@Override
-            public void onClick(View view) {
-                Intent intent = new Intent(mContext,MarketSearchStoreActivity.class);
-                startActivity(intent);
-            }
-        });
-		
-        PostUserLocalInfo();
+			public void onClick(View view) {
+				Intent intent = new Intent(mContext,
+						MarketSearchStoreActivity.class);
+				startActivity(intent);
+			}
+		});
+
+		PostUserLocalInfo();
 	}
 
 	public Drawable getThumbnail(int position, String id) {
@@ -327,10 +337,17 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 						ViewHolder viewHolder = (ViewHolder) view.getChildAt(i)
 								.getTag();
 						if (viewHolder != null) {
+							Drawable drawable = null;
+							String id = "0";
 							// mAppListAdapter.initBtnStatus(viewHolder,(Application2)viewHolder.mButton.getTag());
-							String id = mMarketListAdapter
-									.getItem(position).pictures.get(0).picPath;
-							Drawable drawable = getThumbnail(position, id);
+							if (mMarketListAdapter.getItem(position).pictures != null
+									&& mMarketListAdapter.getItem(position).pictures
+											.size() > 0) {
+								id = mMarketListAdapter
+										.getItem(position).pictures.get(0).picPath;
+								
+							}
+							drawable = getThumbnail(position, id);
 							viewHolder.mThumbnail
 									.setBackgroundDrawable(drawable);
 						}
@@ -400,9 +417,10 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 				switch (msg.what) {
 				case ACTION_USER_LOCAL_INFO:
 					PaginationStoreListInfo paginationStoreListInfo = (PaginationStoreListInfo) msg.obj;
-                    mPaginationStoreListInfo = paginationStoreListInfo;
+					mPaginationStoreListInfo = paginationStoreListInfo;
 
-					if (paginationStoreListInfo != null&&paginationStoreListInfo.storelist!=null) {
+					if (paginationStoreListInfo != null
+							&& paginationStoreListInfo.storelist != null) {
 						for (int i = 0; i < paginationStoreListInfo.storelist
 								.size(); i++) {
 							Latitude tmpLatitude = new Latitude();
@@ -430,7 +448,7 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 						}
 						mListView.setAdapter(mMarketListAdapter);
 					}
-					
+
 					mListView.setVisibility(View.VISIBLE);
 					break;
 				case ACTION_MARKET_ICON:
@@ -453,7 +471,7 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 				default:
 					break;
 				}
-				if(mProgressDialog.isShowing()){
+				if (mProgressDialog.isShowing()) {
 					mProgressDialog.dismiss();
 				}
 			}
@@ -493,13 +511,14 @@ public class MarketBrowser extends SlidingFragmentActivity implements
 				"onGetReverseGeoCodeResult : "
 						+ reverseGeoCodeResult.getBusinessCircle());
 		mTitleSpineer.setText(reverseGeoCodeResult.getAddress());
-        if(reverseGeoCodeResult.getAddress() != null){
-            ContentValues values = new ContentValues();
-            values.put(LoacationHistoryColumns.STREETNAME, reverseGeoCodeResult.getAddress());
-            values.put(LoacationHistoryColumns.LONGITUDE, mLatitude.lng);
-            values.put(LoacationHistoryColumns.LATITUDE, mLatitude.lat);
-//            DBHelper.updateDB(getContentResolver(), values);
-        }
+		if (reverseGeoCodeResult.getAddress() != null) {
+			ContentValues values = new ContentValues();
+			values.put(LoacationHistoryColumns.STREETNAME,
+					reverseGeoCodeResult.getAddress());
+			values.put(LoacationHistoryColumns.LONGITUDE, mLatitude.lng);
+			values.put(LoacationHistoryColumns.LATITUDE, mLatitude.lat);
+			// DBHelper.updateDB(getContentResolver(), values);
+		}
 
 	}
 }

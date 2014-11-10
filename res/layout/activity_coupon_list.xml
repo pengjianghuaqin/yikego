@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/market_detail_actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:layout_alignParentTop="true"
+        android:background="@color/bg_color_blue" >
+
+        <ImageView
+            android:id="@+id/market_detail_back"
+            style="@style/back_syle"
+            android:onClick="onBackButton" />
+
+        <TextView
+            android:id="@+id/actionbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="购物券"
+            android:textColor="@color/white"
+            android:textSize="20dip" />
+
+        <TextView
+            android:id="@+id/back_home"
+            android:layout_width="55dp"
+            android:layout_height="27dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="添加"
+            android:textColor="@color/bg_color_blue"
+            android:textSize="14sp"/>
+    </RelativeLayout>
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/market_detail_actionbar"
+        android:layout_weight="0"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="@drawable/line_list_divider"
+        android:dividerHeight="1px"
+        android:drawSelectorOnTop="false"
+        android:fadingEdge="none"
+        android:footerDividersEnabled="true" />
+
+</LinearLayout>

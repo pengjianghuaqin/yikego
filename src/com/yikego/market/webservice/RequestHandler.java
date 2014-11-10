@@ -126,6 +126,33 @@ public class RequestHandler extends Thread {
                         }
                     }
                     break;
+                case Constant.TYPE_POST_COUPON_LIST:
+                    if (request.getData() != null){
+                    	PostUserCouponInfo userCouponInfo = (PostUserCouponInfo) request.getData();
+                        try {
+                            data = mAgent.postUserCouponInfo(userCouponInfo);
+                            request.setStatus(Constant.STATUS_SUCCESS);
+                            request.notifyObservers(data);
+                        }catch (SocketException e){
+                            request.setStatus(Constant.STATUS_ERROR);
+                            request.notifyObservers(null);
+                        }
+                    }
+                    break;
+                    
+                case Constant.TYPE_POST_COUPON_CHECK:
+                    if (request.getData() != null){
+                    	CouponCheckInfo couponCheckInfo = (CouponCheckInfo) request.getData();
+                        try {
+                            data = mAgent.postCouponCheck(couponCheckInfo);
+                            request.setStatus(Constant.STATUS_SUCCESS);
+                            request.notifyObservers(data);
+                        }catch (SocketException e){
+                            request.setStatus(Constant.STATUS_ERROR);
+                            request.notifyObservers(null);
+                        }
+                    }
+                    break;                    
                 case Constant.TYPE_GET_GOODS_TYPE_INFO:
                     if (request.getData() != null){
                     	StoreId storeId = (StoreId) request.getData();
