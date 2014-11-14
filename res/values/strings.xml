@@ -39,7 +39,6 @@
     <string name="cod_phone_num1">136 2292 9009</string>
     <string name="cod_phone_num2">021&#8211;4939 8988</string>
     <string name="goods_cout_price">商品金额￥</string>
-
     <string name="user_login">用户登录</string>
     <string name="user_register">用户注册</string>
     <string name="yikego_login_title">海客社区超市用户登录</string>
@@ -128,6 +127,7 @@
     <string name="coupon_overdue">优惠券已过期</string>
     <string name="coupon_list_store_text">便利店:</string>
     <string name="coupon_list_coupon_text">优惠券码:</string>
+    <string name="coupon_check_null">无效的优惠券验证码</string>
     <string name="coupon_valid_text">有效日期:</string>
     <string name="coupon_cost">￥ <xliff:g id="number">%d</xliff:g></string>
 

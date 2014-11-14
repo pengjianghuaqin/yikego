@@ -12,4 +12,5 @@ public class CommitOrder {
     public String body;
     public int orderStatus;
     public List<OrderDetail> orderDetailList;
+    public List<CouponCheckInfo> couponList;
 }

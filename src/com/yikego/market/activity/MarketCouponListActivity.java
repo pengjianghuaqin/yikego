@@ -25,8 +25,10 @@ import com.yikego.market.webservice.Request;
 import com.yikego.market.webservice.ThemeService;
 
 import android.app.ListActivity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -60,10 +62,25 @@ public class MarketCouponListActivity extends ListActivity implements
 	private static final int ACTION_NETWORK_ERROR = 0;
 	private static final int ACTION_COUPON_LIST = 1;
 	private LoadingDialog mProgressDialog;
-
+	public static final String ACTION_COUPON_VERIFY = "coupon_verify";
+	private final BroadcastReceiver mApplicationsReceiver;
+	private boolean verifyFlag;
 	public MarketCouponListActivity() {
 		isEnd = false;
 		bBusy = false;
+		verifyFlag = false;
+		nowPage = 1;
+		pageCount = 10;
+		mApplicationsReceiver = new BroadcastReceiver() {
+
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				// TODO Auto-generated method stub
+				Log.v("mApplicationsReceiver", "mApplicationsReceiver intent="+intent.getAction());
+				verifyFlag = true;
+				GetCouponList();
+			}
+		};
 	}
 
 	@Override
@@ -76,8 +93,18 @@ public class MarketCouponListActivity extends ListActivity implements
 		yikegoApplication.getInstance().addActivity(this);
 		mUserId = GlobalUtil.getUserId(mContext);
 		initView();
+		registerIntentReceivers();
 	}
-
+	private void registerIntentReceivers() {
+		// TODO Auto-generated method stub
+		IntentFilter intentFilter = new IntentFilter(MarketCouponListActivity.ACTION_COUPON_VERIFY);
+		registerReceiver(mApplicationsReceiver, intentFilter);		
+	}
+	
+	private void unregisterIntentReceivers() {
+		// TODO Auto-generated method stub
+		unregisterReceiver(mApplicationsReceiver); 
+	}
 	private void initView() {
 		mListView = getListView();
 		mListView.setOnScrollListener(mScrollListener);
@@ -104,7 +131,11 @@ public class MarketCouponListActivity extends ListActivity implements
 	public void onBackButton(View v) {
 		finish();
 	}
-
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		unregisterIntentReceivers();
+	}
 	private void initListener() {
 		// TODO Auto-generated method stub
 		mScrollListener = new AbsListView.OnScrollListener() {
@@ -190,7 +221,7 @@ public class MarketCouponListActivity extends ListActivity implements
 									.get(i));
 						}
 
-						if (mCouponListAdapter == null) {
+						if (verifyFlag || mCouponListAdapter == null) {
 							mCouponListAdapter = new CouponListAdapter(
 									mContext, marketCouponList);
 							mListView.setAdapter(mCouponListAdapter);
@@ -204,7 +235,7 @@ public class MarketCouponListActivity extends ListActivity implements
 								isEnd = true;
 							}
 						}
-
+						verifyFlag = false;
 						mListView.setAdapter(mCouponListAdapter);
 					}
 					mListView.setVisibility(View.VISIBLE);
@@ -249,8 +280,8 @@ public class MarketCouponListActivity extends ListActivity implements
 			if (convertView == null) {
 				// convertView = mLayoutInflater.inflate(R.layout.app_list_item,
 				// null);
-				convertView = mLayoutInflater.inflate(R.layout.coupon_list_item,
-						parent, false);
+				convertView = mLayoutInflater.inflate(
+						R.layout.coupon_list_item, parent, false);
 				viewHolder = new ViewHolder();
 				viewHolder.mCouponId = (TextView) convertView
 						.findViewById(R.id.coupon_id);
@@ -258,15 +289,15 @@ public class MarketCouponListActivity extends ListActivity implements
 						.findViewById(R.id.coupon_valid);
 				viewHolder.mCost = (TextView) convertView
 						.findViewById(R.id.coupon_cost);
-				
+
 				convertView.setTag(viewHolder);
 			} else {
 				viewHolder = (ViewHolder) convertView.getTag();
 			}
 			if (coupon != null) {
-				viewHolder.mValid.setText("￥ "+coupon.couponCash);
+				viewHolder.mCost.setText("￥ " + coupon.couponCash);
 				viewHolder.mCouponId.setText(coupon.couponNo);
-				viewHolder.mCouponId.setText(coupon.couponId+"");
+				viewHolder.mValid.setText(coupon.validTime);
 			}
 
 			return convertView;

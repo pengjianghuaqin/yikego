@@ -4,187 +4,29 @@
     android:layout_height="match_parent"
     android:background="@color/text_gray_color_e3" >
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/market_detail_actionbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:layout_height="50dip"
+        android:layout_alignParentTop="true"
+        android:background="@color/bg_color_blue" >
 
-        <RelativeLayout
-            android:id="@+id/market_detail_actionbar"
-            android:layout_width="match_parent"
-            android:layout_height="50dip"
-            android:background="@color/bg_color_blue" >
-
-            <ImageView
-                android:id="@+id/market_detail_back"
-                style="@style/back_syle"
-                />
-
-            <TextView
-                android:id="@+id/actionbar_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="@string/text_submit_order"
-                android:textColor="@color/white"
-                android:textSize="20dip" />
-        </RelativeLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/info_title"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                style="@style/title_color_style"
-                android:padding="8dp"
-                android:text="收货人信息"
-                android:textColor="@color/black" />
-
-            <RelativeLayout
-                android:id="@+id/layout_detail"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                style="@style/input_color_style"
-                android:onClick="layout_detail_onclick">
-
-                <TextView
-                    android:id="@+id/name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:textColor="@color/black"
-                    android:visibility="gone"
-                    />
-
-                <TextView
-                    android:id="@+id/tel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/name"
-                    android:padding="8dp"
-                    android:textColor="@color/black"
-                    android:text="18312798683" />
-
-                <TextView
-                    android:id="@+id/addressee"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tel"
-                    android:paddingBottom="8dp"
-                    android:paddingLeft="8dp"
-                    android:textColor="@color/black"
-                    android:text="上海市浦东新区华坨路980号" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/arrow_selector"
-                    android:layout_marginRight="12dp" />
-            </RelativeLayout>
-        </LinearLayout>
+        <ImageView
+            android:id="@+id/market_detail_back"
+            style="@style/back_syle" />
 
         <TextView
-            android:layout_width="fill_parent"
+            android:id="@+id/actionbar_title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            style="@style/title_color_style"
-            android:padding="8dp"
-            android:textColor="@color/black"
-            android:text="支付方式" />
-
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            style="@style/input_color_style"
-            android:onClick="layout_cod_onclick">
-
-            <TextView
-                android:id="@+id/playment_way"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:textColor="@color/black"
-                android:text="货到付款" />
-            
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/arrow_selector"
-                    android:layout_marginRight="12dp" />
-        </RelativeLayout>
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            style="@style/title_color_style"
-            android:textColor="@color/black"
-            android:text="商品清单" />
-
-        <ListView
-            android:id="@android:id/list"
-            android:layout_width="fill_parent"
-            android:layout_height="200dip"
-            android:cacheColorHint="@android:color/transparent"
-            android:divider="@color/text_gray_color_e3"
-            android:dividerHeight="1px"
-            android:drawSelectorOnTop="false"
-            android:fadingEdge="none"
-            android:footerDividersEnabled="true" />
-
-        <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                style="@style/title_color_style"
-                android:textColor="@color/black"
-                android:text="付款信息" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dip"
-            style="@style/input_color_style">
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="15dip"
-                    android:text="商品总计"
-                    android:textColor="@color/black"
-                    android:textSize="12dip" />
-            <TextView
-                android:id="@+id/product_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/price_mount"
-                android:layout_marginRight="20dp"
-                android:textColor="@color/black"
-                android:textSize="12dip" />
-
-            <TextView
-                android:id="@+id/price_mount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="15dip"
-                android:textColor="@color/black"
-                android:textSize="14dip" />
-        </RelativeLayout>
-    </LinearLayout>
+            android:layout_centerInParent="true"
+            android:text="@string/text_submit_order"
+            android:textColor="@color/white"
+            android:textSize="20dip" />
+    </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/market_detail_tabbar"
         android:layout_width="match_parent"
         android:layout_height="50dip"
         android:layout_alignParentBottom="true"
@@ -195,8 +37,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="应支付：￥0.00"
             android:layout_marginLeft="10dp"
+            android:text="应支付：￥0.00"
             android:textColor="@color/white" />
 
         <Button
@@ -211,5 +53,41 @@
             android:textColor="@color/bg_color_blue"
             android:textSize="15dip" />
     </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@id/market_detail_tabbar"
+        android:layout_below="@id/market_detail_actionbar"
+        android:orientation="vertical" >
+
+        <!--
+                  <ListView
+                android:id="@android:id/list"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:cacheColorHint="@android:color/transparent"
+                android:divider="@color/text_gray_color_e3"
+                android:dividerHeight="1px"
+                android:drawSelectorOnTop="false"
+                android:fadingEdge="none"
+                android:fillViewport="true"
+                android:footerDividersEnabled="true"
+                android:listSelector="#00000000" />
+        -->
+
+        <ListView
+            android:id="@+id/coupon_list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:cacheColorHint="@android:color/transparent"
+            android:divider="@color/text_gray_color_e3"
+            android:dividerHeight="1px"
+            android:drawSelectorOnTop="false"
+            android:fadingEdge="none"
+            android:fillViewport="true"
+            android:footerDividersEnabled="true"
+            android:listSelector="#00000000" />
+    </LinearLayout>
 
 </RelativeLayout>

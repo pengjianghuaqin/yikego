@@ -266,6 +266,7 @@ public class BaseResource {
         HttpPost httpPost = new HttpPost(uri);
         httpPost.setHeader("Accept", "application/json");
         httpPost.setHeader("Content-Type", "application/json");
+        Log.v("post", "post ="+GSON.toJson(postClass));
         httpPost.setEntity(new StringEntity (GSON.toJson(postClass), "UTF-8"));
         ResponseHandler<String> handler = new ResponseHandler<String>() {
 

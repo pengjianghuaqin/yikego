@@ -128,8 +128,8 @@ public class ServiceProvider extends BaseResource {
 
 	public static Object postCouponCheck(CouponCheckInfo couponCheckInfo)
 			throws IOException, HttpException {
-		Log.d(TAG, "postUserLogin couponCheckInfo.couponId : "
-				+ couponCheckInfo.couponId + " couponCheckInfo.userId : "
+		Log.v(TAG, "postUserLogin couponCheckInfo.couponId : "
+				+ couponCheckInfo.couponNo + " couponCheckInfo.userId : "
 				+ couponCheckInfo.userId);
 		CouponInfo couponInfo = post(ClientInfo.RESOURCE_ROOT_URL
 				+ "/coupon/verifyCoupon", couponCheckInfo, CouponInfo.class);

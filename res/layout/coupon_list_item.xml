@@ -2,81 +2,94 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/user_order_margin_left"
-    android:layout_marginRight="@dimen/user_order_margin_left"
     android:background="@color/bg_color_gray" >
 
     <RelativeLayout
-        android:id="@+id/user_point_item_desc_layout"
+        android:id="@+id/coupon_area"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp" >
+        android:layout_height="60dp" >
 
-        <TextView
-            android:id="@+id/user_point_item_desc_title"
+        <ImageView
+            android:id="@+id/order_flag"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/img_flag_bg"
+            android:src="@drawable/img_flag_selected"
+            android:visibility="gone" />
+
+        <RelativeLayout
+            android:id="@+id/user_point_item_desc_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:gravity="center_vertical"
-            android:text="@string/coupon_list_coupon_text"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_small" />
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp" >
 
-        <TextView
-            android:id="@+id/coupon_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/user_point_item_desc_title"
-            android:gravity="center_vertical"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_small" />
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/user_point_item_desc_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:text="@string/coupon_list_coupon_text"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_small" />
 
-    <RelativeLayout
-        android:id="@+id/user_point_item_count_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/user_point_item_desc_layout"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp" >
+            <TextView
+                android:id="@+id/coupon_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/user_point_item_desc_title"
+                android:gravity="center_vertical"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_small" />
+        </RelativeLayout>
 
-        <TextView
-            android:id="@+id/user_point_item_count_title"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/user_point_item_count_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:gravity="center_vertical"
-            android:text="@string/coupon_valid_text"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_small" />
+            android:layout_below="@+id/user_point_item_desc_layout"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp" >
 
-        <TextView
-            android:id="@+id/coupon_valid"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/user_point_item_count_title"
-            android:gravity="center_vertical"
-            android:textColor="@color/bg_color_blue"
-            android:textSize="@dimen/text_size_small" />
+            <TextView
+                android:id="@+id/user_point_item_count_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:text="@string/coupon_valid_text"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_small" />
 
-        <TextView
-            android:id="@+id/coupon_cost"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/user_point_item_count_title"
-            android:layout_marginRight="30dp"
-            android:gravity="center_vertical"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_small" />
+            <TextView
+                android:id="@+id/coupon_valid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/user_point_item_count_title"
+                android:gravity="center_vertical"
+                android:textColor="@color/bg_color_blue"
+                android:textSize="@dimen/text_size_small" />
 
+            <TextView
+                android:id="@+id/coupon_cost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/user_point_item_count_title"
+                android:layout_marginRight="30dp"
+                android:gravity="center_vertical"
+                android:textColor="@color/red"
+                android:textSize="@dimen/text_size_small" />
+        </RelativeLayout>
     </RelativeLayout>
 
 </RelativeLayout>

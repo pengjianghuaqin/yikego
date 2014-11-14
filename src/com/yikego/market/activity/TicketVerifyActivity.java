@@ -1,10 +1,13 @@
 package com.yikego.market.activity;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,8 +19,10 @@ import com.yikego.market.utils.Constant;
 import com.yikego.market.utils.GlobalUtil;
 import com.yikego.market.webservice.Request;
 import com.yikego.market.webservice.ThemeService;
+
 import java.util.Observable;
 import java.util.Observer;
+
 import android.os.Handler;
 
 /**
@@ -46,18 +51,27 @@ public class TicketVerifyActivity extends Activity {
 	private EditText mVerify_edit;
 	private TextView mBtn_vefiry;
 	private Handler mHandler;
+	private Context mContext;
+	public static final int REQUSET = 1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_shop_ticket);
 		mThemeService = ThemeService.getServiceInstance(this);
+		mContext = this;
 		initActionBar();
 		initView();
 		initHandler();
-
+		
 	}
-
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		Intent intent = new Intent();
+		intent.setAction(MarketCouponListActivity.ACTION_COUPON_VERIFY);
+		sendBroadcast(intent);
+	}
 	private void initView() {
 
 		mVerify_edit = (EditText) findViewById(R.id.verify_edit);
@@ -65,11 +79,17 @@ public class TicketVerifyActivity extends Activity {
 		mBtn_vefiry.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				mCouponCheckInfo.userId = GlobalUtil.getUserId(TicketVerifyActivity.this);
-				mCouponCheckInfo.couponId = Integer.parseInt(mVerify_edit.getText().toString());
-				ckeckCoupon(mCouponCheckInfo);
+				if (mVerify_edit.getText() != null) {
+					mCouponCheckInfo.userId = GlobalUtil
+							.getUserId(TicketVerifyActivity.this);
+					mCouponCheckInfo.couponNo = Integer.parseInt(mVerify_edit
+							.getText().toString());
+					ckeckCoupon(mCouponCheckInfo);
+				}
+
 			}
 		});
+
 	}
 
 	private void initActionBar() {
@@ -81,7 +101,18 @@ public class TicketVerifyActivity extends Activity {
 		actionBarText.setText(R.string.main_left_shop_quan_verify);
 		mScoreExchange = (TextView) findViewById(R.id.score_exchange);
 		mScoreExchange.setText("二维码");
-        mScoreExchange.setVisibility(View.VISIBLE);
+		mScoreExchange.setVisibility(View.VISIBLE);
+		mScoreExchange.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(mContext, CaptureActivity.class);
+				startActivityForResult(intent, REQUSET);
+			}
+
+		});
+
 		actionBack = (ImageView) findViewById(R.id.market_detail_back);
 		actionBack.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -89,6 +120,25 @@ public class TicketVerifyActivity extends Activity {
 				finish();
 			}
 		});
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode,
+			Intent intent) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, intent);
+		// requestCode标示请求的标示 resultCode表示有数据
+		if (requestCode == REQUSET && resultCode == RESULT_OK) {
+			String tmpNo = intent.getStringExtra("couponNo");
+			boolean mat = tmpNo.matches("\\d+");
+			if (mat) {
+				mVerify_edit.setText(intent.getStringExtra("couponNo"));
+			} else {
+				GlobalUtil.showToastString(TicketVerifyActivity.this,
+						R.string.coupon_check_null);
+			}
+
+		}
 	}
 
 	private void initHandler() {

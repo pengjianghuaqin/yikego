@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/list_header"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/info_title"
+            style="@style/title_color_style"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="收货人信息"
+            android:textColor="@color/black" />
+
+        <RelativeLayout
+            android:id="@+id/layout_detail"
+            style="@style/input_color_style"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:onClick="layout_detail_onclick" >
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:textColor="@color/black"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/name"
+                android:padding="8dp"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/addressee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tel"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:textColor="@color/black" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="12dp"
+                android:background="@drawable/arrow_selector" />
+        </RelativeLayout>
+
+        <TextView
+            style="@style/title_color_style"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:padding="8dp"
+            android:text="支付方式"
+            android:textColor="@color/black" />
+
+        <RelativeLayout
+            style="@style/input_color_style"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:onClick="layout_cod_onclick" >
+
+            <TextView
+                android:id="@+id/playment_way"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="货到付款"
+                android:textColor="@color/black" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="12dp"
+                android:background="@drawable/arrow_selector" />
+        </RelativeLayout>
+
+        <TextView
+            style="@style/title_color_style"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="商品清单"
+            android:textColor="@color/black" />
+    </LinearLayout>
+<RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            style="@style/title_color_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:padding="8dp"
+            android:text="使用购物券"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/btn_add_coupon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:background="@color/white"
+            android:text="添加购物券"
+            android:textColor="@color/bg_color_blue"
+            android:textSize="10sp" />
+    </RelativeLayout>
+</LinearLayout>

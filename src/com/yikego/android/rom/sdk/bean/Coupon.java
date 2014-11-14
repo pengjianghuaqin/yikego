@@ -13,4 +13,5 @@ public class Coupon {
 	public String validTime;
 	public String usedTime;
 	public String createTime;
+	public boolean selectFlag = true;
 }
